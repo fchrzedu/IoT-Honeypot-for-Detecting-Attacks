@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  9 OCT 2025 17:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  10 OCT 2025 14:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1462,7 +1462,7 @@ ces - Proposal.dex".run.xml'.
 Here is how much of TeX's memory you used:
  24347 strings out of 468130
  417361 string characters out of 5430149
- 1284112 words of memory out of 5000000
+ 1284115 words of memory out of 5000000
  52638 multiletter control sequences out of 15000+600000
  678467 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1471,7 +1471,7 @@ Here is how much of TeX's memory you used:
 fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.p
 fb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(6 pages, 79913 bytes).
+(6 pages, 81015 bytes).
 PDF statistics:
  148 PDF objects out of 1000 (max. 8388607)
  27 named destinations out of 1000 (max. 500000)
