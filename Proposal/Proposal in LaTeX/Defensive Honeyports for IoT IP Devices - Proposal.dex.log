@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  10 OCT 2025 14:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  12 OCT 2025 15:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1227,7 +1227,7 @@ Package csquotes Info: ... configuration file loaded successfully.
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/csquotes\csquotes.cfg
 File: csquotes.cfg 
 ))
-Package hyperref Info: Option `colorlinks' set `false' on input line 85.
+Package hyperref Info: Option `colorlinks' set `true' on input line 85.
 Package hyperref Info: Option `bookmarksopen' set `true' on input line 85.
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
@@ -1322,7 +1322,7 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 97.
+Package hyperref Info: Link coloring ON on input line 97.
 (Defensive Honeyports for IoT IP Devices - Proposal.dex.out)
 (Defensive Honeyports for IoT IP Devices - Proposal.dex.out)
 \@outlinefile=\write4
@@ -1342,13 +1342,13 @@ Package biblatex Info: Automatic encoding selection.
 
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file '"Defensive Honeyports for IoT IP Devices - Pro
-posal.dex".bbl' not found.
-
-No file "Defensive Honeyports for IoT IP Devices - Proposal.dex".bbl.
+posal.dex".bbl' found.
+ (Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl)
 Package biblatex Info: Reference section=0 on input line 97.
 Package biblatex Info: Reference segment=0 on input line 97.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
 01.
+
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1446,6 +1446,21 @@ Chapter 4.
 
 [4
 
+]
+Chapter 5.
+
+
+[5
+
+]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
+85.
+ (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+
+[6
+
 ] (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
@@ -1453,27 +1468,30 @@ L3 programming layer <2025-09-02>
  ***********
 Package rerunfilecheck Info: File `"Defensive Honeyports for IoT IP Devices - P
 roposal.dex".out' has not changed.
-(rerunfilecheck)             Checksum: 0472BCFC02AAABDD808B67F04820430B;1231.
+(rerunfilecheck)             Checksum: 6FFF9CB70952E234AFE5DDF2E3419983;1276.
 Package logreq Info: Writing requests to '"Defensive Honeyports for IoT IP Devi
 ces - Proposal.dex".run.xml'.
 \openout1 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.run.xml"'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24347 strings out of 468130
- 417361 string characters out of 5430149
- 1284115 words of memory out of 5000000
- 52638 multiletter control sequences out of 15000+600000
- 678467 words of font info for 81 fonts, out of 8000000 for 9000
+ 24626 strings out of 468130
+ 423024 string characters out of 5430149
+ 1285214 words of memory out of 5000000
+ 52904 multiletter control sequences out of 15000+600000
+ 685842 words of font info for 84 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,747b,2256s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,6n,79p,747b,2282s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.p
-fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.p
-fb>
+fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
+.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
+.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri1
+2.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt
+12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(6 pages, 81015 bytes).
+(8 pages, 145045 bytes).
 PDF statistics:
- 148 PDF objects out of 1000 (max. 8388607)
- 27 named destinations out of 1000 (max. 500000)
- 161 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 184 PDF objects out of 1000 (max. 8388607)
+ 32 named destinations out of 1000 (max. 500000)
+ 169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
