@@ -126,22 +126,22 @@ To evaluate how effective isolation and containment mechanisms \textit{(sandboxi
 \subsection{Objectives}\label{sec:objectives}
 The objectives are as follows:
 \begin{itemize}
-	\item To design and deploy a controlled IoT honeypot environment, composed of various VMs \textit{(Virtual Machines)}.
-	\item To deploy a minimum of two separate, independent honeypots for external analysis:
-	\begin{description}
-		\item[1.] A \textbf{Vanilla Honeypot} with zero containment nor segmentation,
-		\item[2.] A \textbf{Segmented Honeypot} operating within a secure, isolated environment.
-	\end{description}
-	\item To collect, store and analyze malicious programs data, composed of:
-	\begin{description}
-		\item[1.] Network traffic
-		\item[2.] Payloads
+
+	\item To design and deploy a controlled Honeypot framework for IoT IP devices, seated within Virtual Machines
+	\item To deploy a minimum of two separate honeypots:
+		\begin{description}
+		\item[1.] Low-interaction Vanilla Honeypot,
+		\item[2.] High-interaction Honeypot within a secure container.
+		\end{description}
+	\item To create a virtual network, where each IoT device and VM have logical addressing and are protected through subnets,
+	\item To collect and store the following malware properties for quantitve comparison and analysis:
+		\begin{description}
+		\item[1.] Network traffic,
+		\item[2.] Payloads,
 		\item[3.] Malware type
 		\item[4.] Activity data
-		\item[5.] Propagation attempts into the external environment
-	\end{description}
-
-		
+		\item[5.] Propagation attempts outside the container.
+		\end{description}
 \end{itemize}
 
 \section{Product Review}\label{sec:productReview}
