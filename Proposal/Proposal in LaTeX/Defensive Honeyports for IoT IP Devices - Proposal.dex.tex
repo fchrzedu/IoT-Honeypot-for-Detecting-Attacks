@@ -89,8 +89,8 @@
 
 % Details to make the title page.
 % Change these details!
-\title{\huge\bfseries This is the title for the proposal}
-\author{Franek Kruczynski}
+\title{\huge\bfseries Defensive Honeypots for IP IoT Devices:\\Quantitive Comparison between Vanilla and Sandboxed Honeypots}
+\author{\LARGE Franek Kruczynski}
 \date{September 2025}
 
 
@@ -118,18 +118,37 @@ Abstract of the project goes here
 The Internet of Things (IoT) is vastly expanding, driving a brand new and complex wave of device inter-connectivity worldwide, with an approximate 27-billion devices by the end of 2025 \citep{autobits2025iot}
 
 \section{Aims \&{} Objectives}\label{sec:aimAndObjectives}
+
 \subsection{Aim}\label{sec:aim}
 
+To evaluate how effective isolation and containment mechanisms \textit{(sandboxing and segmentation)} are at preventing malware propagation within IP IoT honeypot environments, compared to a non-contained \textit{(vanilla}) honeypot -- whilst utilising the same data set.
 
 \subsection{Objectives}\label{sec:objectives}
+The objectives are as follows:
+\begin{itemize}
+	\item To design and deploy a controlled IoT honeypot environment, composed of various VMs \textit{(Virtual Machines)}.
+	\item To deploy a minimum of two separate, independent honeypots for external analysis:
+	\begin{description}
+		\item[1.] A \textbf{Vanilla Honeypot} with zero containment nor segmentation,
+		\item[2.] A \textbf{Segmented Honeypot} operating within a secure, isolated environment.
+	\end{description}
+	\item To collect, store and analyze malicious programs data, composed of:
+	\begin{description}
+		\item[1.] Network traffic
+		\item[2.] Payloads
+		\item[3.] Malware type
+		\item[4.] Activity data
+		\item[5.] Propagation attempts into the external environment
+	\end{description}
 
-Objectives required to meet 1.2.1
+		
+\end{itemize}
 
 \section{Product Review}\label{sec:productReview}
 
 \subsection{Scope}\label{sec:scope}
 
-What will the project do?
+The project will design and build a \textbf{contained IoT Honeypot environment} for IP devices, comparing two separate deployments \textit{(segmented vs vanilla)}. It is designed to help understand the theoretical importance of deploying honeypots within a secure container, and evaluate its success against low-interaction vanilla honeypots \citep{Kocaogullar2023honeypots}; considered low security.
 
 What is its purpose ?
 

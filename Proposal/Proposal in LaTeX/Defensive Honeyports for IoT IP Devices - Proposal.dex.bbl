@@ -51,6 +51,41 @@
       \verb https://autobitslabs.com/how-many-iot-devices-are-there/
       \endverb
     \endentry
+    \entry{Kocaogullar2023honeypots}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d8006cfe948a0813a45aa4c9f8c67688}{%
+           family={Kocaogullar},
+           familyi={K\bibinitperiod},
+           given={Y\bibnamedelima et\bibnamedelima al.},
+           giveni={Y\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {University of Kent}%
+      }
+      \strng{namehash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{fullhash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{fullhashraw}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{bibnamehash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{authorbibnamehash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{authornamehash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{authorfullhash}{d8006cfe948a0813a45aa4c9f8c67688}
+      \strng{authorfullhashraw}{d8006cfe948a0813a45aa4c9f8c67688}
+      \field{sortinit}{K}
+      \field{sortinithash}{c02bf6bff1c488450c352b40f5d853ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Hunting High or Low: Evaluating the Effectiveness of High-Interaction and Low-Interaction Honeypot}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://kar.kent.ac.uk/102122/1/STAST2022.pdf
+      \endverb
+      \verb{url}
+      \verb https://kar.kent.ac.uk/102122/1/STAST2022.pdf
+      \endverb
+    \endentry
   \enddatalist
 \endrefsection
 \endinput

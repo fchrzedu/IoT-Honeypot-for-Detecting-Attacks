@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  12 OCT 2025 15:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  13 OCT 2025 13:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1422,44 +1422,50 @@ l.106 \mainmatter
 
 ]
 Chapter 1.
-
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
+29.
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
+File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
 
 [1
 
 
 
-]
+{C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
+
+[2]
 Chapter 2.
-
-
-[2
-
-]
-Chapter 3.
 
 
 [3
 
 ]
-Chapter 4.
+Chapter 3.
 
 
 [4
 
 ]
-Chapter 5.
+Chapter 4.
 
 
 [5
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 1
-85.
+Chapter 5.
+
+
+[6
+
+]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+04.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-[6
+[7
 
 ] (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
  ***********
@@ -1475,23 +1481,25 @@ ces - Proposal.dex".run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24626 strings out of 468130
- 423024 string characters out of 5430149
- 1285214 words of memory out of 5000000
- 52904 multiletter control sequences out of 15000+600000
- 685842 words of font info for 84 fonts, out of 8000000 for 9000
+ 24694 strings out of 468130
+ 424844 string characters out of 5430149
+ 1285374 words of memory out of 5000000
+ 52964 multiletter control sequences out of 15000+600000
+ 689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,6n,79p,747b,2282s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,747b,2377s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.p
 fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 .pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
+.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17
 .pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri1
-2.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt
-12.pfb>
+2.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmro
+12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
+t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(8 pages, 145045 bytes).
+(9 pages, 205992 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
+ 206 PDF objects out of 1000 (max. 8388607)
+ 34 named destinations out of 1000 (max. 500000)
  169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
