@@ -1,15 +1,17 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'Defensive Honeyports for IoT IP Devices - Proposal.dex.blg'
-[86] biber-MSWIN64:342> INFO - === 
-[118] Biber.pm:421> INFO - Reading 'Defensive Honeyports for IoT IP Devices - Proposal.dex.bcf'
-[202] Biber.pm:1002> INFO - Found 2 citekeys in bib section 0
-[213] Biber.pm:4487> INFO - Processing section 0
-[221] Biber.pm:4678> INFO - Looking for bibtex file 'mybib.bib' for section 0
-[271] bibtex.pm:1713> INFO - LaTeX decoding ...
-[275] bibtex.pm:1519> INFO - Found BibTeX data source 'mybib.bib'
+[84] biber-MSWIN64:342> INFO - === 
+[116] Biber.pm:421> INFO - Reading 'Defensive Honeyports for IoT IP Devices - Proposal.dex.bcf'
+[198] Biber.pm:1002> INFO - Found 3 citekeys in bib section 0
+[208] Biber.pm:4487> INFO - Processing section 0
+[216] Biber.pm:4678> INFO - Looking for bibtex file 'mybib.bib' for section 0
+[265] bibtex.pm:1713> INFO - LaTeX decoding ...
+[274] bibtex.pm:1519> INFO - Found BibTeX data source 'mybib.bib'
 [309] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
 [309] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
 [309] Biber.pm:4307> INFO - Sorting list 'nyt/global//global/global/global' of type 'entry' with template 'nyt' and locale 'en-US'
 [309] Biber.pm:4313> INFO - No sort tailoring available for locale 'en-US'
-[314] bbl.pm:676> INFO - Writing 'Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl' with encoding 'UTF-8'
-[315] bbl.pm:779> INFO - Output to Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl
+[336] bbl.pm:676> INFO - Writing 'Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl' with encoding 'UTF-8'
+[338] bbl.pm:779> INFO - Output to Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl
+[338] Biber.pm:132> WARN - online entry 'cowrie-documentation' (mybib.bib): Invalid format 'n.d.' of date field 'date' - ignoring
+[338] Biber.pm:134> INFO - WARNINGS: 1

@@ -86,6 +86,40 @@
       \verb https://kar.kent.ac.uk/102122/1/STAST2022.pdf
       \endverb
     \endentry
+    \entry{cowrie-documentation}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=8c2d62ee5191a5f15c206adabdf83e67}{%
+           family={Oosterhof},
+           familyi={O\bibinitperiod},
+           given={Michel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cowrie}%
+      }
+      \strng{namehash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{fullhash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{fullhashraw}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{bibnamehash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{authorbibnamehash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{authornamehash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{authorfullhash}{8c2d62ee5191a5f15c206adabdf83e67}
+      \strng{authorfullhashraw}{8c2d62ee5191a5f15c206adabdf83e67}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{labeldatesource}{nodate}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{What is Cowrie?}
+      \verb{urlraw}
+      \verb https://docs.cowrie.org/en/latest/README.html#what-is-cowrie
+      \endverb
+      \verb{url}
+      \verb https://docs.cowrie.org/en/latest/README.html#what-is-cowrie
+      \endverb
+      \warn{\item online entry 'cowrie-documentation' (mybib.bib): Invalid format 'n.d.' of date field 'date' - ignoring}
+    \endentry
   \enddatalist
 \endrefsection
 \endinput

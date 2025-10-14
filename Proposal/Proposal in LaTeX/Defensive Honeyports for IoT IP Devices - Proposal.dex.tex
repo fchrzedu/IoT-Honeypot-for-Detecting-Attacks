@@ -121,20 +121,20 @@ The Internet of Things (IoT) is vastly expanding, driving a brand new and comple
 
 \subsection{Aim}\label{sec:aim}
 
-To evaluate how effective isolation and containment mechanisms \textit{(sandboxing and segmentation)} are at preventing malware propagation within IP IoT honeypot environments, compared to a non-contained \textit{(vanilla}) honeypot -- whilst utilising the same data set.
+To evaluate the effectiveness of isolation and containment mechanisms \textit{(sandboxing and segmentation)} at preventing malware progatation within IP IoT honeypot encironments, compared to a non-contained \textit{(vanilla)} honeypot -- whilst utilizing the same data set. 
 
 \subsection{Objectives}\label{sec:objectives}
 The objectives are as follows:
 \begin{itemize}
 
-	\item To design and deploy a controlled Honeypot framework for IoT IP devices, seated within Virtual Machines
+	\item To design and deploy a controlled Honeypot framework for IoT IP devices, seated within secure machines \textit{(VMs)},
 	\item To deploy a minimum of two separate honeypots:
 		\begin{description}
-		\item[1.] Low-interaction Vanilla Honeypot,
-		\item[2.] High-interaction Honeypot within a secure container.
+		\item[1.] Low-interaction Vanilla Honeypot, mimicking usual IoT devices, 
+		\item[2.] High-interaction Honeypot within a secure container,
 		\end{description}
-	\item To create a virtual network, where each IoT device and VM have logical addressing and are protected through subnets,
-	\item To collect and store the following malware properties for quantitve comparison and analysis:
+	\item To create a virtual network, where each IoT device and VM have logical addressing and are protected using subnets,
+	\item To collect and store the following malware properties for quantitative comparison and analysis:
 		\begin{description}
 		\item[1.] Network traffic,
 		\item[2.] Payloads,
@@ -148,12 +148,10 @@ The objectives are as follows:
 
 \subsection{Scope}\label{sec:scope}
 
-The project will design and build a \textbf{contained IoT Honeypot environment} for IP devices, comparing two separate deployments \textit{(segmented vs vanilla)}. It is designed to help understand the theoretical importance of deploying honeypots within a secure container, and evaluate its success against low-interaction vanilla honeypots \citep{Kocaogullar2023honeypots}; considered low security.
+The project involves the development and deployment of a \textbf{contained IoT Honeypot environment} for IP devices, comparing two separate deployments \textit{(segmented vs vanilla)}. It is designed to help understand the theoretical importance of creating honeypots within a secure container, and evaluating its success against low-interaction vanilla honeypots \citep{Kocaogullar2023honeypots}; further supporting research of malware propagation.
 
-What is its purpose ?
 
-How will it work?
-
+The honeypots will be implemented using Cowrie, a medium-interaction SSH/Telnet based honeypot framework \citep{cowrie-documentation}, that has capabilities for both medium and high-interaction modes \textit{(shell and proxy)}. The sandboxed honeypot will be deployed using a combination of Cowrie, FireJail, Doker and, Linux-based kernel security \textit{(AppArmour/seccomp)}. The framework will exist within a Linux-based Virtual Machine, where a separate VM is used for malware data analysis. 
 
 \subsection{Audience}\label{sec:audience}
 
