@@ -19,6 +19,41 @@
 
 \refsection{0}
   \datalist[entry]{nyt/global//global/global/global}
+    \entry{cornell-malware-analysis}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=12f8cb4723edf7bec5ce9f793a99b955}{%
+           family={Alasmary},
+           familyi={A\bibinitperiod},
+           given={H\bibnamedelima et\bibnamedelima al.},
+           giveni={H\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cornell University}%
+      }
+      \strng{namehash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{fullhash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{fullhashraw}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{bibnamehash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{authorbibnamehash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{authornamehash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{authorfullhash}{12f8cb4723edf7bec5ce9f793a99b955}
+      \strng{authorfullhashraw}{12f8cb4723edf7bec5ce9f793a99b955}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Analyzing, Comparing, and Detecting Emerging Malware: A Graph-based Approach}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1902.03955
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1902.03955
+      \endverb
+    \endentry
     \entry{fortinet-IDS}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=1f25b8a9986a2e7a04ee9538c462e578}{%
@@ -49,6 +84,41 @@
       \endverb
       \verb{url}
       \verb https://www.fortinet.com/uk/resources/cyberglossary/intrusion-detection-system
+      \endverb
+    \endentry
+    \entry{security-issue-inIoT}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dab9e48109330d5fc6ec90b24166e392}{%
+           family={Gurunath},
+           familyi={G\bibinitperiod},
+           given={R\bibnamedelima et\bibnamedelima al.},
+           giveni={R\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE Xplore}%
+      }
+      \strng{namehash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{fullhash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{fullhashraw}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{bibnamehash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{authorbibnamehash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{authornamehash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{authorfullhash}{dab9e48109330d5fc6ec90b24166e392}
+      \strng{authorfullhashraw}{dab9e48109330d5fc6ec90b24166e392}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{An Overview: Security Issue in IoT Network}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/abstract/document/8653728
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/abstract/document/8653728
       \endverb
     \endentry
     \entry{autobits2025iot}{online}{}{}
@@ -116,6 +186,41 @@
       \endverb
       \verb{url}
       \verb https://kar.kent.ac.uk/102122/1/STAST2022.pdf
+      \endverb
+    \endentry
+    \entry{crowdstrike-honeypot}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e790c4a2af9be571373881d1993a575c}{%
+           family={Narendran},
+           familyi={N\bibinitperiod},
+           given={Vaideeswaran},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {CrowdStrike}%
+      }
+      \strng{namehash}{e790c4a2af9be571373881d1993a575c}
+      \strng{fullhash}{e790c4a2af9be571373881d1993a575c}
+      \strng{fullhashraw}{e790c4a2af9be571373881d1993a575c}
+      \strng{bibnamehash}{e790c4a2af9be571373881d1993a575c}
+      \strng{authorbibnamehash}{e790c4a2af9be571373881d1993a575c}
+      \strng{authornamehash}{e790c4a2af9be571373881d1993a575c}
+      \strng{authorfullhash}{e790c4a2af9be571373881d1993a575c}
+      \strng{authorfullhashraw}{e790c4a2af9be571373881d1993a575c}
+      \field{sortinit}{N}
+      \field{sortinithash}{22369a73d5f88983a108b63f07f37084}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{What Is a Honeypot?}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.crowdstrike.com/en-gb/cybersecurity-101/exposure-management/honeypots/
+      \endverb
+      \verb{url}
+      \verb https://www.crowdstrike.com/en-gb/cybersecurity-101/exposure-management/honeypots/
       \endverb
     \endentry
   \enddatalist

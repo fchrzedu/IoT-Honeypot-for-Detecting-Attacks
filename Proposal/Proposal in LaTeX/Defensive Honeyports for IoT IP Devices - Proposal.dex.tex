@@ -113,9 +113,16 @@
 \chapter{Introduction}\label{ch:intro}		% Introduction heading
 \section{Background}\label{sec:background}	% Background subheading
 
-Abstract of the project goes here
+The Internet of Things (IoT) is exponentially expanding, driving a brand new and complex wave of device interconnectivity worldwide, with an expected 27 billion devices by the end of 2025 \textit{\citep{autobits2025iot}}. Consequently, malware is becoming much more sophisticated and advanced, with a parallel increase of its deployment against IoT devices \textit{\citep{cornell-malware-analysis}}, resulting in modern malware being powered through machine learning and AI methods. In essence, this poses a significant risk to IoT devices, its consumers and network infrastructures. 
 
-The Internet of Things (IoT) is vastly expanding, driving a brand new and complex wave of device inter-connectivity worldwide, with an approximate 27-billion devices by the end of 2025\textit{\citep{autobits2025iot}}.
+With such, security researchers and organisations worldwide are faced with having to prevent malicious Cyber-attacks targeting IoT devices. Due to the variation of devices and different professional standards, many devices lack robust security measures. They are often deployed with out-of-date firmware, varying degrees of processing capabilities \textit{\citep{security-issue-inIoT}} and, varying levels of network defences – all of which malware may exploit to cause propagation \textit{(its spread)}.
+
+As a result, understanding and analysing both malware behaviour and patterns has become a fundamental practice in Cyber Security research. Traditional network defences, such as firewalls, VPNs and even IPS/IDS systems often fail in capturing and mitigating Zero-Day, XSS and MITM attacks. Decoy mechanisms mimicking IoT devices, commonly known as Honeypots, are used to lure attackers and have become the norm in network deployment \textit{\citep{crowdstrike-honeypot}}, providing an effective environment to analyse such attacks with security. 
+
+However, the degree of an attacker’s interaction with a Honeypot significantly influences both the data captured, and the severity of an attack. Low-interaction Honeypots (vanilla) are commonly preferred due to their ease of setup, but do not provide nearly as thorough security and analytical measures as high-interaction sandboxed Honeypots do \textit{\citep{Kocaogullar2023honeypots}}. Therefore, the balance of containment and interactivity remains a vague area of research.
+
+This project aims to address such a research gap by providing a quantitative comparison of varying Honeypots and their security measures, evaluating the effectiveness of isolation methods used to prevent malware mitigation within IoT Honeypot frameworks. 
+
 
 \section{Aims \&{} Objectives}\label{sec:aimAndObjectives}
 
@@ -158,11 +165,11 @@ In essence, the project will simulate realistic attacking behaviours and sequenc
 
 \subsection{Audience}\label{sec:audience}
 
-The primary audience for this project involves cyber security researchers, network analysists and academic institutions which study digital forensics, analyse malware behaviour and the administrators that deal with IoT security. Such groups will benefit from the projects structured and quantitative evaluation of containment-based Honeypots and networks, as it provides improved threat detection and response; enhanced threat intelligence through dynamic analysis and prevention; and the overall impact of a secure Honeypot environment. 
+The primary audience for this project involves Cyber Security researchers, network analysists and academic institutions which study digital forensics, analyse malware behaviour and the administrators that deal with IoT security. Such groups will benefit from the projects structured and quantitative evaluation of containment-based Honeypots and networks, as it provides improved threat detection and response; enhanced threat intelligence through dynamic analysis and prevention; and the overall impact of a secure Honeypot environment. 
 
-Furthermore, Cybersecurity lecturers and students will benefit through providing a practical framework for a safe and secure virtual environment for malware deployment, for experimentation and research. The projects architecture may server as a teaching tool for demonstrating both the dangers of types of malware, and analysis practices for security.
+Furthermore, Cyber Security lecturers and students will benefit through providing a practical framework for a safe and secure virtual environment for malware deployment, for experimentation and research. The projects architecture may server as a teaching tool for demonstrating both the dangers of types of malware, and analysis practices for security.
 
-Lastly, IoT administrators and developers in smaller organisations may gauge a better understanding of malware behaviour within contained and non-contained environments. Understanding malware patterns with supporting data may help in more advanced intrusion detection systems (IDS), through ensuring comprehensive flaws within IoT devices are identified \textit{\citep{fortinet-IDS}}. 
+Lastly, IoT administrators and developers in smaller organisations may gauge a better understanding of malware behaviour within contained and non-contained environments. Understanding malware patterns with supporting data may help in more advanced intrusion detection systems (IDS), through ensuring comprehensive flaws within IoT devices are identified \textit{\citep{fortinet-IDS}} and mitigated. 
 
 
 \chapter{Background Review}\label{ch:backgroundReview}

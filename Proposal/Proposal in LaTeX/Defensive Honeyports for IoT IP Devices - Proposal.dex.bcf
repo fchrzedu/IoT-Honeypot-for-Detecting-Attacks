@@ -2375,8 +2375,12 @@
   </bcf:bibdata>
   <bcf:section number="0">
     <bcf:citekey order="1" intorder="1">autobits2025iot</bcf:citekey>
-    <bcf:citekey order="2" intorder="1">Kocaogullar2023honeypots</bcf:citekey>
-    <bcf:citekey order="3" intorder="1">fortinet-IDS</bcf:citekey>
+    <bcf:citekey order="2" intorder="1">cornell-malware-analysis</bcf:citekey>
+    <bcf:citekey order="3" intorder="1">security-issue-inIoT</bcf:citekey>
+    <bcf:citekey order="4" intorder="1">crowdstrike-honeypot</bcf:citekey>
+    <bcf:citekey order="5" intorder="1">Kocaogullar2023honeypots</bcf:citekey>
+    <bcf:citekey order="6" intorder="1">Kocaogullar2023honeypots</bcf:citekey>
+    <bcf:citekey order="7" intorder="1">fortinet-IDS</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
