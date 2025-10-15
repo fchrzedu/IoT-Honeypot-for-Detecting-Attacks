@@ -19,6 +19,38 @@
 
 \refsection{0}
   \datalist[entry]{nyt/global//global/global/global}
+    \entry{fortinet-IDS}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1f25b8a9986a2e7a04ee9538c462e578}{%
+           family={Fortinet},
+           familyi={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Fortinet}%
+      }
+      \strng{namehash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{fullhash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{fullhashraw}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{bibnamehash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{authorbibnamehash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{authornamehash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{authorfullhash}{1f25b8a9986a2e7a04ee9538c462e578}
+      \strng{authorfullhashraw}{1f25b8a9986a2e7a04ee9538c462e578}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{What Is An Intrusion Detection System (IDS)?}
+      \field{year}{2025}
+      \verb{urlraw}
+      \verb https://www.fortinet.com/uk/resources/cyberglossary/intrusion-detection-system
+      \endverb
+      \verb{url}
+      \verb https://www.fortinet.com/uk/resources/cyberglossary/intrusion-detection-system
+      \endverb
+    \endentry
     \entry{autobits2025iot}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=ba2fef71f61357b5c10255c5c64cbc49}{%
