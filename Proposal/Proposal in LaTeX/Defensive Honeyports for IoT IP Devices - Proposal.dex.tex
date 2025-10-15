@@ -11,7 +11,7 @@
 
 \documentclass[a4paper,12pt,oneside]{book}			% sets doc type, book good for chapters
 \usepackage[utf8]{inputenc}						% use UTF-8
-\usepackage[english]{babel}						% Ensures proper formatting for English
+\usepackage[UKenglish]{babel}						% Ensures proper formatting for English
 \usepackage{lmodern}							% Loads latin Modern
 \usepackage[LGR,T1]{fontenc}					% LGR = greek letters, T1 = accented Latin letters
 
@@ -150,14 +150,11 @@ The objectives are as follows:
 
 \subsection{Scope}\label{sec:scope}
 
-% The project involves the development and deployment of a \textbf{contained IoT Honeypot environment} for IoT IP devices, comparing two separate deployments. It is designed to help understand the theoretical importance of creating honeypots within a secure container, and evaluating its success against low-interaction vanilla honeypots \citep{Kocaogullar2023honeypots}; further supporting research of malware propagation.
+The project involves the design and deployment of a secure IoT Honeynet environment for a range of IP IoT devices simulated within a small office network. Two separate and distinct honeypots will be implemented, a high-interaction sandboxed Honeypot and, a low-interaction vanilla Honeypot operating within a secure, isolated Docker container. The Honeypots will operate within a singular Virtual Machine sequentially.
 
+Each malware sample will be executed within the Honeypots, with all relevant data including its type, payloads and various activity logs securely collected. A dedicated Virtual Machine (separate to the Honeynet) will store and process the data using tools such as ElasticSearch, guaranteeing all data remains isolated from the external network.
 
-The project involves the design, development and deployment of a contained IoT Honeynet environment for a range of various IoT IP devices and varying Honeypots, within a small office network. Each executed piece of malware will have its data collected from both Honeypots, which will then be stored and processed within a separate Virtual Machine outside the environments subnet. 
-
-It is designed to evaluate the succesfulness of a high-interaction contained Honeypot against a low-interaction implementation, with the aim to further support pre-existing research regarding malware propagation and identify attacker behaviour patterns  \textit{\citep{Kocaogullar2023honeypots}}.
-
-%The honeypots will be implemented using Cowrie, a medium-interaction SSH/Telnet based honeypot framework \citep{cowrie-documentation}, that has capabilities for both medium and high-interaction modes \textit{(shell and proxy)}. The sandboxed honeypot will be deployed using a combination of Cowrie, FireJail, Doker and, Linux-based kernel security \textit{(AppArmour/seccomp)}. The framework will exist within a Linux-based Virtual Machine, where a separate VM is used for malware data analysis. 
+In essence, the project will simulate realistic attacking behaviours and sequences of events that occur during malware spread within smaller networks. Findings will lead to a better understanding of the importance of segmentation within networks and Honeypots, to aid in strengthening IoT security by identifying attacker patterns \textit{\citep{Kocaogullar2023honeypots}}. Furthermore, it’ll help expand on pre-existing research and highlight the importance of practical implementation methods for secure environments.  
 
 \subsection{Audience}\label{sec:audience}
 

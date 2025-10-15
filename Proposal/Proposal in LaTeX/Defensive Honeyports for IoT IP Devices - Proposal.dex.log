@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  15 OCT 2025 17:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  15 OCT 2025 18:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -61,14 +61,18 @@ on input line 2078.
 File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
  babel
 )
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\UKenglis
+h.ldf
+Language: UKenglish 2017/06/06 v3.3r English support from the babel system
+
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/babel-english\english.
 ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
 
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/generic/babel/locale/en\babe
-l-english.tex
-Package babel Info: Importing font and identification data for english
-(babel)             from babel-en.ini. Reported on input line 12.
+l-ukenglish.tex
+Package babel Info: Importing font and identification data for UKenglish
+(babel)             from babel-en-GB.ini. Reported on input line 11.
 )
 Package babel Info: Hyphen rules for 'canadian' set to \l@english
 (babel)             (\language0). Reported on input line 102.
@@ -76,7 +80,7 @@ Package babel Info: Hyphen rules for 'australian' set to \l@ukenglish
 (babel)             (\language73). Reported on input line 105.
 Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 (babel)             (\language73). Reported on input line 108.
-))
+)))
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -1232,7 +1236,7 @@ Package hyperref Info: Option `bookmarksopen' set `true' on input line 85.
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
-Package csquotes Info: Redefining alias 'default' -> 'english'.
+Package csquotes Info: Redefining alias 'default' -> 'UKenglish'.
  (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
 \openout1 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.aux"'.
 
@@ -1328,13 +1332,32 @@ Package hyperref Info: Link coloring ON on input line 97.
 \@outlinefile=\write4
 \openout4 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.out"'.
 
+Package biblatex Info: Trying to load language 'UKenglish'...
+Package biblatex Info: ... file 'UKenglish.lbx' found.
+
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\UKenglish
+.lbx
+File: UKenglish.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'british'...
+Package biblatex Info: ... file 'british.lbx' found.
+
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\british.l
+bx
+File: british.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
+)
+Package biblatex Info: Trying to load language 'british'...
+Package biblatex Info: ... file 'british.lbx' found.
+
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\british.l
+bx
+File: british.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
 (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/biblatex/lbx\english.l
 bx
 File: english.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
-)
+)))
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
@@ -1343,19 +1366,13 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file '"Defensive Honeyports for IoT IP Devices - Pro
 posal.dex".bbl' found.
- (Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl
-
-Package biblatex Warning: Biber reported the following issues
-(biblatex)                with 'cowrie-documentation':
-(biblatex)                - online entry 'cowrie-documentation' (mybib.bib): In
-valid format 'n.d.' of date field 'date' - ignoring.
-
-)
+ (Defensive Honeyports for IoT IP Devices - Proposal.dex.bbl)
 Package biblatex Info: Reference section=0 on input line 97.
 Package biblatex Info: Reference segment=0 on input line 97.
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
 01.
- (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
+
+(C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
@@ -1441,37 +1458,39 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 {C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}]
 
 [2]
+
+[3]
 Chapter 2.
-
-
-[3
-
-]
-Chapter 3.
 
 
 [4
 
 ]
-Chapter 4.
+Chapter 3.
 
 
 [5
 
 ]
-Chapter 5.
+Chapter 4.
 
 
 [6
 
 ]
+Chapter 5.
+
+
+[7
+
+]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-08.
+05.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-[7
+[8
 
 ] (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
  ***********
@@ -1487,13 +1506,13 @@ ces - Proposal.dex".run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24699 strings out of 468130
- 425045 string characters out of 5430149
- 1285388 words of memory out of 5000000
- 52968 multiletter control sequences out of 15000+600000
+ 24720 strings out of 468130
+ 425937 string characters out of 5430149
+ 1300637 words of memory out of 5000000
+ 52979 multiletter control sequences out of 15000+600000
  689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,747b,2312s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,747b,2383s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.p
 fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 .pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
@@ -1503,9 +1522,9 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(9 pages, 209095 bytes).
+(10 pages, 208087 bytes).
 PDF statistics:
- 209 PDF objects out of 1000 (max. 8388607)
+ 210 PDF objects out of 1000 (max. 8388607)
  35 named destinations out of 1000 (max. 500000)
  169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
