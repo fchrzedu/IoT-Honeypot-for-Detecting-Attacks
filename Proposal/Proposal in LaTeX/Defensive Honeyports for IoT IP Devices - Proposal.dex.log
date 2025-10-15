@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  15 OCT 2025 17:23
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  15 OCT 2025 17:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1466,7 +1466,7 @@ Chapter 5.
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-07.
+08.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1478,19 +1478,9 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-09-02>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `"Defensive Honeyports for IoT IP Devices - P
 roposal.dex".out' has not changed.
 (rerunfilecheck)             Checksum: 6FFF9CB70952E234AFE5DDF2E3419983;1276.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                "Defensive Honeyports for IoT IP Devices - Proposal.d
-ex"
-(biblatex)                and rerun LaTeX afterwards.
-
 Package logreq Info: Writing requests to '"Defensive Honeyports for IoT IP Devi
 ces - Proposal.dex".run.xml'.
 \openout1 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.run.xml"'.
@@ -1499,7 +1489,7 @@ ces - Proposal.dex".run.xml'.
 Here is how much of TeX's memory you used:
  24699 strings out of 468130
  425045 string characters out of 5430149
- 1285414 words of memory out of 5000000
+ 1285388 words of memory out of 5000000
  52968 multiletter control sequences out of 15000+600000
  689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1513,7 +1503,7 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(9 pages, 208693 bytes).
+(9 pages, 209095 bytes).
 PDF statistics:
  209 PDF objects out of 1000 (max. 8388607)
  35 named destinations out of 1000 (max. 500000)

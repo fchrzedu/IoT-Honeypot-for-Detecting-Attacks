@@ -128,13 +128,13 @@ To evaluate the effectiveness of containment and sandboxing mechanisms, in preve
 The objectives are as follows:
 \begin{itemize}
 
-	\item To design and deploy a controlled Honeypot framework for IoT IP devices, seated within Virtual Machines,
-	\item To deploy a minimum of two separate Honeypots:
+	\item Design, develop and deploy a secure Honeynet framework within Virtual Machines,
+	\item To deploy two separate Honeypots:
 		\begin{description}
-		\item[1.] Low-interaction Vanilla Honeypot, mimicking usual IoT devices, 
-		\item[2.] High-interaction Honeypot within a secure container,
+		\item[1.] \textbf{Vanilla Honeypot:} Low-interaction with no advanced security,
+		\item[2.] \textbf{Sandboxed Honeypot:} High-interaction within a secured container.
 		\end{description}
-	\item To create a virtual network, where each IoT device and VM have logical addressing and are protected through subnets, mimicing a small office network,
+	\item To create and design a virtual network, providing both logical addressing to all IoT IP devices, Virtual Machines and, providing security through sub-netting. In essence mimicking a small office network.
 	\item To collect and store the following malware properties for quantitative comparison and analysis:
 		\begin{description}
 		\item[1.] Network traffic,
@@ -143,6 +143,7 @@ The objectives are as follows:
 		\item[4.] Activity data
 		\item[5.] Propagation attempts outside the container.
 		\end{description}
+	\item Quantitatively compare the data of all malware, and conclude whether attack behaviors differ based on environment. 
 \end{itemize}
 
 \section{Product Review}\label{sec:productReview}
