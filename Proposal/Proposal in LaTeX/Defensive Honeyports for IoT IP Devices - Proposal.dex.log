@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 14:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 15:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1498,18 +1498,14 @@ Chapter 4.
 [9
 
 ]
-Chapter 5.
 
-
-[10
-
-]
+[10]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-40.
+54.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (25.48584pt too wide) in paragraph at lines 241--241
+Overfull \hbox (25.48584pt too wide) in paragraph at lines 255--255
 \T1/lmr/m/it/12 Evasion Tech-nique\T1/lmr/m/n/12 . \T1/lmr/m/sc/12 url\T1/lmr/m
 /n/12 : [][]$\T1/lmtt/m/n/12 https : / / pure . royalholloway . ac . uk / ws / 
 portalfiles /
@@ -1524,19 +1520,27 @@ portalfiles /
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-09-02>
  ***********
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `"Defensive Honeyports for IoT IP Devices - P
 roposal.dex".out' has not changed.
-(rerunfilecheck)             Checksum: 6FFF9CB70952E234AFE5DDF2E3419983;1276.
+(rerunfilecheck)             Checksum: 0472BCFC02AAABDD808B67F04820430B;1231.
+
+Package biblatex Warning: Please rerun LaTeX.
+(biblatex)                Page breaks have changed.
+
 Package logreq Info: Writing requests to '"Defensive Honeyports for IoT IP Devi
 ces - Proposal.dex".run.xml'.
 \openout1 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.run.xml"'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24763 strings out of 468130
- 427338 string characters out of 5430149
- 1301197 words of memory out of 5000000
- 53013 multiletter control sequences out of 15000+600000
+ 24765 strings out of 468130
+ 427364 string characters out of 5430149
+ 1301171 words of memory out of 5000000
+ 53016 multiletter control sequences out of 15000+600000
  689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,747b,2383s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1549,9 +1553,9 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(13 pages, 236666 bytes).
+(13 pages, 237420 bytes).
 PDF statistics:
- 254 PDF objects out of 1000 (max. 8388607)
- 44 named destinations out of 1000 (max. 500000)
- 169 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 251 PDF objects out of 1000 (max. 8388607)
+ 43 named destinations out of 1000 (max. 500000)
+ 161 words of extra memory for PDF output out of 10000 (max. 10000000)
 

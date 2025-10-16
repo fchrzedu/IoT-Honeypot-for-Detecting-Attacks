@@ -18,5 +18,4 @@
 \contentsline {section}{\numberline {4.1}Activities}{9}{section.4.1}%
 \contentsline {section}{\numberline {4.2}Schedule and Time Management}{9}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Data Management}{9}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Deliverables}{9}{section.4.4}%
-\contentsline {chapter}{\numberline {5}References}{10}{chapter.5}%
+\contentsline {section}{\numberline {4.4}Deliverables}{10}{section.4.4}%
