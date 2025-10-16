@@ -184,10 +184,11 @@ Another approach is a systematic, behaviour analysis of common malware samples w
 
 \section{Related Literature}\label{sec:relatedLiterature}
 
-A literature review. At this point in time you are likely to have an incomplete lit-
-erature review, which is fine. You may prefer to submit an annotated bibliography
-or a sample of your intended literature review, to get feedback.
+The rising frequency of the relationship between malware and IoT devices has lead to a surge in research development, dedicated in understanding both attacker behaviour patterns and, defensive techniques. \textit{\citep{cornell-malware-analysis}} focuses on a graph-based approach to malware analysis, focusing on polymorphic malware utilising unreachable code. While their work demonstrated improvements in behavioural analysis, the approach was limited due to using historical data and lacked an environment for dynamic data collection; a critical area in IoT analysis.
 
+\textit{\citep{analysis-mitigation-sandbox-evasion}} explored analysis within a popular Sandbox, revealing that modern malware has the capability to evade security systems and remain undetected even post-execution. This finding identified a critical error within containments systems. While malware may  be thoroughly analysed, the payload may be unable to be examined if the sample supresses itself. Therefore, the aspect of containment alone is not sufficient for IoT malware analysis and contained Honeypot environments require effective security measures to integrate deception.
+
+Lastly, \textit{\citep{crowdstrike-honeypot}} briefly mentions the importance of Honeypots within modern IoT architectures, rendering them an essential requirement for intelligence collection on active and common threats. However, their integration within IoT frameworks remains a vague area of research, as differentiating devices result in varying challenges.
 
 \chapter{Methodology \&{} Techniques}\label{ch:methods}
 \section{Approach}\label{sec:approach}

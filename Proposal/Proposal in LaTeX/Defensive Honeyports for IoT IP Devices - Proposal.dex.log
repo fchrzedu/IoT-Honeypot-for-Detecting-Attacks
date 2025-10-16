@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 13:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 13:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1476,30 +1476,38 @@ Chapter 2.
 [5
 
 ]
+Overfull \hbox (1.19206pt too wide) in paragraph at lines 191--192
+[]\T1/lmr/m/n/12 Lastly, \T1/lmr/m/it/12 ([]Nar-en-dran, [][]2025[][]) \T1/lmr/
+m/n/12 briefly men-tions the im-port-ance of Hon-ey-pots within
+ []
+
+
+
+[6]
 Chapter 3.
-
-
-[6
-
-]
-Chapter 4.
 
 
 [7
 
 ]
-Chapter 5.
+Chapter 4.
 
 
 [8
 
 ]
+Chapter 5.
+
+
+[9
+
+]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-21.
+22.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (25.48584pt too wide) in paragraph at lines 222--222
+Overfull \hbox (25.48584pt too wide) in paragraph at lines 223--223
 \T1/lmr/m/it/12 Evasion Tech-nique\T1/lmr/m/n/12 . \T1/lmr/m/sc/12 url\T1/lmr/m
 /n/12 : [][]$\T1/lmtt/m/n/12 https : / / pure . royalholloway . ac . uk / ws / 
 portalfiles /
@@ -1507,7 +1515,7 @@ portalfiles /
 
 
 
-[9
+[10
 
 ] (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
  ***********
@@ -1523,10 +1531,10 @@ ces - Proposal.dex".run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24758 strings out of 468130
- 427291 string characters out of 5430149
- 1301177 words of memory out of 5000000
- 53010 multiletter control sequences out of 15000+600000
+ 24762 strings out of 468130
+ 427331 string characters out of 5430149
+ 1301197 words of memory out of 5000000
+ 53013 multiletter control sequences out of 15000+600000
  689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,747b,2383s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1539,9 +1547,9 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(11 pages, 229164 bytes).
+(12 pages, 231754 bytes).
 PDF statistics:
- 241 PDF objects out of 1000 (max. 8388607)
- 42 named destinations out of 1000 (max. 500000)
+ 249 PDF objects out of 1000 (max. 8388607)
+ 43 named destinations out of 1000 (max. 500000)
  169 words of extra memory for PDF output out of 10000 (max. 10000000)
 
