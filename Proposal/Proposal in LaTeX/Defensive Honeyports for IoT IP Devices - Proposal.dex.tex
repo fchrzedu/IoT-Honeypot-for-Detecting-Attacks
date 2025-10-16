@@ -192,13 +192,21 @@ Lastly, \textit{\citep{crowdstrike-honeypot}} briefly mentions the importance of
 
 \chapter{Methodology \&{} Techniques}\label{ch:methods}
 \section{Approach}\label{sec:approach}
-- Link back to objectives?
 
-- Two separate VMs
+The project follows an experimental quantitative comparison approach to evaluate effectiveness of malware containment and propagation within IoT Honeypot frameworks. The methodology directly links back to 1.2.2 Objectives, through providing a controlled environment for testing, research and deployment between two configurations. All testing will be performed in Ubuntu, a Linux distribution.
 
-- Lab VM = honeypots
+Two Virtual Machines deployed within Oracle’s VirtualBox will form the overall framework. The Lab VM will sequentially run both Honeypots:
+\begin{itemize}
+	\item\textbf{Vanilla Honeypot}: Low-interaction Cowrie instance operating without additional containment.
+	\item\textbf{Sandboxed Honeypot}: Identical Cowrie instance deployed within a \textbf{FireJail and Docker} container. It will utilise Linux-based Kernel security like seccomp and AppArmor, used for filtering network packets and restricting sample system calls.
+\end{itemize}
 
-Analysis VM = protected
+A separate Analysis VM will collect data, process logs and analyse packets using \textbf{ElasticSearch}, ensuring the VM remains disconnected from external networks.
+
+Each sample will be executed within both Honeypot configurations using identical conditions to prevent data skew. Network traffic, pcaps and payload data will be recorded to generate the quantitative comparison, most likely stored within CSV files. Key metrics will include propagation attempts, program events and communication patterns.
+
+Integrity will be maintained through host OS level kill-switches, VM snapshot rollbacks and network segmentation using subnetting. These measures ensure the host machine remains unaffected, including the external network. Lastly, all collected data will be quantitatively analysed to determine whether Sandboxed Honeypots provide a noticeable difference in security, preventing malware propagation compared to the vanilla configuration. The results will demonstrate the benefits of secure containment for malware analysis.
+
 
 \section{Technologies}\label{sec:technologies}
 \section{Version Control \&{} Management}\label{sec:versionControl}
