@@ -196,7 +196,7 @@ The project follows an experimental quantitative comparison to evaluate effectiv
 
 A separate Analysis VM will collect data, process logs and analyse packets using \textbf{ElasticSearch}, ensuring the VM remains disconnected from external networks. Each sample executed within either Honeypot will run within identical conditions to avoid skew. Metrics like network traffic (pcaps), payload data and program events will be stored securely in CSV files.
 
-Integrity will be enforced via kernel-level kill switches, VM snapshot rollbacks and sub-netting to enforce traffic isolation. Lastly, all collected sample data will be compared statistically to determine whether sandboxing truly improves containment security. 
+Integrity will be enforced via kernel-level kill switches, VM snapshot rollbacks and sub-netting to administer traffic isolation. Lastly, all collected sample data will be compared statistically to determine whether sandboxing truly improves containment security. 
 
 
 \section{Technologies}\label{sec:technologies}
@@ -227,7 +227,7 @@ Project activities align directly with Section~\ref{sec:objectives}:
 	\item\textbf{Management Space:}
 		\begin{description}
 			\item[(1)] Implement a Linux \textbf{nftables} kill switch (kernel-level) to block all IP traffic if containment fails.
-			\item[(2)] Establish a management level framework for network addressing, VM management and, snapshot rollsbacks.
+			\item[(2)] Establish a management level framework for network addressing, VM management and, snapshot rollbacks.
 		\end{description}
 
 	\item\textbf{Virtual Framework:}
