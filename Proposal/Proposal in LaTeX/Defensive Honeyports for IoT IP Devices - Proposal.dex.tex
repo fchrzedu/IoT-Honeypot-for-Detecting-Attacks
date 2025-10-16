@@ -243,8 +243,15 @@ A Gantt chart will be employed to visualise a clear roadmap for such a complex p
 
 \section{Data Management}\label{sec:data management}
 
-- How is this data going to be stored? Analysis vm stored sensitive samples etc
-- CSV files for extracting
+Sensitive data, Honeypot and VM logs; and pcaps (packet captures) will be stored within the isolated Analysis VM. All relevant documentation will be accessible through both GitHub and Google Drive. Accessibility and integrity will be managed through:
+
+\begin{itemize}
+	\item Ethical and Security Compliance: Raw samples will always remain within the contained environment.
+	\item Backups: Frequent backups to version control systems (mentioned in sec insert) will be used to mitigate any progress loss and ensure version synchronisation. 
+	\item Isolation: The VMs will remain inaccessible by external networks, ensuring internally stored data remains secure.
+	\item Storage: Processed and collected logs will be stored in CSV files, formatted to aid in quantitative comparison.
+\end{itemize}
+
 
 \section{Deliverables}\label{sec: deliverables}
 
