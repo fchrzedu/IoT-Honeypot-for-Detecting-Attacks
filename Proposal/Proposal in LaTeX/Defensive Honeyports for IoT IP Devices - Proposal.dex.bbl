@@ -86,6 +86,41 @@
       \verb https://www.fortinet.com/uk/resources/cyberglossary/intrusion-detection-system
       \endverb
     \endentry
+    \entry{analysis-mitigation-sandbox-evasion}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=f4ff3f0eec4720efc709a4306c478683}{%
+           family={Genç},
+           familyi={G\bibinitperiod},
+           given={Z.\bibnamedelimi A\bibnamedelimb et\bibnamedelima al.},
+           giveni={Z\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {ACM Digital Library}%
+      }
+      \strng{namehash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{fullhash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{fullhashraw}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{bibnamehash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{authorbibnamehash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{authornamehash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{authorfullhash}{f4ff3f0eec4720efc709a4306c478683}
+      \strng{authorfullhashraw}{f4ff3f0eec4720efc709a4306c478683}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Case Study: Analysis and Mitigation of a Novel Sandbox-Evasion Technique}
+      \field{year}{2019}
+      \verb{urlraw}
+      \verb https://pure.royalholloway.ac.uk/ws/portalfiles/portal/34760373/cecc2019GLS.pdf
+      \endverb
+      \verb{url}
+      \verb https://pure.royalholloway.ac.uk/ws/portalfiles/portal/34760373/cecc2019GLS.pdf
+      \endverb
+    \endentry
     \entry{security-issue-inIoT}{online}{}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=dab9e48109330d5fc6ec90b24166e392}{%
@@ -186,6 +221,41 @@
       \endverb
       \verb{url}
       \verb https://kar.kent.ac.uk/102122/1/STAST2022.pdf
+      \endverb
+    \endentry
+    \entry{static-analysis-drawbacks}{online}{}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=5272828e7c95579f5efb6ce1981a21a1}{%
+           family={Moser\bibnamedelima A},
+           familyi={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           given={Y\bibnamedelima et\bibnamedelima al.},
+           giveni={Y\bibinitperiod\bibinitdelim e\bibinitperiod\bibinitdelim a\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {IEEE Xplore}%
+      }
+      \strng{namehash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{fullhash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{fullhashraw}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{bibnamehash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{authorbibnamehash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{authornamehash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{authorfullhash}{5272828e7c95579f5efb6ce1981a21a1}
+      \strng{authorfullhashraw}{5272828e7c95579f5efb6ce1981a21a1}
+      \field{sortinit}{M}
+      \field{sortinithash}{4625c616857f13d17ce56f7d4f97d451}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Limits of Static Analysis for Malware Detection}
+      \field{year}{2008}
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/4413008
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/4413008
       \endverb
     \endentry
     \entry{crowdstrike-honeypot}{online}{}{}

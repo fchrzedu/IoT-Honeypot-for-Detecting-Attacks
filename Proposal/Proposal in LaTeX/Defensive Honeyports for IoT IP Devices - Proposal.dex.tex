@@ -176,13 +176,17 @@ Lastly, IoT administrators and developers in smaller organisations may gauge a b
 
 \section{Existing Approaches}\label{sec:existingApproaches}
 
-Add on to 1.1, provide overview of similar products and why they aren't sufficient
+Numerous approaches exist for malware analysis, one of which is a static analysis approach using a Windows-based framework to execute malware \textit{\citep{static-analysis-drawbacks}} within a contained environment that may be applied to IoT environments. The system focuses on registering system changes and runtime behaviour to analyse samples. However, the framework lacks the advanced emulation of IoT devices; has many scalability issues relating to resource management and, fails to highlight the importance of containment within malware analysis.
+
+
+Another approach is a systematic, behaviour analysis of common malware samples within a Cuckoo Sandbox \textit{\citep{analysis-mitigation-sandbox-evasion}}, strongly relating to the project. The authors observed malware behaviours, however a specific sample, \textit{TeslaCrypt}, managed to bypass detection within the Sandbox and was only identified post-execution. Ultimately, the Sandbox failed to capture critical data and the true payload data, highlighting the importance that Honeypot containment alone is not enough.
+
 
 \section{Related Literature}\label{sec:relatedLiterature}
 
-Self explanatory
-
-- Look through thesis provided by supervisor
+A literature review. At this point in time you are likely to have an incomplete lit-
+erature review, which is fine. You may prefer to submit an annotated bibliography
+or a sample of your intended literature review, to get feedback.
 
 
 \chapter{Methodology \&{} Techniques}\label{ch:methods}

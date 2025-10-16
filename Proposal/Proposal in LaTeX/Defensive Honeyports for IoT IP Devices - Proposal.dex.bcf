@@ -2381,6 +2381,8 @@
     <bcf:citekey order="5" intorder="1">Kocaogullar2023honeypots</bcf:citekey>
     <bcf:citekey order="6" intorder="1">Kocaogullar2023honeypots</bcf:citekey>
     <bcf:citekey order="7" intorder="1">fortinet-IDS</bcf:citekey>
+    <bcf:citekey order="8" intorder="1">static-analysis-drawbacks</bcf:citekey>
+    <bcf:citekey order="9" intorder="1">analysis-mitigation-sandbox-evasion</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
