@@ -209,6 +209,13 @@ Integrity will be maintained through host OS level kill-switches, VM snapshot ro
 
 
 \section{Technologies}\label{sec:technologies}
+
+The project will utilise a range of open-source programs and technologies to aid in the analysis. The core framework will be built within Oracle VirtualBox due to its flexibility for Sandbox implementations, snapshot rollbacks and inter-connectivity between separate VMs. Each VM will run an instance of Lubuntu; a popular, stable and secure Linux distribution.
+
+The Honeypot framework will operate within Cowrie, an SSH/Telnet Honeypot designed for IP-based malware capture. It is widely used due to integrated structural logging capabilities for analysis and a large public documentation. Docker, a lightweight portable container, will be used to Sandbox the high-interaction Honeypot, ensuring low system level isolation. Firejail and AppArmor will provide additional kernel-level security by restricting access to malware samples to specific system calls and functions. 
+
+ElasticSearch will provide real-time log indexing and data storage using the RESTful engine, supplemented by WireShark for packet capturing. Furthermore, Python scripts will automate data extraction from the samples and format them into appropriate CSV files to be used for the final quantitative comparison. 
+
 \section{Version Control \&{} Management}\label{sec:versionControl}
 Introduce GitHub \&{} Supervisor Google Drive
 
