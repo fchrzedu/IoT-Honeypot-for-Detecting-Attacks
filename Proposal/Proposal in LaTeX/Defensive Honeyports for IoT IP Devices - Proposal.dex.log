@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 14:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 14:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1505,11 +1505,11 @@ Chapter 5.
 
 ]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-37.
+40.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (25.48584pt too wide) in paragraph at lines 238--238
+Overfull \hbox (25.48584pt too wide) in paragraph at lines 241--241
 \T1/lmr/m/it/12 Evasion Tech-nique\T1/lmr/m/n/12 . \T1/lmr/m/sc/12 url\T1/lmr/m
 /n/12 : [][]$\T1/lmtt/m/n/12 https : / / pure . royalholloway . ac . uk / ws / 
 portalfiles /
@@ -1549,7 +1549,7 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(13 pages, 236159 bytes).
+(13 pages, 236666 bytes).
 PDF statistics:
  254 PDF objects out of 1000 (max. 8388607)
  44 named destinations out of 1000 (max. 500000)
