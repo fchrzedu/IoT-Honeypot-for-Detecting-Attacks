@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 15:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.10.9)  16 OCT 2025 19:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1453,59 +1453,47 @@ Chapter 1.
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 1
-38.
+36.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 [2{C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}
 ]
-Overfull \hbox (2.33249pt too wide) in paragraph at lines 170--171
-[]\T1/lmr/m/n/12 Furthermore, Cy-ber Se-cur-ity lec-tur-ers and stu-dents will 
-be-ne-fit through provid-
- []
-
-
 
 [3]
-
-[4]
 Chapter 2.
 
 
-[5
+[4
 
 ]
-Overfull \hbox (1.19206pt too wide) in paragraph at lines 191--192
-[]\T1/lmr/m/n/12 Lastly, \T1/lmr/m/it/12 ([]Nar-en-dran, [][]2025[][]) \T1/lmr/
-m/n/12 briefly men-tions the im-port-ance of Hon-ey-pots within
- []
 
-
-
-[6]
+[5]
 Chapter 3.
 
 
-[7
+[6
 
 ]
 
-[8]
+[7]
 Chapter 4.
 
 
-[9
+[8
 
 ]
 
+[9]
+
 [10]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-65.
+94.
  (C:\Users\Franek\AppData\Local\Programs\MiKTeX\tex/latex/lm\t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (25.48584pt too wide) in paragraph at lines 266--266
+Overfull \hbox (25.48584pt too wide) in paragraph at lines 295--295
 \T1/lmr/m/it/12 Evasion Tech-nique\T1/lmr/m/n/12 . \T1/lmr/m/sc/12 url\T1/lmr/m
 /n/12 : [][]$\T1/lmtt/m/n/12 https : / / pure . royalholloway . ac . uk / ws / 
 portalfiles /
@@ -1515,27 +1503,119 @@ portalfiles /
 
 [11
 
-] (Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
+]
+Appendix A.
+
+
+pdfTeX warning: miktex-pdftex.exe (file ./TDE E1 Form.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+<TDE E1 Form.pdf, id=208, 597.55246pt x 845.07718pt>
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf>
+Package pdftex.def Info: TDE E1 Form.pdf  used on input line 298.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+
+
+pdfTeX warning: miktex-pdftex.exe (file ./TDE E1 Form.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+
+
+pdfTeX warning: miktex-pdftex.exe (file ./TDE E1 Form.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+<TDE E1 Form.pdf, id=210, page=1, 597.55246pt x 845.07718pt>
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 1>
+Package pdftex.def Info: TDE E1 Form.pdf , page1 used on input line 298.
+(pdftex.def)             Requested size: 597.551pt x 845.07512pt.
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 1>
+Package pdftex.def Info: TDE E1 Form.pdf , page1 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+
+
+[12
+
+]
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 1>
+Package pdftex.def Info: TDE E1 Form.pdf , page1 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 1>
+Package pdftex.def Info: TDE E1 Form.pdf , page1 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+
+
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 1>
+Package pdftex.def Info: TDE E1 Form.pdf , page1 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+[13
+
+ <./TDE E1 Form.pdf>]
+
+pdfTeX warning: miktex-pdftex.exe (file ./TDE E1 Form.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+<TDE E1 Form.pdf, id=240, page=2, 597.55246pt x 845.07718pt>
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 2>
+Package pdftex.def Info: TDE E1 Form.pdf , page2 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 2>
+Package pdftex.def Info: TDE E1 Form.pdf , page2 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+
+
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 2>
+Package pdftex.def Info: TDE E1 Form.pdf , page2 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+[14
+
+ <./TDE E1 Form.pdf>]
+
+pdfTeX warning: miktex-pdftex.exe (file ./TDE E1 Form.pdf): PDF inclusion: foun
+d PDF version <1.7>, but at most version <1.5> allowed
+<TDE E1 Form.pdf, id=261, page=3, 597.55246pt x 845.07718pt>
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 3>
+Package pdftex.def Info: TDE E1 Form.pdf , page3 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 3>
+Package pdftex.def Info: TDE E1 Form.pdf , page3 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+
+
+File: TDE E1 Form.pdf Graphic file (type pdf)
+<use TDE E1 Form.pdf, page 3>
+Package pdftex.def Info: TDE E1 Form.pdf , page3 used on input line 298.
+(pdftex.def)             Requested size: 597.57834pt x 845.1138pt.
+[15
+
+ <./TDE E1 Form.pdf>]
+(Defensive Honeyports for IoT IP Devices - Proposal.dex.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-09-02>
  ***********
 Package rerunfilecheck Info: File `"Defensive Honeyports for IoT IP Devices - P
 roposal.dex".out' has not changed.
-(rerunfilecheck)             Checksum: 0472BCFC02AAABDD808B67F04820430B;1231.
+(rerunfilecheck)             Checksum: FB5A402259B52AD6984C365FB17A1874;1281.
 Package logreq Info: Writing requests to '"Defensive Honeyports for IoT IP Devi
 ces - Proposal.dex".run.xml'.
 \openout1 = `"Defensive Honeyports for IoT IP Devices - Proposal.dex.run.xml"'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24765 strings out of 468130
- 427364 string characters out of 5430149
- 1301198 words of memory out of 5000000
- 53016 multiletter control sequences out of 15000+600000
+ 24793 strings out of 468130
+ 428014 string characters out of 5430149
+ 1301233 words of memory out of 5000000
+ 53039 multiletter control sequences out of 15000+600000
  689247 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,747b,2383s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,79p,747b,2426s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.p
 fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 .pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12
@@ -1545,9 +1625,9 @@ fb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmcsc10
 12.pfb><C:/Users/Franek/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmt
 t12.pfb>
 Output written on "Defensive Honeyports for IoT IP Devices - Proposal.dex.pdf" 
-(13 pages, 238975 bytes).
+(17 pages, 372946 bytes).
 PDF statistics:
- 251 PDF objects out of 1000 (max. 8388607)
- 43 named destinations out of 1000 (max. 500000)
- 161 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 314 PDF objects out of 1000 (max. 8388607)
+ 48 named destinations out of 1000 (max. 500000)
+ 194 words of extra memory for PDF output out of 10000 (max. 10000000)
 

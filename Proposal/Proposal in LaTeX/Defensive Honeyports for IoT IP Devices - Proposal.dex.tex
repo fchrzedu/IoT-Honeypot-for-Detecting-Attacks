@@ -113,156 +113,190 @@
 \chapter{Introduction}\label{ch:intro}		% Introduction heading
 \section{Background}\label{sec:background}	% Background subheading
 
-The Internet of Things (IoT) is exponentially expanding, driving a brand new and complex wave of device interconnectivity worldwide, with an expected 27 billion devices by the end of 2025 \textit{\citep{autobits2025iot}}. Consequently, malware is becoming much more sophisticated and advanced, with a parallel increase of its deployment against IoT devices \textit{\citep{cornell-malware-analysis}}, resulting in modern malware being powered through machine learning and AI methods. In essence, this poses a significant risk to IoT devices, its consumers and network infrastructures. 
+The Internet of Things (IoT) is exponentially expanding, with an expected 27 billion devices by the end of 2025 \textit{\citep{autobits2025iot}}. Consequently, this surge resulted in much higher malware sophistication and deployment against IoT devices \textit{\citep{cornell-malware-analysis}}. Such poses a significant risk to IoT devices, consumers and infrastructures.
 
-With such, security researchers and organisations worldwide are faced with having to prevent malicious Cyber-attacks targeting IoT devices. Due to the variation of devices and different professional standards, many devices lack robust security measures. They are often deployed with out-of-date firmware, varying degrees of processing capabilities \textit{\citep{security-issue-inIoT}} and, varying levels of network defences – all of which malware may exploit to cause propagation \textit{(its spread)}.
+Security researchers and organisations now face rapidly growing challenges in Cyber-attack mitigations. IoT devices often lack robust security measures, use outdated firmware \textit{\citep{security-issue-inIoT}} and vary in network defence levels, leaving them susceptible to malware propagation attacks (its spread).
 
-As a result, understanding and analysing both malware behaviour and patterns has become a fundamental practice in Cyber Security research. Traditional network defences, such as firewalls, VPNs and even IPS/IDS systems often fail in capturing and mitigating Zero-Day, XSS and MITM attacks. Decoy mechanisms mimicking IoT devices, commonly known as Honeypots, are used to lure attackers and have become the norm in network deployment \textit{\citep{crowdstrike-honeypot}}, providing an effective environment to analyse such attacks with security. 
+As a result, malware analysis has become a fundamental practice in Cyber research. Traditional defences like IPS/IDS systems and VPNs often fail against Zero-Day and malicious attacks; while Honeypots (decoy systems mimicking IoT devices) provide effective environment control to attract and analyse attackers \textit{\citep{crowdstrike-honeypot}}.
 
-However, the degree of an attacker’s interaction with a Honeypot significantly influences both the data captured, and the severity of an attack. Low-interaction Honeypots (vanilla) are commonly preferred due to their ease of setup, but do not provide nearly as thorough security and analytical measures as high-interaction sandboxed Honeypots do \textit{\citep{Kocaogullar2023honeypots}}. Therefore, the balance of containment and interactivity remains a vague area of research.
+However, the level of interaction with a Honeypot greatly affects containment and data quality. Low-interaction (vanilla) Honeypots provide easier setup with a constraint on security, whereas high-interaction (sandboxed) Honeypots offer greater analytical processing \textit{\citep{Kocaogullar2023honeypots}}. The balance of containment and interactivity remains a vague area of research. 
 
-This project aims to address such a research gap by providing a quantitative comparison of varying Honeypots and their security measures, evaluating the effectiveness of isolation methods used to prevent malware mitigation within IoT Honeypot frameworks. 
+This project aims to quantitatively compare sandboxed and vanilla Honeypots, to assess benefits of containment and sandboxing effectiveness in preventing malware mitigation within IoT Honeypot frameworks. 
 
 
 \section{Aims \&{} Objectives}\label{sec:aimAndObjectives}
 
 \subsection{Aim}\label{sec:aim}
 
-To evaluate the effectiveness of containment and sandboxing mechanisms, in preventing malware propagation (specifically its spread into external systems) within a IoT IP device Honeypot framework. Such will be achieved through quantitatively comparing the same malware programs on two separate Honeypots, contained high-interaction against vanilla low-interaction. 
-
+To evaluate the effectiveness of containment and sandboxing mechanisms in preventing malware propagation in IoT Honeypots, through quantitatively comparing identical samples across vanilla and sandboxed Honeypots.
 
 \subsection{Objectives}\label{sec:objectives}
-The objectives are as follows:
 \begin{itemize}
 
-	\item Design, develop and deploy a secure Honeynet framework within Virtual Machines,
-	\item To deploy two separate Honeypots:
-		\begin{description}
-		\item[1.] \textbf{Vanilla Honeypot:} Low-interaction with no advanced security,
-		\item[2.] \textbf{Sandboxed Honeypot:} High-interaction within a secured container.
-		\end{description}
-	\item To create and design a virtual network, providing both logical addressing to all IoT IP devices, Virtual Machines and, providing security through sub-netting. In essence mimicking a small office network.
-	\item To collect and store the following malware properties for quantitative comparison and analysis:
-		\begin{description}
-		\item[1.] Network traffic,
-		\item[2.] Payloads,
-		\item[3.] Malware type
-		\item[4.] Activity data
-		\item[5.] Propagation attempts outside the container.
-		\end{description}
-	\item Quantitatively compare the data of all malware, and conclude whether attack behaviors differ based on environment. 
-\end{itemize}
+\item Design and deploy a secure Honeynet framework within Virtual Machines (VMs),
+\item Deploy two separate Honeypots:.
+\begin{description}
+\item[1.] \textbf{Vanilla Honeypot:} Low-interaction with no advanced security,
+\item[2.] \textbf{Sandboxed Honeypot:} High-interaction within a secured container.
+\end{description}
+\item Create a virtual network with logical addressing and sub-netting for all IoT IP devices and VMs to mimic a small office network.
+\item Collect malware properties regarding network traffic, payloads, malware type, activity data and external propagation attempts.
+\item Quantitatively compare the malware data to conclude whether attack behaviours differ based on environment. 
+\end{itemize} 
+
 
 \section{Product Review}\label{sec:productReview}
 
 \subsection{Scope}\label{sec:scope}
 
-The project involves the design and deployment of a secure IoT Honeynet environment for a range of IP IoT devices simulated within a small office network. Two separate and distinct honeypots will be implemented, a high-interaction sandboxed Honeypot and, a low-interaction vanilla Honeypot operating within a secure, isolated Docker container. The Honeypots will operate within a singular Virtual Machine sequentially.
+The project involves development of a secure IoT Honeynet environment, simulating a small office network composed of two Honeypots, executed sequentially within a singular Lab VM. A separate Analysis VM will store and process sample data using \textbf{ElasticSearch} to guarantee full isolation from external networks.
 
-Each malware sample will be executed within the Honeypots, with all relevant data including its type, payloads and various activity logs securely collected. A dedicated Virtual Machine (separate to the Honeynet) will store and process the data using tools such as ElasticSearch, guaranteeing all data remains isolated from the external network.
+Each malware sample will be executed in sequentially running Honeypots under identical conditions, where the collected data will be stored securely, aiming to reveal the impact of containment.
 
-In essence, the project will simulate realistic attacking behaviours and sequences of events that occur during malware spread within smaller networks. Findings will lead to a better understanding of the importance of segmentation within networks and Honeypots, to aid in strengthening IoT security by identifying attacker patterns \textit{\citep{Kocaogullar2023honeypots}}. Furthermore, it’ll help expand on pre-existing research and highlight the importance of practical implementation methods for secure environments.  
+In essence, findings will lead to a greater understanding regarding the importance of Honeypot segmentation. It’ll aid in IoT security through identifying attacker patterns \textit{\citep{Kocaogullar2023honeypots}} and help expand existing research into secure Honeypot environments and design.
 
 \subsection{Audience}\label{sec:audience}
 
-The primary audience for this project involves Cyber Security researchers, network analysists and academic institutions which study digital forensics, analyse malware behaviour and the administrators that deal with IoT security. Such groups will benefit from the projects structured and quantitative evaluation of containment-based Honeypots and networks, as it provides improved threat detection and response; enhanced threat intelligence through dynamic analysis and prevention; and the overall impact of a secure Honeypot environment. 
+The primary audience relates to Cyber Security researchers, network analysts and academic institutions studying digital forensics and malware analysis. Such groups will benefit from access to data, from a quantitative dynamic analysis, to strengthen threat detection for security improvement of developing Honeypots.
 
-Furthermore, Cyber Security lecturers and students will benefit through providing a practical framework for a safe and secure virtual environment for malware deployment, for experimentation and research. The projects architecture may server as a teaching tool for demonstrating both the dangers of types of malware, and analysis practices for security.
+Furthermore, the framework will also support students and lecturers by providing a secure and safe virtual environment for malware experimentation and research, to demonstrate analytical and ethical practices. 
 
-Lastly, IoT administrators and developers in smaller organisations may gauge a better understanding of malware behaviour within contained and non-contained environments. Understanding malware patterns with supporting data may help in more advanced intrusion detection systems (IDS), through ensuring comprehensive flaws within IoT devices are identified \textit{\citep{fortinet-IDS}} and mitigated. 
+Lastly, a comprehensive analysis of malware may support IoT administrators seeking to develop secure intrusion prevention systems (IDS) \textit{\citep{fortinet-IDS}}, through ensuring critical flaws are unable to be exploited based on historical data.
 
 
 \chapter{Background Review}\label{ch:backgroundReview}
 
 \section{Existing Approaches}\label{sec:existingApproaches}
 
-Numerous approaches exist for malware analysis, one of which is a static analysis approach using a Windows-based framework to execute malware \textit{\citep{static-analysis-drawbacks}} within a contained environment that may be applied to IoT environments. The system focuses on registering system changes and runtime behaviour to analyse samples. However, the framework lacks the advanced emulation of IoT devices; has many scalability issues relating to resource management and, fails to highlight the importance of containment within malware analysis.
+Research in malware mitigation includes static analysis and sandboxing systems. Static analysis, such as a Windows-based framework \textit{\citep{static-analysis-drawbacks}} designed to execute malware within a container focused on registering system changes based on run-time behaviour. However, this framework lacks advanced IoT device emulation and has scalability issues regarding resource management, allowing for exploitation. 
 
 
-Another approach is a systematic, behaviour analysis of common malware samples within a Cuckoo Sandbox \textit{\citep{analysis-mitigation-sandbox-evasion}}, strongly relating to the project. The authors observed malware behaviours, however a specific sample, \textit{TeslaCrypt}, managed to bypass detection within the Sandbox and was only identified post-execution. Ultimately, the Sandbox failed to capture critical data and the true payload data, highlighting the importance that Honeypot containment alone is not enough.
+Systematic and dynamic behavioural analysis of common malware samples \textit{\citep{analysis-mitigation-sandbox-evasion}} within a Cuckoo Sandbox provided deep insight into malware attacker patterns. Unfortunately, the ransomware \textit{TeslaCrypt} evaded detection until post-execution, masking the true payload. This demonstrates the concern of poor sandboxing measures in Honeypots. 
 
 
 \section{Related Literature}\label{sec:relatedLiterature}
 
-The rising frequency of the relationship between malware and IoT devices has lead to a surge in research development, dedicated in understanding both attacker behaviour patterns and, defensive techniques. \textit{\citep{cornell-malware-analysis}} focuses on a graph-based approach to malware analysis, focusing on polymorphic malware utilising unreachable code. While their work demonstrated improvements in behavioural analysis, the approach was limited due to using historical data and lacked an environment for dynamic data collection; a critical area in IoT analysis.
+IoT-targeting malware research focuses on understanding behavioural patterns and defensive techniques. A graph-based analysis \textit{\citep{cornell-malware-analysis}} focused on polymorphic malware utilising unreachable code, improving general malware classification. However, the use of only historical data lacked real-time dynamic collection, crucial for IoT systems.
 
-\textit{\citep{analysis-mitigation-sandbox-evasion}} explored analysis within a popular Sandbox, revealing that modern malware has the capability to evade security systems and remain undetected even post-execution. This finding identified a critical error within containments systems. While malware may  be thoroughly analysed, the payload may be unable to be examined if the sample supresses itself. Therefore, the aspect of containment alone is not sufficient for IoT malware analysis and contained Honeypot environments require effective security measures to integrate deception.
+\textit{\citep{analysis-mitigation-sandbox-evasion}} explored analysis within a popular Sandbox, revealing modern malware’s ability to supress execution and remain undetected. It further proved containment alone is not sufficient for IoT system security, therefore Honeypot environments require a combination of containment and deception to secure systems effectively.
 
-Lastly, \textit{\citep{crowdstrike-honeypot}} briefly mentions the importance of Honeypots within modern IoT architectures, rendering them an essential requirement for intelligence collection on active and common threats. However, their integration within IoT frameworks remains a vague area of research, as differentiating devices result in varying challenges.
+Lastly, \textit{\citep{crowdstrike-honeypot}} highlights the importance of Honeypots within IoT modern architectures, vital for threat intelligence. However, varying integrations across devices remains a vague area of research. 
+
+
 
 \chapter{Methodology \&{} Techniques}\label{ch:methods}
 \section{Approach}\label{sec:approach}
 
-The project follows an experimental quantitative comparison approach to evaluate effectiveness of malware containment and propagation within IoT Honeypot frameworks. The methodology directly links back to Section~\ref{sec:objectives}, through providing a controlled environment for testing, research and deployment between two configurations. All testing will be performed in Ubuntu, a Linux distribution.
 
-Two Virtual Machines deployed within Oracle’s VirtualBox will form the overall framework. The Lab VM will sequentially run both Honeypots:
+The project follows an experimental quantitative comparison to evaluate effectiveness of malware containment within IoT architectures to create a controlled testing environment. Two separate VMs will be deployed using \textbf{Ubuntu} (Lubuntu) within \textbf{Oracle VirtualBox}:
 \begin{itemize}
-	\item\textbf{Vanilla Honeypot}: Low-interaction Cowrie instance operating without additional containment.
-	\item\textbf{Sandboxed Honeypot}: Identical Cowrie instance deployed within a \textbf{FireJail and Docker} container. It will utilise Linux-based Kernel security like seccomp and AppArmor, used for filtering network packets and restricting sample system calls.
+\item\textbf{Vanilla Honeypot}: \textbf{Cowrie} instance operating without additional containment.
+\item\textbf{Sandboxed Honeypot}: Identical \textbf{Cowrie} instance inside a \textbf{FireJail} \& \textbf{Docker} container, reinforced with \textbf{seccomp} and \textbf{AppArmor} to restrict system calls and filter network packets.
 \end{itemize}
 
-A separate Analysis VM will collect data, process logs and analyse packets using \textbf{ElasticSearch}, ensuring the VM remains disconnected from external networks.
+A separate Analysis VM will collect data, process logs and analyse packets using \textbf{ElasticSearch}, ensuring the VM remains disconnected from external networks. Each sample executed within either Honeypot will run within identical conditions to avoid skew. Metrics like network traffic (pcaps), payload data and program events will be stored securely in CSV files.
 
-Each sample will be executed within both Honeypot configurations using identical conditions to prevent data skew. Network traffic, pcaps and payload data will be recorded to generate the quantitative comparison, most likely stored within CSV files. Key metrics will include propagation attempts, program events and communication patterns.
-
-Integrity will be maintained through host OS level kill-switches, VM snapshot rollbacks and network segmentation using subnetting. These measures ensure the host machine remains unaffected, including the external network. Lastly, all collected data will be quantitatively analysed to determine whether Sandboxed Honeypots provide a noticeable difference in security, preventing malware propagation compared to the vanilla configuration. The results will demonstrate the benefits of secure containment for malware analysis.
+Integrity will be enforced via kernel-level kill switches, VM snapshot rollbacks and sub-netting to enforce traffic isolation. Lastly, all collected sample data will be compared statistically to determine whether sandboxing truly improves containment security. 
 
 
 \section{Technologies}\label{sec:technologies}
 
-The project will utilise a range of open-source programs and technologies to aid in the analysis. The core framework will be built within Oracle VirtualBox due to its flexibility for Sandbox implementations, snapshot rollbacks and inter-connectivity between separate VMs. Each VM will run an instance of Lubuntu; a popular, stable and secure Linux distribution.
+The project will employ various open-source technologies to support controlled analysis. The core framework will operate within \textbf{Oracle VirtualBox}, chosen for its flexibility in sandbox implementation, snapshot management and inter-VM connectivity. Each VM will operate inside \textbf{Ubuntu}, a lightweight and stable Linux distribution.
 
-The Honeypot framework will operate within Cowrie, an SSH/Telnet Honeypot designed for IP-based malware capture. It is widely used due to integrated structural logging capabilities for analysis and a large public documentation. Docker, a lightweight portable container, will be used to Sandbox the high-interaction Honeypot, ensuring low system level isolation. Firejail and AppArmor will provide additional kernel-level security by restricting access to malware samples to specific system calls and functions. 
+The Honeypots will be implemented in \textbf{Cowrie}, an SSH/Telnet Honeypot used for capturing IP-based malware, widely used for its logging capabilities for analysis. The sandboxed Honeypot will be containerised within \textbf{Docker}, providing lightweight low level system isolation; while \textbf{Firejail} \& \textbf{AppArmor}  will enforce kernel-level security by limiting system calls.
 
-ElasticSearch will provide real-time log indexing and data storage using the RESTful engine, supplemented by WireShark for packet capturing. Furthermore, Python scripts will automate data extraction from the samples and format them into appropriate CSV files to be used for the final quantitative comparison. 
+For analysis, \textbf{ElasticSearch} will provide real-time log indexing and storage using the RESTful engine complemented by \textbf{WireShark} for packet capturing. \textbf{Python} scripts will extract sample data and format them into appropriate CSV files for final quantitative comparison.
+
+
+
 
 \section{Version Control \&{} Management}\label{sec:versionControl}
 
-GitHub, a web-based platform for version control, will store all source code, configuration files and documentation, providing a transparent history of the project’s development. All changes will be pushed with detailed commits to ensure professionalism. During varying development stages, branching will be used to manage maintain a streamlined approach.
+All configurations, documentations and scripts will be maintained in \textbf{GitHub} for transparent project development history, with branching used for different development stages and frequent commits.
 
-Additionally, backups will be stored within a Google Drive accessible by the supervisor for data integrity, it’ll ensure data synchronisation across various systems. Sensitive data (malware samples and system configurations) will mainly be stored within the Analysis VM, with the aim to maintain ethical and security compliances. 
+
+Backups will be uploaded to \textbf{Google Drive} for redundancy to ensure data synchronisation. Lastly, sensitive data (malware samples and system configs) will remain within the Analysis VM, to ensure ethical and security compliance.
+
 
 
 \chapter{Project Management}\label{ch:project management}
 \section{Activities}\label{sec:activities}
 
-The activities you include here should relate back to the objectives of Section~\ref{sec:objectives}. What do you need to do to reach this objectives and eventually deliver on the aim?
-
-\section{Schedule and Time Management}\label{sec:time management}
-
-The project will follow a weekly schedule to ensure a streamlined and continuous development approach.
+Project activities align directly with Section~\ref{sec:objectives}:
 \begin{itemize}
-	\item Supervisor Meetings: Weekly scheduled meetings used for formative feedback and validation of the project’s methodology.
-	\item Calendar Planning: A personal calendar used to dedicate weekly slots for all aspects of development, such as collecting sufficient malware samples. 
-	\item Time Management: Balancing between the dissertation and independent coursework’s is required, therefore personal study and research time will be allocated in daily chunks to steady workflow. 
+	\item\textbf{Management Space:}
+		\begin{description}
+			\item[(1)] Implement a Linux \textbf{nftables} kill switch (kernel-level) to block all IP traffic if containment fails.
+			\item[(2)] Establish a management level framework for network addressing, VM management and, snapshot rollsbacks.
+		\end{description}
+
+	\item\textbf{Virtual Framework:}
+		\begin{description}
+			\item[(1)] Deploy the Lab VM running \textbf{Cowrie} for both Honeypots.
+			\item[(2)] Configure an Analysis VM isolated from external networks.
+			\item[(3)] Configure sub-netting and a demilitarised zone to separate Honeypots from the host OS.
+			\end{description}
+
+	\item\textbf{Simulation:}
+		\begin{description}
+			\item[(1)] Execute both Honeypots on \textbf{Cowrie} within \textbf{Lubuntu}, with the sandboxed Honeypot contained.
+			\item[(2)] Simulate a small office network to replicate realistic attack patterns.
+			\item[(3)] Execute malware samples under strict controlled conditions.
+		\end{description}
+
+	\item\textbf{Data Analysis:}
+		\begin{description}
+			\item[(1)] Capture sample payloads, types and logs.
+			\item[(2)] Use \textbf{ElasticSearch} and \textbf{Python} to process data and format into CSV.
+			\item[(3)] Conduct quantitative comparison on sample data, analysing relationships across environments.
+		\end{description}
+
 \end{itemize}
 
-A Gantt chart will be employed to visualise a clear roadmap for such a complex project, to ensure arbitrary milestones are met. Additionally, snapshot rollbacks will be integrated within the schedule to avoid testing errors.
+
+
+\section{Schedule and Time Management}\label{sec:time management}
+The project will follow a weekly schedule for continuous development:
+\begin{itemize}
+\item\textbf{Supervisor Meetings:} Weekly meetings for formative feedback.
+\item\textbf{Calendar Planning:} Personal calendar to dedicate slots for all aspects of development.
+\item\textbf{Time Management:} Personal study will be allocated in daily chunks to balance coursework with dissertation.
+\end{itemize}
+Finally, a Gantt chart will aid visualise clear milestones with VM snapshot rollbacks integrated into the timeline to avoid test errors. 
 
 
 
 \section{Data Management}\label{sec:data management}
 
-Sensitive data, Honeypot and VM logs; and pcaps (packet captures) will be stored within the isolated Analysis VM. All relevant documentation will be accessible through both GitHub and Google Drive. Accessibility and integrity will be managed through:
+All sensitive data (pcaps, logs and samples) will remain within the isolated Analysis VM. Relevant documentation will remain accessible through \textbf{GitHub}. 
 
+Key policies:
 \begin{itemize}
-	\item Ethical and Security Compliance: Raw samples will always remain within the contained environment.
-	\item Backups: Frequent backups to version control systems (mentioned in sec insert) will be used to mitigate any progress loss and ensure version synchronisation. 
-	\item Isolation: The VMs will remain inaccessible by external networks, ensuring internally stored data remains secure.
-	\item Storage: Processed and collected logs will be stored in CSV files, formatted to aid in quantitative comparison.
+	\item\textbf{Ethical Compliance:} No raw sample will leave the contained Honeypots.
+	\item\textbf{Backups:} Frequent backups to \textbf{GitHub} and \textbf{Google Drive} to ensure synchronisation. 
+	\item\textbf{Isolation:} Strict VM isolation from external networks.
+	\item\textbf{Storage:} Process data stored in CSV files for formatted analysis.
 \end{itemize}
+
 
 
 \section{Deliverables}\label{sec: deliverables}
 
-The project will develop a secure IoT Honeynet framework, with fully configured and secure Honeypots for malware analysis and processing, provided with virtual network segmentation. Furthermore, an isolated and complex analysis environment (utilising the Analysis VM) will be capable of processing, analysing and visualising all executed and collected samples.
+The project will deliver a secure IoT Honeypot framework with secure sandboxing and a virtual network. The isolated environment will be capable of analysing executed samples.
 
-A quantitative dataset, housed within CSV files indexed using ElasticSearch, will present detailed logs including malware payloads, network traffic analysis and general activity logs. Additionally, complete version control will be developed which contains all configuration scripts, executed and built code; and, Python scripts.
+Additionally, a quantitative dataset containing malware payloads, traffic activity and various logs will be delivered, indexed by \textbf{ElasticSearch}. A comprehensive version-controlled repository will house all scripts, documentation and code.
 
-Lastly, the biggest deliverable to be delivered is the analytical report produced by the framework. An extensively documented evaluation of the data produced will highlight the importance of containment wihtin IoT systems utilising Honeypots, show relationships between high and low-interaction Honeypots; and attempt to highlight varying attacker patterns.
+Lastly, a final analytical report evaluating the effectiveness between malware propagation in Honeypot environments.
+
+In essence, the project aims to deliver a practical research tool and verifiable evidence regarding the effectiveness of containment in IoT Honeypots.
 
 
 \printbibliography
+
+\begin{appendix}
+\chapter{Ethics Form}\label{ch:ethics}
+\includepdf[pages=-]{TDE E1 Form.pdf}
+\end{appendix}
 \end{document}
 
 
