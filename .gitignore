@@ -1,0 +1,21 @@
+# Cowrie runtime files
+cowrie/var/log/
+cowrie/var/lib/
+cowrie/cowrie-env/
+cowrie/*.pyc
+cowrie/__pycache__/
+cowrie/etc/cowrie.cfg
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+
+# Data files
+*.pcap
+*.csv
+*.log
+
+# IDE
+.vscode/
+.idea/
