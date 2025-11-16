@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+    sandboxed-cowrie:
+    # build the docker container from Dockerfile in PWD
+        build:
+            context: .
+            dockerfile: Dockerfile
+
+        # create docker name
+        container_name: sandboxed-cowrie-docker-honeypot
+
+        # always restart unless expl. stopped
+        restart: unless-stopped
+
+        # map ports here
+        # 2222 design choice. If vanilla & containerised run simultaneously, prevents errors
+        ports:
+            - "2222:2222" # used for SSH
+            - "2223:2223" # used for Telnet
+
+        # where the files are stored after container is shut down
+        volumes:
+            # logs on filesystem
+            - ./data/logs:/home/cowrie/cowrie/var/log/cowrie
+            # where malware will be downloaded to
+            -  ./data/downloads:/home/cowrie/cowrie/var/lib/cowrie/downloads
+            # used for pcaps
+            - ./data/pcap:/home/cowrie/cowrie/var/lib/cowrie/pcap
+            # TTY recording
+            - ./data/tty:/home/cowrie/cowrie/var/lib/cowrie/tty
+
+        environment:
+            - TZ =Europe/London
+
+        # resource limits
+        # prevents max consumption by malware if propoagation occurs
+        deploy:
+            resources:
+                limits:
+                    cpu: '1.0' # max 1 core
+                    memory: 512M # maximum 512MB of RAM
+                reservations:
+                # always allocate these (guaranteed)
+                    cpu: '0.5'
+                    memory: 256M
+        # all network configurations
+        # NEED TO CHANGE SUBNETTING
+        networks:
+            - honeynet_network
+
+        #security-opt:
+        #    - apparmor=docker-default
+
+        cap_drop:
+            - ALL
+        cap_add:
+            - NET_BIND_SERVICE
+
+
+        read_only: false
+
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "10m"
+                max-file: "3"
+
+networks:
+    honeynet_network:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.20.0.0/16 # will change in future
