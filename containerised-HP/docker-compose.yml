@@ -1,5 +1,5 @@
-version: '3.8'
-
+# version: '3.8'
+# Version kept for reference, modern Docker compose doesn't allow v in config :)
 services:
     sandboxed-cowrie:
     # build the docker container from Dockerfile in PWD
@@ -31,18 +31,18 @@ services:
             - ./data/tty:/home/cowrie/cowrie/var/lib/cowrie/tty
 
         environment:
-            - TZ =Europe/London
+            - TZ=Europe/London
 
         # resource limits
         # prevents max consumption by malware if propoagation occurs
         deploy:
             resources:
                 limits:
-                    cpu: '1.0' # max 1 core
+                    cpus: '1.0' # max 1 core
                     memory: 512M # maximum 512MB of RAM
                 reservations:
                 # always allocate these (guaranteed)
-                    cpu: '0.5'
+                    cpus: '0.5'
                     memory: 256M
         # all network configurations
         # NEED TO CHANGE SUBNETTING
