@@ -46,6 +46,9 @@ RUN python3 -m venv cowrie-env
 # install cowrie dependenies inside venv
 RUN . cowrie-env/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 
+# Install cowrie packages themselves
+RUN . cowrie-env/bin/activate && pip install -e .
+
 # create dirs for files
 RUN mkdir -p /home/cowrie/cowrie/var/log/cowrie \
                          /home/cowrie/cowrie/var/lib/cowrie \
@@ -62,5 +65,6 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD pgrep -f "cowrie.tac" || exit 1
 
 # finally start cowrie
-CMD ["/bin/bash", "-c", "source cowrie-env/bin/activate && bin/cowrie start && tail -f /dev/null"]
 
+# use bash shell, exec as comm, activate venv && and run twistd in background
+CMD ["/bin/bash", "-c", "source cowrie-env/bin/activate && twistd --nodaemon --pidfile= cowrie"]
