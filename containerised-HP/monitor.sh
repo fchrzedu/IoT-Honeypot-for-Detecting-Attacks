@@ -1,7 +1,7 @@
 set -e # exit on errors
 
 # Color codes for output
-RED='\033[1;196m'
+RED='\033[1;31;47m'
 GREEN='\033[1;32m'
 BLUE='\033[1;34m'
 NC='\033[0m'
@@ -26,6 +26,25 @@ check_docker_status(){
 	exit 1
 	fi
 
+}
+
+show_help_commands(){
+	echo ""
+	echo "Usage:    ./monitor.sh [command]"
+	echo ""
+	echo "---Available commands---"
+	echo -e "	${BLUE}build${NC}		Build docker & honeypot image"
+	echo -e "	${BLUE}start${NC}		Start containersied docker & cowrie sandbox"
+	echo -e "	${BLUE}stop${NC}		Stop containerised honeypot"
+	echo -e "	${BLUE}restart${NC}		Restart containerised honeypot"
+	echo -e "	${BLUE}logs${NC}		Display current session logs in follow mode (-f)"
+	echo -e "	${BLUE}status${NC}		View the status of the current containerised honeypot"
+	echo -e "	${BLUE}shell${NC}		Open a shell inside docker honeypot"
+	echo -e "	${BLUE}reset${NC}		Reset honeypot (delete all data!)"
+	echo -e "	${BLUE}backup${NC}		Create a backup of honeypot data"
+	echo -e "	${BLUE}export${NC}		Export logs to use with python scripts for analysis"
+	echo -e "	${BLUE}--help${NC}		View this message"
+	echo ""
 }
 
 build_container(){
@@ -124,6 +143,7 @@ export_data() {
 
 
 
+
 # Main script logic
 case "${1:-}" in
     build)
@@ -153,8 +173,15 @@ case "${1:-}" in
     backup)
         create_a_backup
         ;;
+    export)
+	export_data
+	;;
+    --help)
+	show_help_commands
+	;;
     *)
         print_an_error "Unknown command: ${1:-}"
+	print_a_warning "For available commands do:	./monitor.sh --help"
         echo ""
         exit 1
         ;;
