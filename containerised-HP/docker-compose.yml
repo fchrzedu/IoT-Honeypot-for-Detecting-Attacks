@@ -29,6 +29,10 @@ services:
             - ./data/pcap:/home/cowrie/cowrie/var/lib/cowrie/pcap
             # TTY recording
             - ./data/tty:/home/cowrie/cowrie/var/lib/cowrie/tty
+            # mount firejail in read mode
+            - ./cowrie.profile:/home/cowrie/.config/firejail/cowrie.profile:ro
+            # mount cowrie config in read only
+            - ./sandboxed-honeypot.cfg:/home/cowrie/cowrie/etc/cowrie.cfg:ro
 
         environment:
             - TZ=Europe/London
@@ -49,13 +53,20 @@ services:
         networks:
             - honeynet_network
 
-        #security-opt:
-        #    - apparmor=docker-default
+        # enabled post firejail and apparmor install
+        security_opt:
+            - apparmor=docker-default  # Use Docker's default AppArmor profile
+            - no-new-privileges:true   # Prevent privilege escalation
+            - seccomp=unconfined       # Allow Firejail's seccomp inside
+
 
         cap_drop:
             - ALL
         cap_add:
             - NET_BIND_SERVICE
+            - SETFCAP
+            - SETUID
+            - SETGID
 
 
         read_only: false
