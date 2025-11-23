@@ -1,0 +1,42 @@
+# AA (AppArmor) profile for cowrie
+#include <tunables/global>
+
+/use/bin/env {
+    #include <abstractions/base>
+    #include <abstractions/bash>
+    #include <<abstractions/python>
+
+    # allow cowrie to read/write its own dirs
+    /home/cowrie/cowrie/** rw,
+
+    # permit neccesary system reads
+    /usr/share/python3/** r,
+    /etc/ssl/certs/** r,
+    /proc/*/stat r,
+    /proc/*/cmdline r,
+    /sys/kernel/debug/** r,
+
+    # deny dangerous ops
+    deny /root/** rwx,
+    deny /sys/kernel/debug/tracing/** w,
+    deny /proc/sys/** w,
+    deny /proc/sysrq-trigger rwx,
+
+    # network operations for SSH & Telnet
+    network inet stream
+    network inet dgram
+
+    # deny raw socket
+    deny network raw,
+    deny network packet,
+
+    # limited capability usage
+    capability net_bind_service,
+    capability setuid,
+    capability setgid,
+
+    deny capability sys_admin,
+    deny capability sys_module,
+    deny capability sys_rawio,
+
+    }
