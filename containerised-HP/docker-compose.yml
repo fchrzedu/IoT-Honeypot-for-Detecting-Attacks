@@ -57,7 +57,6 @@ services:
         security_opt:
             - apparmor=docker-default  # Use Docker's default AppArmor profile
             - no-new-privileges:true   # Prevent privilege escalation
-            - seccomp=unconfined       # Allow Firejail's seccomp inside
 
 
         cap_drop:
@@ -65,8 +64,11 @@ services:
         cap_add:
             - NET_BIND_SERVICE
             - SETFCAP
-            - SETUID
-            - SETGID
+            - SYS_ADMIN # firejail namespacing
+            - SYS_PTRACE # firejail process tracing
+            - SYS_CHROOT # firejail chroot
+        devices:
+            - /dev/fuse:/dev/fuse # firejail may use this
 
 
         read_only: false
