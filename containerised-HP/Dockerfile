@@ -44,6 +44,9 @@ RUN mkdir -p /tmp/firejail-tmp \
     chmod 755 /run/firejail && \
     chmod 755 /var/cache/firejail
 
+# CURRENTLY MISSING COWRIE DIRECTORIES AND ACCESS FOR FIREJAIL
+
+
 # need to add firejail as sudoer using a non-root user
 # avoiding root if malware propagates
 RUN chmod u+s /usr/bin/firejail
