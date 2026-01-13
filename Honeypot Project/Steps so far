@@ -1,9 +1,9 @@
-Cowrie honeypot (/vanilla-honeypot)
+Cowrie honeypot PWD: /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot
 
+1) Installed dependencies i.e. Python3
+2) Created non-root user w/ no password {sudo adduser --disabled-password cowrie}
+3) Added cowrie as a submodule to git repo {git submodule add http://github.com/cowrie/cowrie}
+4) Navigated into cowrie & created venv {python3 -m venv cowrie-env} {PWD: /Honeypot Project/vanilla-honeypot/cowrie}
+5) Activated cowrie-env & installed packages - Cowrie fully installed
 
-1) Installing dependencies with python runtime libraries
-2) Created non-root user cowrie with no password: sudo adduser --disabled-password cowrie
-2) Cloned cowrie independently into each library to have separate Cowrie instances
-    2.1) Create python venv to isolate Cowrie from system dependencies source [cowrie-env/bin/activate]
-    2.2) Install Cowrie dependencies [python -m pip install --upgrade pip] []
 
