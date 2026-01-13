@@ -24,4 +24,13 @@ cowrie-configs\:	copies of configs from containerised-HP & cowrie/
 cowrie\:	submodule of https://github.com/cowrie/cowrie/
 
 
+Run vanilla honeypot:
+source cowrie\cowrie-env\bin {activate|deactivate}
+
+Run sandboxed honeypot (containerised-HP):
+./monitor.sh build:	Builds Docker image using Docker-Compose
+./monitor.sh start:	Starts Docker image with a unique internet bridge
+./monitor.sh --help: 	various commands (processing & exporting not yet supported)
+
+
 
