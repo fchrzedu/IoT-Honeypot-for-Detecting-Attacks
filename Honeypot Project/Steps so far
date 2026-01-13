@@ -1,0 +1,9 @@
+Cowrie honeypot (/vanilla-honeypot)
+
+
+1) Installing dependencies with python runtime libraries
+2) Created non-root user cowrie with no password: sudo adduser --disabled-password cowrie
+2) Cloned cowrie independently into each library to have separate Cowrie instances
+    2.1) Create python venv to isolate Cowrie from system dependencies source [cowrie-env/bin/activate]
+    2.2) Install Cowrie dependencies [python -m pip install --upgrade pip] []
+
