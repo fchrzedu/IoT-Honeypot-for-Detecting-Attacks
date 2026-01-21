@@ -1,3 +1,5 @@
+-- ALL OF THESE STEPS ARE IN ORDER -- 
+
 Cowrie honeypot PWD: /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot
 
 1) Installed dependencies i.e. Python3
@@ -6,4 +8,60 @@ Cowrie honeypot PWD: /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Proj
 4) Navigated into cowrie & created venv {python3 -m venv cowrie-env} {PWD: /Honeypot Project/vanilla-honeypot/cowrie}
 5) Activated cowrie-env & installed packages - Cowrie fully installed
 
+
+						           15/01/2026 - 21/01/2026
+						======== WORKING ON DEVICE PROFILES ========
+						
+Instead of emulating devices as if they were their own entity, we are only storing potential metadata for a device i.e. SSH banner, name & model, make, arch etc
+- 'Feeding' this metadata for a specific device into Cowrie; it is session based
+- Each time an attacker connects to the Cowrie honeypot, Cowrie selects a device profile randomly (round-robin for testing)
+- We do not need to build a virtual network, as common malware doesn't scan LAN for host devices -- it scans the internet for its next victim
+	therefore, we only care about its IP activity, rather than LAN scanning
+- If the same sample connects to cowrie 2+ more, due to us selecting various device profiles per session, this provides an illusion of a network of IoT devices
+
+Proposed attack flow:
+1. Attacker connects to Cowrie honeypot via SSH/Telnet
+2. Cowrie creates a new session w/ fake filesystem, and assigns a device profile to this session
+3. Malware runs commands, where a global python script returns metadata per command i.e. [IP CAMERA] uname -a = returns IP Camera data
+4. Malware deploys payload (believing it is on a real device, as we only require basic metadata)
+5. Cowrie logs everything, and logs are exported to be data processes
+
+**Key Point**: The malware never "knows" it's in a honeypot, it thinks it successfully compromised an ARM router or MIPS camera.
+
+https://www.shodan.io/ & https://openwrt.org/
+Creating device_profiles.py to store a catalogue of device data utilising SHODAN & OpenWRT:
+
+					======== DEVICE PROFILE REVERSE ENGINEERING ========
+- IP CAMERA:
+Chose D-Link as they are extremely commoon
+In SHODAN, searched for "D-Link" and was greeted with this result webpage: https://www.shodan.io/host/73.227.106.199
+Within the result, the following was found:
+			IP Camera:
+			  MAC Address: B0:C5:54:12:65:24 (will generate similar)
+			  Version: 1.16
+			  Hardware Version: A
+			  Name: Upstairs
+			  Brand: D-Link	(Manufacturer)
+			  IP Address: 192.168.2.6 (Not needed, will generate fake IPS)
+			  Model: DCS-5020L
+			  Build: 1
+Returned back to SHODAN and searched for "DCS-5020L" port:22 (22 for SSH, we need its banner for uname):
+		SHODAN: "DCS-5020L" port:22 returns zero results
+		SHODAN: "DCS-5020L" itself doesn't show results with an SSH banner
+
+		GITHUB: D-Link camera /proc/cpuinfo on git returns nothing
+		GITHUB: DCS-5020L uname on git returns nothing 
+
+		OpenWRT: "DCS-5020L" returned one result at https://openwrt.org/toh/d-link/d-link_dcs-5020l_a1?s[]=dcs&s[]=5020l
+		CTRL+F in OEM bootlog for 'Architecture' returned: Advanced Linux Sound Architecture Driver Version 1.0.14rc3 (Wed Mar 14 07:25:50 2007 UTC). & EXAMPLE MIPS
+		Kernel search returned:    Image Type:   MIPS Linux Kernel Image (lzma compressed) 
+		CPU search returned: CPURamFlashNetwork__WLAN__USBSerialJTagRalink RT3352 @ xxx __MHz__64 MiB8 MiB1x 10/100bgnNoYes?
+		Unable to find SSH banner anywhere
+
+What have we found:
+Manufacturer
+
+
+- ARM ROUTER:
+- x86 NAS:
 
