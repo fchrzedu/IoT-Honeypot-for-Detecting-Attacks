@@ -85,25 +85,111 @@ VCEI exceptions\t\t: not available""",
                 "architecture (RT3352 = mipsel standard)",
                 "cpuinfo (RT3352 datasheet + MIPS 24KEc specs)"
             ]
-        },
-
-        "validation_notes": """
-Profile based on:
-1. Shodan reconnaissance (MAC, firmware, model)
-2. OpenWRT hardware database (CPU, RAM, bootlog)
-3. Ralink RT3352 technical specifications
-4. Dropbear release timeline (2013.58 for mid-2013 device)
-5. Standard MIPS kernel output formats
-
-Confidence level:
-- All hardware specs confirmed
-- System outputs follow documented RT3352 patterns
-- SSH banner consistent with device release timeline
-""",
+        },        
 
         "testing_priority": "high",  # Common IoT target, well-documented malware exists
+    },
+
+
+
+
+
+
+
+    "tplink_archer_a7_router": {     
+            # ============================
+            # DEVICE IDENTIFICATION
+            # ============================
+          "name": "TP Link Archer A7 v5 Router",
+          "manufacturer": "TP-Link",
+          "model": "Archer A7 v5",
+          "hardware_version": "5.0", # Unable to find hardware version, used '5.0' from v5
+          "firmware_version": "v3.0-r43502",
+          "device_type": "MIPS Router",
+
+            # ============================
+            # HARDWARE SPECIFICATIONS
+            # ============================
+            "cpu": "Qualcomm Atheros QCA9563",
+            "cpu_mhz": "750",
+            "architecture": "mips",
+            "ram_mb": "128",
+            "flash_mb": "16",
+            # ============================
+            # SYSTEMS SPECIFICATIONS
+            # ============================
+            # Reasoning: "Firmware v3.0-r43502" released June 2020
+            # Firmware 2020 -> OpenWRT, looked for release closest: Feb 2021 21.02 Linux 5.4
+            # June 2020 suggests transition period from Feb -> June: 5.4.188
+            "kernel_version": "5.4.188", 
+            "hostname": "OpenWrt",  # Standard OpenWRT hostname, user conf so doesn't matter
+            "ssh_banner": "SSH-2.0-dropbear_2020.79",
+            # Reasoning:
+            # - Hostname: OpenWrt (standard)
+            # - Kernel: 5.4.188 (OpenWrt 21.02 series)
+            # - Build date: Mon Jun 23 (firware date 06/23/20)
+            # - Architecture: mips 
+            "uname_output": "Linux OpenWrt 5.4.188 #0 SMP Mon Jun 23 10:15:42 2020 Mips GNU/Linux",
+            # /proc/cpuinfo (QCA9563 standard output)
+            "cpuinfo": """system type\t\t: Qualcomm Atheros QCA956X rev 0
+                machine\t\t\t: TP-Link Archer A7 v5
+                processor\t\t: 0
+                cpu model\t\t: MIPS 74Kc V5.0
+                BogoMIPS\t\t: 373.33
+                wait instruction\t: yes
+                microsecond timers\t: yes
+                tlb_entries\t\t: 32
+                extra interrupt vector\t: yes
+                hardware watchpoint\t: yes, count: 4, address/irw mask: [0x0ffc, 0x0ffc, 0x0ffb, 0x0ffb]
+                isa\t\t\t: mips1 mips2 mips32r1 mips32r2
+                ASEs implemented\t: 
+                shadow register sets\t: 1
+                kscratch registers\t: 0
+                package\t\t\t: 0
+                core\t\t\t: 0
+                VCED exceptions\t\t: not available
+                VCEI exceptions\t\t: not available""",
+                # ============================
+                # OPERATIONAL DATA
+                # ============================
+                    "available_commands": [
+                        "ls", "cat", "echo", "ps", "kill", "top",
+                        "busybox", "sh", "mount", "umount", "df",
+                        "ifconfig", "ping", "wget", "curl", "reboot",
+                        "iptables", "uci", "opkg"  # OpenWRT-specific commands
+                    ],
+                "shell_prompt": "root@OpenWrt:~# ",
+                
+                # Network info
+                "mac_prefix": "68:FF:7B", # Shodan OUI
+
+                # HTTP Server IF applicable, routers usually have web UI
+                "http_server": "uhttpd",    # OpenWrt standard
+                # ========================================
+                # DOCUMENTATION & VALIDATION
+                # ========================================
+                "research_sources": {
+                    "shodan": "https://www.shodan.io/host/73.112.241.251",
+                    "openwrt": "https://openwrt.org/toh/tp-link/archer_a7_v5",
+                    "confirmed_fields": [
+                        "manufacturer", "model", "ssh_banner",  # SSH banner confirmed from Shodan!
+                        "firmware_version", "cpu", "ram_mb", "flash_mb", "architecture"
+                    ],
+                    "deduced_fields": [
+                        "kernel_version (from firmware date June 2020 → OpenWRT 21.02 → Linux 5.4)",
+                        "hardware_version (v5 from model name)",
+                        "cpuinfo (QCA9563 datasheet + MIPS 74Kc specs)",
+                        "hostname (OpenWRT default, though Shodan showed 'Wygate' user override)"
+                    ]
+                },         
+          
     }
+
 }
+
+
+
+
 
 
 
