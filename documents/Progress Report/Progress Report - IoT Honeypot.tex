@@ -1,0 +1,77 @@
+\documentclass[a4paper,12pt,oneside]{book} % You can change: book → report/article
+
+% ---------------- Required Basic Packages ----------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{geometry}   % Margins
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=3.2cm,
+    right=3.2cm
+}
+
+% ---------------- Useful Packages (add/remove as needed) ----------------
+\usepackage{graphicx}   % Images
+\usepackage{xcolor}     % Colours
+\usepackage{hyperref}   % Clickable links in PDF
+\usepackage{setspace}   % Line spacing
+
+\linespread{1.25}       % Required spacing
+
+
+
+\usepackage{listings}
+\usepackage{xcolor} % needed for styling
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    numbers=left,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!50!black}
+}
+
+\usepackage[
+    backend=biber,
+    style=authoryear
+]{biblatex}
+\addbibresource{references.bib}
+
+% ---------------- Title Details (edit these) ----------------
+\title{\huge\bfseries Progress Report\\Defensive Honeypots for IP IoT Devices:\\Quantitative  Comparison between Vanilla and Sandboxed Honeypots}
+\author{\LARGE Franek Kruczynski}
+\date{November 2025}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\tableofcontents
+
+\mainmatter
+\chapter{Introduction}
+Write your introduction here...
+
+	\section{Background}\label{sec:background}
+	\section{Aims \& Objectives}\label{sec:aimsAndObjectives}
+		\subsection{Aim}\label{sec:aim}
+		\subsection{Objectives}\label{sec:objectives}
+
+\chapter{Background Review}
+Literature overview here...
+
+\chapter{Technical Progress}
+Methods, implementation, system design...
+
+\chapter{Professionalism and Risk}
+Risk analysis, ethics, legal/EDI matters...
+
+\chapter{Conclusion}
+Wrap up your progress so far.
+
+
+\chapter {References}
+\printbibliography
+\end{document}
