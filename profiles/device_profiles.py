@@ -92,6 +92,7 @@ VCEI exceptions\t\t: not available""",
 
 
 
+# ===========================================================================================================================================================
 
 
 
@@ -169,19 +170,21 @@ VCEI exceptions\t\t: not available""",
                 # DOCUMENTATION & VALIDATION
                 # ========================================
                 "research_sources": {
-                    "shodan": "https://www.shodan.io/host/73.112.241.251",
-                    "openwrt": "https://openwrt.org/toh/tp-link/archer_a7_v5",
-                    "confirmed_fields": [
-                        "manufacturer", "model", "ssh_banner",  # SSH banner confirmed from Shodan!
-                        "firmware_version", "cpu", "ram_mb", "flash_mb", "architecture"
-                    ],
-                    "deduced_fields": [
-                        "kernel_version (from firmware date June 2020 → OpenWRT 21.02 → Linux 5.4)",
-                        "hardware_version (v5 from model name)",
-                        "cpuinfo (QCA9563 datasheet + MIPS 74Kc specs)",
-                        "hostname (OpenWRT default, though Shodan showed 'Wygate' user override)"
-                    ]
-                },         
+        "shodan": "https://www.shodan.io/host/73.112.241.251",
+        "openwrt": "https://openwrt.org/toh/tp-link/archer_a7_v5",
+        "confirmed_fields": [
+            "manufacturer", "model", "ssh_banner",
+            "firmware_version", "cpu", "ram_mb", "flash_mb", "architecture"
+        ],
+        "deduced_fields": [
+            "kernel_version (from firmware date June 2020 → OpenWRT 21.02 → Linux 5.4)",
+            "hardware_version (v5 from model name)",
+            "cpuinfo (QCA9563 datasheet + MIPS 74Kc specs)"
+        ]
+    },
+    
+    "testing_priority": "high"    
+                
           
     }
 
@@ -207,3 +210,26 @@ def get_random_profile():
 # Returns a profile based on its name
 def get_profile_by_name(name):
 	return DEVICE_PROFILES.get(name, None)
+
+
+# ============================================
+# Testing Function
+# ============================================
+
+if __name__ == "__main__":
+    print("=" * 70)
+    print("DEVICE PROFILE CATALOGUE - VALIDATION TEST")
+    print("=" * 70)
+    print(f"\n✓ Total profiles loaded: {len(DEVICE_PROFILES)}")
+    
+    for profile_id, profile in DEVICE_PROFILES.items():
+        print("\n" + "-" * 70)
+        print(f"[{profile_id}]")
+        print(f"  Name: {profile['name']}")
+        print(f"  Architecture: {profile['architecture']}")
+        print(f"  SSH Banner: {profile['ssh_banner']}")
+        print(f"  Kernel: {profile['kernel_version']}")
+    
+    print("\n" + "=" * 70)
+    print("VALIDATION COMPLETE")
+    print("=" * 70)
