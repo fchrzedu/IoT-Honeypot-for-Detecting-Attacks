@@ -1,36 +1,16 @@
-This Git Repo is for version control of my dissertation based on IoT IP devices and honeypots
-OS running is Lubuntu 23.04.3
-Python version 3.12.3
-Docker version 29.0.1, build eedd969
+OS: Lubuntu 24.04.3
+Python3 version: 3.12.3
 
-ENSURE YOU USE PYTHON 3.12.3 IF ON DEBIAN, DO NOT USE DEV
+ENSURE YOU USE A NON DEVELOPER PYTHON3 VERSION
 
-NOTE:
-All cowrie files reside as a submodule within this repo, to allow configurations to be accessible
-	cowrie @ XXXXXXXX itself is just a pointer to https://github.com/cowrie/cowrie/
-
-
-containerised-HP\	(docker + cowrie honeypot)
-	- data\ (files for containerised honeypot)
-	- Dockerfile:	builds docker image
-	- docker-compose.yml: defines containers from Dockerfile
-	- monitor.sh:	custom $bash script for Dockerfile 
-	- sandboxed-honeypot.cfg:	config for sandboxed honeypot
-
-documents\:	all docs and papers
-
-cowrie-configs\:	copies of configs from containerised-HP & cowrie/
-		
-cowrie\:	submodule of https://github.com/cowrie/cowrie/
+Cowrie_Backups = Stores backup files from cowrie/ itsef
+Cowrie_Code_Files = Stores all configured files from cowrie/
+Honeypot Project\
+	vanilla-honeypot\ = vanilla cowrie implementation
+Prototype v1 = 1st ever basic prototype done - scrapped due to different direction of dissertation
+documents\ = self explanatory
 
 
-Run vanilla honeypot:
-source cowrie\cowrie-env\bin {activate|deactivate}
-
-Run sandboxed honeypot (containerised-HP):
-./monitor.sh build:	Builds Docker image using Docker-Compose
-./monitor.sh start:	Starts Docker image with a unique internet bridge
-./monitor.sh --help: 	various commands (processing & exporting not yet supported)
-
-
-
+NOTE: All cowrie files reside in a Git submodule from https://github.com/cowrie/cowrie/
+	They cannot and will not be pushed nor committed to this repo
+	Therefore, use Cowrie_Backups & Cowrie_Code_Files if you wish to run this on your own machine
