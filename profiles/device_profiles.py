@@ -85,7 +85,7 @@ VCEI exceptions\t\t: not available""",
                 "architecture (RT3352 = mipsel standard)",
                 "cpuinfo (RT3352 datasheet + MIPS 24KEc specs)"
             ]
-        },        
+        },
 
         "testing_priority": "high",  # Common IoT target, well-documented malware exists
     },
