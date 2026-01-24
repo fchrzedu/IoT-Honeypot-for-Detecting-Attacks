@@ -37,20 +37,21 @@ DEVICE_PROFILES = {
         "uname_output": "Linux DCS-5020L 2.6.21 #1 Wed Aug 10 18:35:44 CST 2013 mipsel GNU/Linux",
 
         # /proc/cpuinfo - also assumed and built from examples online
-        "cpuinfo": """system type\t\t: Ralink RT3352
-processor\t\t: 0
-cpu model\t\t: MIPS 24KEc V4.12
-BogoMIPS\t\t: 265.42
-wait instruction\t: yes
-microsecond timers\t: yes
-tlb_entries\t\t: 32
-extra interrupt vector\t: yes
-hardware watchpoint\t: yes
-ASEs implemented\t: mips16 dsp
-shadow register sets\t: 1
-core\t\t\t: 0
-VCED exceptions\t\t: not available
-VCEI exceptions\t\t: not available""",
+        "cpuinfo": """
+            system type\t\t: Ralink RT3352
+            processor\t\t: 0
+            cpu model\t\t: MIPS 24KEc V4.12
+            BogoMIPS\t\t: 265.42
+            wait instruction\t: yes
+            microsecond timers\t: yes
+            tlb_entries\t\t: 32
+            extra interrupt vector\t: yes
+            hardware watchpoint\t: yes
+            ASEs implemented\t: mips16 dsp
+            shadow register sets\t: 1
+            core\t\t\t: 0
+            VCED exceptions\t\t: not available
+            VCEI exceptions\t\t: not available\n""",
 
         # ============================
         # OPERATIONAL DATA
@@ -132,7 +133,8 @@ VCEI exceptions\t\t: not available""",
             # - Architecture: mips 
             "uname_output": "Linux OpenWrt 5.4.188 #0 SMP Mon Jun 23 10:15:42 2020 mips GNU/Linux",
             # /proc/cpuinfo (QCA9563 standard output)
-            "cpuinfo": """system type\t\t: Qualcomm Atheros QCA956X rev 0
+            "cpuinfo": """
+                system type\t\t: Qualcomm Atheros QCA956X rev 0
                 machine\t\t\t: TP-Link Archer A7 v5
                 processor\t\t: 0
                 cpu model\t\t: MIPS 74Kc V5.0
@@ -149,7 +151,7 @@ VCEI exceptions\t\t: not available""",
                 package\t\t\t: 0
                 core\t\t\t: 0
                 VCED exceptions\t\t: not available
-                VCEI exceptions\t\t: not available""",
+                VCEI exceptions\t\t: not available\n""",
                 # ============================
                 # OPERATIONAL DATA
                 # ============================
