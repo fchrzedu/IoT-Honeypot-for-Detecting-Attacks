@@ -39,10 +39,16 @@ except Exception as e:
 
 commands = {}
 
-"""
-def hardware_platform() -> str:
-    return CowrieConfig.get("shell", "hardware_platform", fallback="x86_64")
-"""
+# ==========
+#    HELPER FUNCTIONS MODIFIED FOR PROFILES
+# ========
+
+# NEW FUNCTION: Returns processor for uname -p
+def processor_type(profile=None):
+    if profile and 'cpu' in profile:
+        return profile['cpu']
+    else:
+        return "unknown"
 
 # Returns CPU architecture i.e. x86_64, MIPS, ASM etc...
 # profile defined in src/cowrie/ssh/session.py __init__
@@ -52,21 +58,43 @@ def hardware_platform(profile=None) -> str:
     else:
         return CowrieConfig.get("shell", "hardware_platform", fallback="x86_64")	# Return default Cowrie config if profile architecture no exist
 
-def kernel_name() -> str:
+# Returns kernel name (Always Linux for IoT devices) - no change needed
+def kernel_name(profile=None) -> str:
     return CowrieConfig.get("shell", "kernel_name", fallback="Linux")
 
+# Returns kernel version from device_profiles:kernel_version
+def kernel_version(profile=None) -> str:
+    if profile and 'kernel_version' in profile:
+        return profile['kernel_version']
+    else:
+        return CowrieConfig.get("shell", "kernel_version", fallback="3.2.0-4-amd64")
 
-def kernel_version() -> str:
-    return CowrieConfig.get("shell", "kernel_version", fallback="3.2.0-4-amd64")
+# Returns kernel build string from device_profiles:uname_output
+def kernel_build_string(profile=None) -> str:
+    if profile and 'uname_output' in profile:
+        # Parse output from uname_output, split it and extract build time
+        parts = profile['uname_output'].split()
 
-
-def kernel_build_string() -> str:
+    # Find where build string starts (#)
+    for i, part in enumerate(parts):
+        if part.startswith('#'):
+            # Collect all parts until architecture / OS hit
+            build_parts = []
+            j = i
+            # Stop when we hit known architecture - not needed, but good for future expansion of devices supported
+            while j < len(parts):
+                if parts[j] in ['mipsel', 'mips', 'armv7l', 'x86_64', 'i686', 'aarch64', 'GNU/Linux']:
+                    break
+                build_parts.append(parts[j])
+                j +=1
+            return ' '.join(build_parts)
+    # Fallback to default cowrie value
     return CowrieConfig.get(
         "shell", "kernel_build_string", fallback="#1 SMP Debian 3.2.68-1+deb7u1"
     )
 
-
-def operating_system() -> str:
+# Returns OS (Always GNU/Linux for IoT devices) - can leave as default fallback
+def operating_system(profile=None) -> str:
     return CowrieConfig.get("shell", "operating_system", fallback="GNU/Linux")
 
 
@@ -120,27 +148,14 @@ class Command_uname(HoneyPotCommand):
         try:
             # The correct path to the SSH session in Cowrie's architecture:
             # self.protocol → terminal → transport → session
-            if hasattr(self.protocol, 'terminal') and self.protocol.terminal:  # Check whether protocol has a terminal
+            if hasattr(self.protocol, 'terminal') and self.protocol.terminal:
                 if hasattr(self.protocol.terminal, 'transport') and self.protocol.terminal.transport:
                     ssh_session = self.protocol.terminal.transport.session
                     if ssh_session and hasattr(ssh_session, 'device_profile'):
                         profile = ssh_session.device_profile
-                        self.write(f"[DEBUG] Profile loaded: {profile.get('name', 'Unknown')}\n")
-                        self.write(f"[DEBUG] Architecture: {profile.get('architecture', 'N/A')}\n")
-                    else:
-                        self.write("[DEBUG] Session has no device_profile\n")
-                else:
-                    self.write("[DEBUG] Terminal has no transport\n")
-            else:
-                self.write("[DEBUG] Protocol has no terminal\n")
-            
-            # Test hardware_platform function
-            arch = hardware_platform(profile)
-            self.write(f"[DEBUG] hardware_platform() returned: {arch}\n\n")
             
         except Exception as e:
-            self.write(f"[EXCEPTION] {type(e).__name__}: {e}\n")
-    
+            self.write(f"[EXCEPTION] {type(e).__name__}: {e}\n")   
     
 
         opts = {
@@ -150,6 +165,7 @@ class Command_uname(HoneyPotCommand):
             "os": False,
             "node": False,
             "machine": False,
+            "processor" : False,    # added for processor_type()
         }
 
         flags = [
@@ -159,7 +175,8 @@ class Command_uname(HoneyPotCommand):
             (["v", "kernel-version"], "version"),
             (["o", "operating-system"], "os"),
             (["n", "nodename"], "node"),
-            (["m", "machine", "p", "processor", "i", "hardware-platform"], "machine"),
+            (["m", "machine", "i", "hardware-platform"], "machine"),  # ← -p removed
+            (["p", "processor"], "processor"), # added new flag for p-
         ]
 
         if not self.args:
@@ -224,20 +241,25 @@ class Command_uname(HoneyPotCommand):
         output = []
 
         if opts["name"]:
-            output.append(kernel_name())
+            output.append(kernel_name(profile))
         if opts["node"]:
-            output.append(self.protocol.hostname)
+            if profile and 'hostname' in profile:
+                output.append(profile['hostname'])
+            else:
+                output.append(self.protocol.hostname)
         if opts["release"]:
-            output.append(kernel_version())
+            output.append(kernel_version(profile))
         if opts["version"]:
-            output.append(kernel_build_string())
+            output.append(kernel_build_string(profile))
         if opts["machine"]:
-            output.append(hardware_platform())
+            output.append(hardware_platform(profile))
         if opts["os"]:
-            output.append(operating_system())
+            output.append(operating_system(profile))
+        if opts["processor"]:
+            output.append(processor_type(profile))
 
         if len(output) < 1:
-            output.append(kernel_name())
+            output.append(kernel_name(profile))
 
         self.write(" ".join(output) + "\n")
 
