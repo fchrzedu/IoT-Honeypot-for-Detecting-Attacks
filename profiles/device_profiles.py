@@ -106,7 +106,7 @@ VCEI exceptions\t\t: not available""",
           "model": "Archer A7 v5",
           "hardware_version": "5.0", # Unable to find hardware version, used '5.0' from v5
           "firmware_version": "v3.0-r43502",
-          "device_type": "MIPS Router",
+          "device_type": "Mips Router",
 
             # ============================
             # HARDWARE SPECIFICATIONS
@@ -130,7 +130,7 @@ VCEI exceptions\t\t: not available""",
             # - Kernel: 5.4.188 (OpenWrt 21.02 series)
             # - Build date: Mon Jun 23 (firware date 06/23/20)
             # - Architecture: mips 
-            "uname_output": "Linux OpenWrt 5.4.188 #0 SMP Mon Jun 23 10:15:42 2020 Mips GNU/Linux",
+            "uname_output": "Linux OpenWrt 5.4.188 #0 SMP Mon Jun 23 10:15:42 2020 mips GNU/Linux",
             # /proc/cpuinfo (QCA9563 standard output)
             "cpuinfo": """system type\t\t: Qualcomm Atheros QCA956X rev 0
                 machine\t\t\t: TP-Link Archer A7 v5
