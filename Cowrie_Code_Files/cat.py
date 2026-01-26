@@ -38,18 +38,37 @@ class Command_cat(HoneyPotCommand):
     linenumber = 1
 
     def start(self) -> None:
-        # Get filename from arguments
-        filename = self.args[0] if self.args else ""
-        # if requesting /proc/cpuinfo, return profile-specific data
-        if filename == "/proc/cpuinfo":
-            profile = self.protocol.terminal.transport.session.device_profile
-            self.write(profile["cpuinfo"] + "\n\n")
-            self.exit()
-            return
+        if self.args and len(self.args) > 0:
+            filename = self.args[0]
+        
+            if filename == "/proc/cpuinfo" or filename == "proc/cpuinfo":
+                try:
+                    # Get device profile from session
+                    if hasattr(self.protocol, 'terminal') and self.protocol.terminal:
+                        if hasattr(self.protocol.terminal, 'transport') and self.protocol.terminal.transport:
+                            ssh_session = self.protocol.terminal.transport.session
+                            if ssh_session and hasattr(ssh_session, 'device_profile'):
+                                profile = ssh_session.device_profile
+                                if 'cpuinfo' in profile:
+                                    self.write(profile['cpuinfo'])
+                                    if not profile['cpuinfo'].endswith('\n'):
+                                        self.write('\n')
+                                    self.exit()
+                                    return
+                except Exception:
+                    # If profile fails, fall through to default behavior
+                    pass
+        
+
+
+
         try:
             optlist, args = getopt.gnu_getopt(
                 self.args, "AbeEnstTuv", ["help", "number", "version"]
             )
+
+
+            
         except getopt.GetoptError as err:
             self.errorWrite(
                 f"cat: invalid option -- '{err.opt}'\nTry 'cat --help' for more information.\n"
