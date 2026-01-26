@@ -1,6 +1,6 @@
 # Copyright (c) 2010 Upi Tamminen <desaster@gmail.com>
 # See the COPYRIGHT file for more information
-
+# Original location: /IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie/src/cowrie/commands/
 """
 modified uname command to work with device_profiles.py
 
