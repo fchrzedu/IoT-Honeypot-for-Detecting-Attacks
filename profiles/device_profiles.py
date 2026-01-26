@@ -61,7 +61,7 @@ DEVICE_PROFILES = {
             "ifconfig", "ping", "wget", "reboot"
         ],
 
-        "shell_prompt": "# ",
+        "shell_prompt": "root@ArcherA7:~# ",
 
         # Network info
         "mac_prefix": "B0:C5:54",
