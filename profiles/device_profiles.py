@@ -61,7 +61,7 @@ DEVICE_PROFILES = {
             "ifconfig", "ping", "wget", "reboot"
         ],
 
-        "shell_prompt": "root@ArcherA7:~# ",
+        "shell_prompt": "# ", # simple root for camera
 
         # Network info
         "mac_prefix": "B0:C5:54",
@@ -160,7 +160,7 @@ DEVICE_PROFILES = {
                         "iptables", "uci", "opkg"  # OpenWRT-specific commands
                     ],
                 "shell_prompt": "root@OpenWrt:~# ",
-                
+
                 # Network info
                 "mac_prefix": "68:FF:7B", # Shodan OUI
 
