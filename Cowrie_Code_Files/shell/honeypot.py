@@ -54,7 +54,7 @@ class HoneyPotShell:
                     self.protocol.device_shell_prompt = profile["shell_prompt"]                    
 
         except Exception as e:
-            self.write(f"[ ERROR] honeypot.py: prompt init failed e = {e}")
+            log.msg(f"[ WARNING ] honeypot.py: prompt init failed e = {e}")
 
         self.interactive: bool = interactive
         self.redirect: bool = redirect  # to support output redirection
