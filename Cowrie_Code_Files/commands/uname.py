@@ -33,7 +33,7 @@ try:
     PROFILES_LOADED = True	# Set boolean to loaded
 except Exception as e:
     PROFILES_LOADED =  False	# Return error w/ exception if unsuccesful
-    print(f"[ WARNING ] uname.py: Unable to load device profiles: exception {e}")
+    log.msg(f"[ WARNING ] uname.py: Unable to load device profiles e: {e}")
 
 
 
@@ -175,8 +175,8 @@ class Command_uname(HoneyPotCommand):
             (["v", "kernel-version"], "version"),
             (["o", "operating-system"], "os"),
             (["n", "nodename"], "node"),
-            (["m", "machine", "i", "hardware-platform"], "machine"),  # ← -p removed
-            (["p", "processor"], "processor"), # added new flag for p-
+            (["m", "machine", "i", "hardware-platform"], "machine"),  #  -p removed
+            (["p", "processor"], "processor"), # added new flag for -p
         ]
 
         if not self.args:
