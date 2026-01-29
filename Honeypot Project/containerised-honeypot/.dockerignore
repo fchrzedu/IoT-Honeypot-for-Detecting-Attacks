@@ -1,0 +1,6 @@
+cowrie/cowrie-env
+cowrie/.venv
+cowrie/venv
+__pycache__
+*.pyc
+.git
