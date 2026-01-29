@@ -1,4 +1,4 @@
-# 1️⃣ Use the official Ubuntu 24.04 base image
+#  1️⃣ Use the official Ubuntu 24.04 base image
 FROM ubuntu:24.04
 
 # 2️⃣ Avoid interactive prompts during package installs
