@@ -47,9 +47,12 @@ RUN cowrie/cowrie-env/bin/pip install --upgrade pip && \
 # Ensure the venv's bin directory is in PATH
 ENV PATH="/home/cowrie/cowrie/cowrie-env/bin:$PATH"
 
+# Change working dir to cowrie/cowrie/
+WORKDIR /home/cowrie/cowrie
+
 #Expose the default Cowrie SSH/Telnet ports
 EXPOSE 2222 2223
 
 # Use the Cowrie binary from the virtual environment to start
 # This ensures it uses the correct twistd inside the venv
-CMD ["cowrie", "start"]
+CMD ["cowrie-env/bin/twistd", "-n", "cowrie"]
