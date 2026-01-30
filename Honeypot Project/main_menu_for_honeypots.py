@@ -11,8 +11,8 @@ from colorama import Fore, Back, Style, init
 init(autoreset=True)
 
 # Path config
-SCRIPT_DIR = Path(__file__).parent.resolve() # /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project
-VANILLA_HONEYPOT_DIR = SCRIPT_DIR / "vanilla-honeypot" # /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot
+SCRIPT_DIR = Path(__file__).parent.resolve() # /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project
+VANILLA_HONEYPOT_DIR = SCRIPT_DIR / "vanilla-honeypot" # /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot
 COWRIE_DIR = VANILLA_HONEYPOT_DIR / "cowrie"
 COWRIE_BIN = COWRIE_DIR / "cowrie-env" / "bin" / "cowrie"
 LOG_FILE = COWRIE_DIR / "var" / "log" / "cowrie" / "cowrie.log"
@@ -41,10 +41,10 @@ def start_cowrie():
         print(COWRIE_BIN)
         return
 
-    env = os.environ.copy() # Copy current venv (why?)
-    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") # What does this do
+    env = os.environ.copy() # Copy current venv 
+    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") 
 
-    result = subprocess.run( # What does this do
+    result = subprocess.run( 
         [str(COWRIE_BIN), "start"],
         cwd=COWRIE_DIR,
         env=env,
@@ -64,16 +64,15 @@ def start_cowrie():
   
 
 def stop_cowrie():
-
     if not COWRIE_BIN.exists(): # Check whether cowrie/cowrie-env/bin/cowrie exists
         print(f"{Fore.RED} Cowrie binary not found:{Style.RESET_ALL}")
         print(COWRIE_BIN)
         return
 
-    env = os.environ.copy() # Copy current venv (why?)
-    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") # What does this do
+    env = os.environ.copy() # Copy current venv 
+    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") 
 
-    result = subprocess.run( # What does this do
+    result = subprocess.run( 
         [str(COWRIE_BIN), "stop"],
         cwd=COWRIE_DIR,
         env=env,
