@@ -1,200 +1,282 @@
 #!/usr/bin/env python3
 """
-Main-menu command-line driven menu for both environments
+Unified Honeypot Management System
+Manages both Vanilla and Containerised Cowrie Honeypots
 """
 import os
 import subprocess
-from pathlib import Path
-from colorama import Fore, Back, Style, init
 import time
+from pathlib import Path
+from colorama import Fore, Style, init
 
 # Initialize colorama
 init(autoreset=True)
 
-# Path config
-SCRIPT_DIR = Path(__file__).parent.resolve() # /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project
-VANILLA_HONEYPOT_DIR = SCRIPT_DIR / "vanilla-honeypot" # /home/USER/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot
-COWRIE_DIR = VANILLA_HONEYPOT_DIR / "cowrie"
-COWRIE_BIN = COWRIE_DIR / "cowrie-env" / "bin" / "cowrie"
-LOG_FILE = COWRIE_DIR / "var" / "log" / "cowrie" / "cowrie.log"
-JSON_LOG_FILE = COWRIE_DIR / "var" / "log" / "cowrie" / "cowrie.json"
-PID_FILE = COWRIE_DIR / "var" / "run" / "cowrie.pid"
+
+# ============================================================================
+# PATH CONFIGURATION
+# ============================================================================
+SCRIPT_DIR = Path(__file__).parent.resolve()
+
+# VANILLA HONEYPOT PATHS
+VANILLA_HONEYPOT_DIR = SCRIPT_DIR / "vanilla-honeypot"
+VANILLA_COWRIE_DIR = VANILLA_HONEYPOT_DIR / "cowrie"
+VANILLA_COWRIE_BIN = VANILLA_COWRIE_DIR / "cowrie-env" / "bin" / "cowrie"
+VANILLA_LOG_FILE = VANILLA_COWRIE_DIR / "var" / "log" / "cowrie" / "cowrie.log"
+VANILLA_JSON_LOG_FILE = VANILLA_COWRIE_DIR / "var" / "log" / "cowrie" / "cowrie.json"
+VANILLA_PID_FILE = VANILLA_COWRIE_DIR / "var" / "run" / "cowrie.pid"
+
+# SANDBOXED HONEYPOT PATHS
+CONTAINER_DIR = SCRIPT_DIR / "containerised-honeypot"
+DOCKERFILE = CONTAINER_DIR / "Dockerfile"
+
+# DOCKER CONFIGURATION
+IMAGE_NAME = "cowrie-sandboxed-image"
+IMAGE_TAG = "v2"
+CONTAINER_NAME = "cowrie-honeypot-container"
+HOST_PORT = "2223"
+CONTAINER_PORT = "2222"
 
 
+# ============================================================================
+# UTILITY FUNCTIONS
+# ============================================================================
+def clear_screen():
+    """Clear the terminal screen"""
+    os.system('clear' if os.name != 'nt' else 'cls')
+
+
+def print_header(text):
+    """Print a formatted header"""
+    print(f"\n{Fore.CYAN}{'='*60}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}{text:^60}{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}{'='*60}{Style.RESET_ALL}\n")
+
+
+def print_separator():
+    """Print a separator line"""
+    print(f"{Fore.CYAN}{'-'*60}{Style.RESET_ALL}")
+
+
+def pause():
+    """Pause and wait for user input"""
+    input(f"\n{Fore.CYAN}Press Enter to continue...{Style.RESET_ALL}")
+
+
+# ============================================================================
+# MAIN MENU
+# ============================================================================
+def display_main_menu():
+    """Display main menu for honeypot selection"""
+    clear_screen()
+    print_header("HONEYPOT MANAGEMENT SYSTEM")
+    
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Manage Vanilla Honeypot")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Manage Sandboxed Honeypot (Docker)")
+    print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
+    
+    print_separator()
+
+
+# ============================================================================
+# VANILLA HONEYPOT FUNCTIONS
+# ============================================================================
 def display_vanilla_menu():
-    print(f"{Fore.CYAN}{'-='*20}{Style.RESET_ALL}")
-    print(f"{Fore.CYAN}  VANILLA HONEYPOT OPTIONS")
-    print(f"{Fore.CYAN}{'-='*20}{Style.RESET_ALL}")
-    """Displays menu for vanilla-honeypot/"""
+    """Display vanilla honeypot menu"""
+    clear_screen()
+    print_header("VANILLA HONEYPOT MENU")
+    
     print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Start Cowrie")
     print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Stop Cowrie")
     print(f"{Fore.GREEN}[3]{Style.RESET_ALL} Restart Cowrie")
-    print(f"{Fore.GREEN}[4]{Style.RESET_ALL} View live logs")
-    print(f"{Fore.GREEN}[5]{Style.RESET_ALL} Clear logs")
-    print(f"{Fore.GREEN}[6]{Style.RESET_ALL} Check status")
-    print(f"{Fore.RED}[0]{Style.RESET_ALL} Quit\n")
-    print(f"{Fore.CYAN}{'-='*20}{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}[4]{Style.RESET_ALL} View Live Logs")
+    print(f"{Fore.GREEN}[5]{Style.RESET_ALL} Clear Logs")
+    print(f"{Fore.GREEN}[6]{Style.RESET_ALL} Check Status")
+    print(f"{Fore.YELLOW}[b]{Style.RESET_ALL} Back to Main Menu")
+    print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
+    
+    print_separator()
 
-def start_cowrie():
-    print(f"{Fore.YELLOW}Starting Cowrie...{Style.RESET_ALL}")
 
-    if not COWRIE_BIN.exists(): # Check whether cowrie/cowrie-env/bin/cowrie exists
-        print(f"{Fore.RED} Cowrie binary not found:{Style.RESET_ALL}")
-        print(COWRIE_BIN)
+def vanilla_start_cowrie():
+    """Start vanilla Cowrie"""
+    clear_screen()
+    print_header("Starting Vanilla Cowrie")
+    
+    if not VANILLA_COWRIE_BIN.exists():
+        print(f"{Fore.RED}ERROR: Cowrie binary not found{Style.RESET_ALL}")
+        print(f"Path: {VANILLA_COWRIE_BIN}\n")
         return
-
-    env = os.environ.copy() # Copy current venv 
-    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") 
-
-    result = subprocess.run( 
-        [str(COWRIE_BIN), "start"],
-        cwd=COWRIE_DIR,
+    
+    env = os.environ.copy()
+    env["PATH"] = str(VANILLA_COWRIE_BIN.parent) + ":" + env.get("PATH", "")
+    
+    result = subprocess.run(
+        [str(VANILLA_COWRIE_BIN), "start"],
+        cwd=VANILLA_COWRIE_DIR,
         env=env,
         capture_output=True,
         text=True
     )
-
+    
     if result.stdout:
         print(result.stdout)
     if result.stderr:
         print(f"{Fore.YELLOW}{result.stderr}{Style.RESET_ALL}")
-
+    
     if result.returncode == 0:
-        print(f"{Fore.GREEN}Cowrie started successfully{Style.RESET_ALL}")
+        print(f"\n{Fore.GREEN}SUCCESS: Cowrie started successfully{Style.RESET_ALL}")
     else:
-        print(f"{Fore.RED}Cowrie start failed (code {result.returncode}){Style.RESET_ALL}")
-  
+        print(f"\n{Fore.RED}ERROR: Cowrie start failed (exit code: {result.returncode}){Style.RESET_ALL}")
 
-def stop_cowrie():
-    if not COWRIE_BIN.exists(): # Check whether cowrie/cowrie-env/bin/cowrie exists
-        print(f"{Fore.RED} Cowrie binary not found:{Style.RESET_ALL}")
-        print(COWRIE_BIN)
+
+def vanilla_stop_cowrie():
+    """Stop vanilla Cowrie"""
+    clear_screen()
+    print_header("Stopping Vanilla Cowrie")
+    
+    if not VANILLA_COWRIE_BIN.exists():
+        print(f"{Fore.RED}ERROR: Cowrie binary not found{Style.RESET_ALL}")
+        print(f"Path: {VANILLA_COWRIE_BIN}\n")
         return
-
-    env = os.environ.copy() # Copy current venv 
-    env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "") 
-
-    result = subprocess.run( 
-        [str(COWRIE_BIN), "stop"],
-        cwd=COWRIE_DIR,
+    
+    env = os.environ.copy()
+    env["PATH"] = str(VANILLA_COWRIE_BIN.parent) + ":" + env.get("PATH", "")
+    
+    result = subprocess.run(
+        [str(VANILLA_COWRIE_BIN), "stop"],
+        cwd=VANILLA_COWRIE_DIR,
         env=env,
         capture_output=True,
         text=True
     )
-
+    
     if result.stdout:
-        print(f"{Fore.YELLOW}{result.stdout}{Style.RESET_ALL}")
+        print(result.stdout)
     if result.stderr:
         print(f"{Fore.YELLOW}{result.stderr}{Style.RESET_ALL}")
-
-    if result.returncode == 0:
-        print(f"{Fore.GREEN}Cowrie stopped successfully{Style.RESET_ALL}")
-    else:
-        print(f"{Fore.RED}Cowrie stopped failed (code {result.returncode}){Style.RESET_ALL}")
-
-def restart_cowrie():
     
-    """Restart Cowrie honeypot"""
-    print(f"{Fore.YELLOW}Restarting Cowrie...{Style.RESET_ALL}")
-    if not LOG_FILE.exists():
-        print(f"{Fore.RED}Log file not found:{Style.RESET_ALL}")
-        print(f"   {LOG_FILE}")
+    if result.returncode == 0:
+        print(f"\n{Fore.GREEN}SUCCESS: Cowrie stopped successfully{Style.RESET_ALL}")
+    else:
+        print(f"\n{Fore.RED}ERROR: Cowrie stop failed (exit code: {result.returncode}){Style.RESET_ALL}")
+
+
+def vanilla_restart_cowrie():
+    """Restart vanilla Cowrie"""
+    clear_screen()
+    print_header("Restarting Vanilla Cowrie")
+    
+    if not VANILLA_LOG_FILE.exists():
+        print(f"{Fore.RED}ERROR: Log file not found{Style.RESET_ALL}")
+        print(f"Path: {VANILLA_LOG_FILE}\n")
         return
+    
+    print("Stopping Cowrie...")
+    vanilla_stop_cowrie()
+    
+    print(f"\n{Fore.CYAN}Waiting 2 seconds...{Style.RESET_ALL}")
     time.sleep(2)
-    stop_cowrie()
-    time.sleep(2)
-    start_cowrie()
+    
+    print("\nStarting Cowrie...")
+    vanilla_start_cowrie()
 
 
-def view_logs():
-    """View cowrie logs in real time"""
-    print(f"{Fore.YELLOW}Viewing Cowrie logs in real time (Press CTRL+C to stop)...{Style.RESET_ALL}")
-
-    if not LOG_FILE.exists():
-        print(f"{Fore.RED}Log file not found:{Style.RESET_ALL}")
-        print(f"   {LOG_FILE}")
-    print(f"{Fore.CYAN}Log file: {LOG_FILE}{Style.RESET_ALL}")
-    print(f"{Fore.CYAN}{'-'*60}{Style.RESET_ALL}\n")
-
-
+def vanilla_view_logs():
+    """View vanilla Cowrie logs"""
+    clear_screen()
+    print_header("Viewing Cowrie Logs (Ctrl+C to stop)")
+    
+    if not VANILLA_LOG_FILE.exists():
+        print(f"{Fore.RED}ERROR: Log file not found{Style.RESET_ALL}")
+        print(f"Path: {VANILLA_LOG_FILE}\n")
+        return
+    
+    print(f"Log file: {VANILLA_LOG_FILE}")
+    print_separator()
+    print()
+    
     try:
-        # Use tail f to follow logs
-        subprocess.run(["tail", "-f", str(LOG_FILE)])
+        subprocess.run(["tail", "-f", str(VANILLA_LOG_FILE)])
     except KeyboardInterrupt:
-        print(f"{Fore.GREEN}Stopped viewing logs{Style.RESET_ALL}")
+        print(f"\n\n{Fore.GREEN}Stopped viewing logs{Style.RESET_ALL}")
     except Exception as e:
-        print(f"{Fore.RED}Error viewing logs: {e}{Style.RESET_ALL}")
+        print(f"\n{Fore.RED}ERROR: {e}{Style.RESET_ALL}")
 
-def clear_logs():
-    print(f"{Fore.YELLOW}Clear Cowrie logs{Style.RESET_ALL}")
-    confirm = input(f"{Fore.RED}[WARNING] This will clear ALL logs. Are you sure you wish to proceed? (y/n): {Style.RESET_ALL}").strip().lower()
 
-    if confirm != 'y':
-        print(f"{Fore.RED}Cancelled operation{Style.RESET_ALL}")
+def vanilla_clear_logs():
+    """Clear vanilla Cowrie logs"""
+    clear_screen()
+    print_header("Clear Cowrie Logs")
+    
+    print(f"{Fore.RED}WARNING: This will delete all log content!{Style.RESET_ALL}\n")
+    confirm = input(f"Type 'yes' to confirm: ").strip().lower()
+    
+    if confirm != 'yes':
+        print(f"\n{Fore.YELLOW}Operation cancelled{Style.RESET_ALL}")
         return
+    
+    print()
     try:
-        log_files = [
-            LOG_FILE,
-            JSON_LOG_FILE,
-        ]
+        log_files = [VANILLA_LOG_FILE, VANILLA_JSON_LOG_FILE]
         cleared = 0
-
+        
         for log_file in log_files:
             if log_file.exists():
-                # Clear file content (empty it but keep file)
                 log_file.write_text("")
-                time.sleep(1)                
                 print(f"{Fore.GREEN}Cleared: {log_file.name}{Style.RESET_ALL}")
-                cleared +=1
+                cleared += 1
             else:
-                print(f"{Fore.YELLOW}File not found: {log_file.name}{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}Not found: {log_file.name}{Style.RESET_ALL}")
+        
         if cleared > 0:
-            print(f"{Fore.GREEN}Cleared {cleared} log file(s) succesfully!{Style.RESET_ALL}")
+            print(f"\n{Fore.GREEN}SUCCESS: Cleared {cleared} log file(s){Style.RESET_ALL}")
         else:
             print(f"\n{Fore.YELLOW}No log files found to clear{Style.RESET_ALL}")
+    
     except Exception as e:
-        print(f"{Fore.RED}Error clearing logs: {e}{Style.RESET_ALL}")
+        print(f"\n{Fore.RED}ERROR: {e}{Style.RESET_ALL}")
 
-            
-def check_status():
-    """Check whether Cowrie is running"""
-    print(f"{Fore.YELLOW}Cowrie health check...{Style.RESET_ALL}")
-    print(f"{Fore.CYAN}{'-'*60}{Style.RESET_ALL}\n")
 
-    if PID_FILE.exists():
+def vanilla_check_status():
+    """Check vanilla Cowrie status"""
+    clear_screen()
+    print_header("Cowrie Status Check")
+    
+    # Check PID file
+    if VANILLA_PID_FILE.exists():
         try:
-            pid = PID_FILE.read_text().strip()
-
-            # Check whether process is running
+            pid = VANILLA_PID_FILE.read_text().strip()
             result = subprocess.run(
                 ["ps", "-p", pid],
                 capture_output=True,
                 text=True
             )
-
+            
             if result.returncode == 0:
                 print(f"{Fore.GREEN}Status: RUNNING{Style.RESET_ALL}")
-                print(f"{Fore.CYAN}PID: {pid}{Style.RESET_ALL}")
+                print(f"PID: {pid}")
             else:
-                print(f"{Fore.RED}Status: STOPPED (stale PID file){Style.RESET_ALL}")
-                print(f"{Fore.YELLOW}(PID file exists but process not running){Style.RESET_ALL}")
+                print(f"{Fore.RED}Status: STOPPED{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}(Stale PID file exists){Style.RESET_ALL}")
+        
         except Exception as e:
             print(f"{Fore.RED}Status: UNKNOWN{Style.RESET_ALL}")
-            print(f"{Fore.YELLOW}   Error: {e}{Style.RESET_ALL}")
+            print(f"Error: {e}")
     else:
         print(f"{Fore.RED}Status: STOPPED{Style.RESET_ALL}")
-        print(f"{Fore.YELLOW}(No PID file found){Style.RESET_ALL}")
-
-    # Method 2: Use cowrie status command
-    print(f"\n{Fore.CYAN}Checking via Cowrie command...{Style.RESET_ALL}")
+        print("(No PID file found)")
     
-    if COWRIE_BIN.exists():
+    # Use cowrie status command
+    print(f"\n{Fore.CYAN}Checking via Cowrie command...{Style.RESET_ALL}\n")
+    
+    if VANILLA_COWRIE_BIN.exists():
         env = os.environ.copy()
-        env["PATH"] = str(COWRIE_BIN.parent) + ":" + env.get("PATH", "")
+        env["PATH"] = str(VANILLA_COWRIE_BIN.parent) + ":" + env.get("PATH", "")
         
         result = subprocess.run(
-            [str(COWRIE_BIN), "status"],
-            cwd=COWRIE_DIR,
+            [str(VANILLA_COWRIE_BIN), "status"],
+            cwd=VANILLA_COWRIE_DIR,
             env=env,
             capture_output=True,
             text=True
@@ -204,52 +286,321 @@ def check_status():
             print(result.stdout.strip())
     else:
         print(f"{Fore.RED}Cowrie binary not found{Style.RESET_ALL}")
-
-
-    # Additional info
-    print(f"\n{Fore.CYAN}Configuration:{Style.RESET_ALL}")
-    print(f"   Cowrie directory: {COWRIE_DIR}")
-    print(f"   Log file: {LOG_FILE}")
     
-    if LOG_FILE.exists():
-        # Get last 3 lines of log
+    # Configuration info
+    print(f"\n{Fore.CYAN}Configuration:{Style.RESET_ALL}")
+    print(f"Cowrie directory: {VANILLA_COWRIE_DIR}")
+    print(f"Log file: {VANILLA_LOG_FILE}")
+    
+    # Last log entries
+    if VANILLA_LOG_FILE.exists():
         try:
             result = subprocess.run(
-                ["tail", "-n", "3", str(LOG_FILE)],
+                ["tail", "-n", "5", str(VANILLA_LOG_FILE)],
                 capture_output=True,
                 text=True
             )
             if result.stdout:
-                print(f"\n{Fore.CYAN}Last log entries:{Style.RESET_ALL}")
+                print(f"\n{Fore.CYAN}Last 5 log entries:{Style.RESET_ALL}")
                 print(f"{Fore.YELLOW}{result.stdout}{Style.RESET_ALL}")
         except:
             pass
-    time.sleep(2)
 
-def main():
-    """main program loop"""
-    exit = False
-    while not exit:          
+
+# ============================================================================
+# CONTAINERISED HONEYPOT FUNCTIONS
+# ============================================================================
+def display_docker_menu():
+    """Display Docker honeypot menu"""
+    clear_screen()
+    print_header("SANDBOXED HONEYPOT MENU (Docker)")
+    
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Build & Run Container (detached)")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Build & Run Container (interactive)")
+    print(f"{Fore.GREEN}[3]{Style.RESET_ALL} Stop Container")
+    print(f"{Fore.GREEN}[4]{Style.RESET_ALL} View Logs")
+    print(f"{Fore.GREEN}[5]{Style.RESET_ALL} Check Status")
+    print(f"{Fore.GREEN}[6]{Style.RESET_ALL} List Images & Containers")
+    print(f"{Fore.RED}[7]{Style.RESET_ALL} Cleanup (Remove Container & Image)")
+    print(f"{Fore.YELLOW}[b]{Style.RESET_ALL} Back to Main Menu")
+    print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
+    
+    print_separator()
+
+
+def docker_build_and_run(detached=True):
+    """Build image and run container"""
+    mode = "Detached" if detached else "Interactive"
+    clear_screen()
+    print_header(f"Build & Run Container ({mode})")
+    
+    # Stop and remove existing container
+    print("Cleaning up existing container...")
+    subprocess.run(
+        ["docker", "stop", CONTAINER_NAME],
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL
+    )
+    subprocess.run(
+        ["docker", "rm", CONTAINER_NAME],
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL
+    )
+    
+    # Remove old image
+    subprocess.run(
+        ["docker", "rmi", f"{IMAGE_NAME}:{IMAGE_TAG}"],
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL
+    )
+    
+    # Build new image
+    print(f"\n{Fore.CYAN}Building Docker image...{Style.RESET_ALL}")
+    print_separator()
+    
+    result = subprocess.run(
+        ["docker", "build", "--no-cache", "-t", f"{IMAGE_NAME}:{IMAGE_TAG}", "."],
+        cwd=CONTAINER_DIR
+    )
+    
+    if result.returncode != 0:
+        print(f"\n{Fore.RED}ERROR: Build failed{Style.RESET_ALL}")
+        return
+    
+    print(f"\n{Fore.GREEN}SUCCESS: Image built successfully{Style.RESET_ALL}\n")
+    
+    # Run container
+    print(f"{Fore.CYAN}Starting container...{Style.RESET_ALL}")
+    print_separator()
+    
+    if detached:
+        result = subprocess.run([
+            "docker", "run", "-d",
+            "-p", f"{HOST_PORT}:{CONTAINER_PORT}",
+            "--name", CONTAINER_NAME,
+            f"{IMAGE_NAME}:{IMAGE_TAG}"
+        ])
+        
+        if result.returncode == 0:
+            print(f"\n{Fore.GREEN}SUCCESS: Container started{Style.RESET_ALL}")
+            print(f"\nSSH Access: ssh -p {HOST_PORT} root@localhost")
+            print(f"View Logs:  docker logs -f {CONTAINER_NAME}")
+        else:
+            print(f"\n{Fore.RED}ERROR: Failed to start container{Style.RESET_ALL}")
+    else:
+        print(f"\n{Fore.YELLOW}Running in interactive mode (Ctrl+C to stop)...{Style.RESET_ALL}\n")
+        time.sleep(1)
+        subprocess.run([
+            "docker", "run", "--rm", "-it",
+            "-p", f"{HOST_PORT}:{CONTAINER_PORT}",
+            f"{IMAGE_NAME}:{IMAGE_TAG}"
+        ])
+
+
+def docker_stop():
+    """Stop Docker container"""
+    clear_screen()
+    print_header("Stopping Container")
+    
+    result = subprocess.run(
+        ["docker", "stop", CONTAINER_NAME],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.returncode == 0:
+        print(f"{Fore.GREEN}SUCCESS: Container stopped{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}ERROR: Failed to stop container or container not running{Style.RESET_ALL}")
+
+
+def docker_logs():
+    """View Docker container logs"""
+    clear_screen()
+    print_header("Viewing Container Logs (Ctrl+C to stop)")
+    
+    print(f"Container: {CONTAINER_NAME}")
+    print_separator()
+    print()
+    
+    try:
+        subprocess.run(["docker", "logs", "-f", CONTAINER_NAME])
+    except KeyboardInterrupt:
+        print(f"\n\n{Fore.GREEN}Stopped viewing logs{Style.RESET_ALL}")
+
+
+def docker_status():
+    """Check Docker container status"""
+    clear_screen()
+    print_header("Container Status Check")
+    
+    result = subprocess.run(
+        ["docker", "ps", "--filter", f"name={CONTAINER_NAME}", "--format", "{{.Status}}"],
+        capture_output=True,
+        text=True
+    )
+    
+    if result.stdout.strip():
+        print(f"{Fore.GREEN}Status: RUNNING{Style.RESET_ALL}")
+        print(f"{result.stdout.strip()}")
+        
+        # Show resource usage
+        print(f"\n{Fore.CYAN}Resource Usage:{Style.RESET_ALL}")
+        print_separator()
+        subprocess.run(["docker", "stats", "--no-stream", CONTAINER_NAME])
+    else:
+        print(f"{Fore.RED}Status: STOPPED{Style.RESET_ALL}")
+
+
+def docker_list():
+    """List Docker images and containers"""
+    clear_screen()
+    print_header("Docker Images & Containers")
+    
+    print(f"{Fore.CYAN}Images:{Style.RESET_ALL}")
+    print_separator()
+    subprocess.run(["docker", "images", "--filter", f"reference={IMAGE_NAME}"])
+    
+    print(f"\n{Fore.CYAN}Containers:{Style.RESET_ALL}")
+    print_separator()
+    subprocess.run(["docker", "ps", "-a", "--filter", f"name={CONTAINER_NAME}"])
+
+
+def docker_cleanup():
+    """Remove Docker container and image"""
+    clear_screen()
+    print_header("Cleanup Container & Image")
+    
+    print(f"{Fore.RED}WARNING: This will remove the container and image!{Style.RESET_ALL}\n")
+    confirm = input("Type 'yes' to continue: ").strip().lower()
+    
+    if confirm != 'yes':
+        print(f"\n{Fore.YELLOW}Operation cancelled{Style.RESET_ALL}")
+        return
+    
+    print(f"\n{Fore.CYAN}Stopping container...{Style.RESET_ALL}")
+    subprocess.run(
+        ["docker", "stop", CONTAINER_NAME],
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL
+    )
+    
+    print(f"{Fore.CYAN}Removing container...{Style.RESET_ALL}")
+    subprocess.run(
+        ["docker", "rm", CONTAINER_NAME],
+        stderr=subprocess.DEVNULL,
+        stdout=subprocess.DEVNULL
+    )
+    
+    print(f"{Fore.CYAN}Removing image...{Style.RESET_ALL}")
+    result = subprocess.run(["docker", "rmi", f"{IMAGE_NAME}:{IMAGE_TAG}"])
+    
+    if result.returncode == 0:
+        print(f"\n{Fore.GREEN}SUCCESS: Cleanup complete{Style.RESET_ALL}")
+    else:
+        print(f"\n{Fore.RED}ERROR: Some items may not have been removed{Style.RESET_ALL}")
+
+
+# ============================================================================
+# MENU HANDLERS
+# ============================================================================
+def vanilla_menu_handler():
+    """Handle vanilla honeypot menu"""
+    while True:
         display_vanilla_menu()
-        choice = input("Please enter your choice> ")
+        choice = input(f"{Fore.CYAN}Enter choice> {Style.RESET_ALL}").strip().lower()
         
         if choice == '0':
-            exit = True
+            return 'exit'
+        elif choice == 'b':
+            return 'back'
         elif choice == '1':
-            start_cowrie()
+            vanilla_start_cowrie()
         elif choice == '2':
-            stop_cowrie()
+            vanilla_stop_cowrie()
         elif choice == '3':
-            restart_cowrie()
+            vanilla_restart_cowrie()
         elif choice == '4':
-            view_logs()
+            vanilla_view_logs()
         elif choice == '5':
-            clear_logs()
+            vanilla_clear_logs()
         elif choice == '6':
-            check_status()
+            vanilla_check_status()
         else:
-            print("Please enter a valid choice!\n")
+            clear_screen()
+            print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
+            pause()
+            continue
         
+        if choice not in ['0', 'b']:
+            pause()
+
+
+def docker_menu_handler():
+    """Handle Docker honeypot menu"""
+    while True:
+        display_docker_menu()
+        choice = input(f"{Fore.CYAN}Enter choice> {Style.RESET_ALL}").strip().lower()
+        
+        if choice == '0':
+            return 'exit'
+        elif choice == 'b':
+            return 'back'
+        elif choice == '1':
+            docker_build_and_run(detached=True)
+        elif choice == '2':
+            docker_build_and_run(detached=False)
+        elif choice == '3':
+            docker_stop()
+        elif choice == '4':
+            docker_logs()
+        elif choice == '5':
+            docker_status()
+        elif choice == '6':
+            docker_list()
+        elif choice == '7':
+            docker_cleanup()
+        else:
+            clear_screen()
+            print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
+            pause()
+            continue
+        
+        # Don't pause after interactive mode
+        if choice not in ['0', 'b', '2']:
+            pause()
+
+
+# ============================================================================
+# MAIN PROGRAM
+# ============================================================================
+def main():
+    """Main program loop"""
+    while True:
+        display_main_menu()
+        choice = input(f"{Fore.CYAN}Enter choice> {Style.RESET_ALL}").strip()
+        
+        if choice == '0':
+            clear_screen()
+            print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
+            break
+        elif choice == '1':
+            result = vanilla_menu_handler()
+            if result == 'exit':
+                clear_screen()
+                print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
+                break
+        elif choice == '2':
+            result = docker_menu_handler()
+            if result == 'exit':
+                clear_screen()
+                print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
+                break
+        else:
+            clear_screen()
+            print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
+            pause()
+
 
 if __name__ == "__main__":
     main()
