@@ -29,6 +29,7 @@ VANILLA_PID_FILE = VANILLA_COWRIE_DIR / "var" / "run" / "cowrie.pid"
 # SANDBOXED HONEYPOT PATHS
 CONTAINER_DIR = SCRIPT_DIR / "containerised-honeypot"
 DOCKERFILE = CONTAINER_DIR / "Dockerfile"
+DOCKER_COMPOSE_FILE = CONTAINER_DIR / "docker-compose.yml"
 
 # DOCKER CONFIGURATION
 IMAGE_NAME = "cowrie-sandboxed-image"
@@ -72,7 +73,7 @@ def display_main_menu():
     print_header("HONEYPOT MANAGEMENT SYSTEM")
     
     print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Manage Vanilla Honeypot")
-    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Manage Sandboxed Honeypot (Docker)")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Manage Sandboxed Honeypot (Docker Compose)")
     print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
     
     print_separator()
@@ -308,199 +309,234 @@ def vanilla_check_status():
 
 
 # ============================================================================
-# CONTAINERISED HONEYPOT FUNCTIONS
+# CONTAINERISED (DOCKER COMPOSE) HONEYPOT FUNCTIONS
 # ============================================================================
-def display_docker_menu():
-    """Display Docker honeypot menu"""
+def display_docker_compose_menu():
+    """Display Docker Compose honeypot menu"""
     clear_screen()
-    print_header("SANDBOXED HONEYPOT MENU (Docker)")
+    print_header("SANDBOXED HONEYPOT MENU (Docker Compose)")
     
-    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Build & Run Container (detached)")
-    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Build & Run Container (interactive)")
-    print(f"{Fore.GREEN}[3]{Style.RESET_ALL} Stop Container")
-    print(f"{Fore.GREEN}[4]{Style.RESET_ALL} View Logs")
-    print(f"{Fore.GREEN}[5]{Style.RESET_ALL} Check Status")
-    print(f"{Fore.GREEN}[6]{Style.RESET_ALL} List Images & Containers")
-    print(f"{Fore.RED}[7]{Style.RESET_ALL} Cleanup (Remove Container & Image)")
+    
+    print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Start Honeypot (detached)")
+    print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Start Honeypot (interactive)")
+    print(f"{Fore.GREEN}[3]{Style.RESET_ALL} Stop Honeypot")
+    print(f"{Fore.GREEN}[4]{Style.RESET_ALL} Restart Honeypot\n")
+
+    print(f"{Fore.GREEN}[5]{Style.RESET_ALL} View Logs")
+    print(f"{Fore.GREEN}[6]{Style.RESET_ALL} Check Status")
+    print(f"{Fore.GREEN}[7]{Style.RESET_ALL} Rebuild Image")
+    print(f"{Fore.GREEN}[8]{Style.RESET_ALL} View Collected Data\n")
+
+    print(f"{Fore.RED}[9]{Style.RESET_ALL} Cleanup (Remove All)")
     print(f"{Fore.YELLOW}[b]{Style.RESET_ALL} Back to Main Menu")
     print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
-    
+
     print_separator()
 
 
-def docker_build_and_run(detached=True):
-    """Build image and run container"""
-    mode = "Detached" if detached else "Interactive"
+def docker_compose_build_and_run(detached=True):
+    
+
     clear_screen()
-    print_header(f"Build & Run Container ({mode})")
+    print_header(f"Start & Initialise Honeypot ({"Detached" if detached else "Interactive"})")
     
-    # Stop and remove existing container
-    print("Cleaning up existing container...")
-    subprocess.run(
-        ["docker", "stop", CONTAINER_NAME],
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL
-    )
-    subprocess.run(
-        ["docker", "rm", CONTAINER_NAME],
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL
-    )
-    
-    # Remove old image
-    subprocess.run(
-        ["docker", "rmi", f"{IMAGE_NAME}:{IMAGE_TAG}"],
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL
-    )
-    
-    # Build new image
-    print(f"\n{Fore.CYAN}Building Docker image...{Style.RESET_ALL}")
-    print_separator()
-    
-    result = subprocess.run(
-        ["docker", "build", "--no-cache", "-t", f"{IMAGE_NAME}:{IMAGE_TAG}", "."],
-        cwd=CONTAINER_DIR
-    )
-    
-    if result.returncode != 0:
-        print(f"\n{Fore.RED}ERROR: Build failed{Style.RESET_ALL}")
+    if not DOCKER_COMPOSE_FILE.exists():
+        print(f"{Fore.RED}ERROR: docker-compose.yml not found{Style.RESET_ALL}")
+        print(f"Path: {DOCKER_COMPOSE_FILE}\n")
         return
     
-    print(f"\n{Fore.GREEN}SUCCESS: Image built successfully{Style.RESET_ALL}\n")
-    
-    # Run container
-    print(f"{Fore.CYAN}Starting container...{Style.RESET_ALL}")
+    print(f"{Fore.CYAN}Starting honeypot container...{Style.RESET_ALL}")
     print_separator()
-    
-    if detached:
-        result = subprocess.run([
-            "docker", "run", "-d",
-            "-p", f"{HOST_PORT}:{CONTAINER_PORT}",
-            "--name", CONTAINER_NAME,
-            f"{IMAGE_NAME}:{IMAGE_TAG}"
-        ])
-        
-        if result.returncode == 0:
-            print(f"\n{Fore.GREEN}SUCCESS: Container started{Style.RESET_ALL}")
+
+    cmd = ["docker", "compose", "up"]
+    if detached: cmd.append("-d")
+    result = subprocess.run(cmd, cwd=CONTAINER_DIR)
+    if result.returncode == 0:
+        if detached:
+            print(f"\n{Fore.GREEN}SUCCESS: Honeypot started{Style.RESET_ALL}")
             print(f"\nSSH Access: ssh -p {HOST_PORT} root@localhost")
-            print(f"View Logs:  docker logs -f {CONTAINER_NAME}")
-        else:
-            print(f"\n{Fore.RED}ERROR: Failed to start container{Style.RESET_ALL}")
+            print(f"View Logs:  docker compose logs -f")
+            print(f"\nLogs Directory: {CONTAINER_DIR}/cowrie-logs")
     else:
-        print(f"\n{Fore.YELLOW}Running in interactive mode (Ctrl+C to stop)...{Style.RESET_ALL}\n")
-        time.sleep(1)
-        subprocess.run([
-            "docker", "run", "--rm", "-it",
-            "-p", f"{HOST_PORT}:{CONTAINER_PORT}",
-            f"{IMAGE_NAME}:{IMAGE_TAG}"
-        ])
+        print(f"\n{Fore.RED}ERROR: Failed to start honeypot!{Style.RESET_ALL}")
 
 
-def docker_stop():
+
+
+def docker_compose_stop():
     """Stop Docker container"""
     clear_screen()
     print_header("Stopping Container")
     
     result = subprocess.run(
-        ["docker", "stop", CONTAINER_NAME],
+        ["docker", "compose", "down"],
+        cwd=CONTAINER_DIR,
         capture_output=True,
         text=True
     )
     
     if result.returncode == 0:
-        print(f"{Fore.GREEN}SUCCESS: Container stopped{Style.RESET_ALL}")
+        print(f"{Fore.GREEN}SUCCESS: Honeypot stopped{Style.RESET_ALL}")
     else:
-        print(f"{Fore.RED}ERROR: Failed to stop container or container not running{Style.RESET_ALL}")
+        print(f"{Fore.RED}ERROR: Failed to stop honeypot!{Style.RESET_ALL}")
+        if result.stderr: print(result.stderr)
 
-
-def docker_logs():
-    """View Docker container logs"""
+def docker_compose_restart():
+    """Restart honeypot via docker-compose.yml"""
     clear_screen()
-    print_header("Viewing Container Logs (Ctrl+C to stop)")
+    print_header("Restarting Honeypot...")
+
+    print("Stopping Honeypot...")
+    subprocess.run(["docker", "compose", "down"], cwd=CONTAINER_DIR)
+
+    time.sleep(2)
+    print("\nStarting honeypot...")
+    result = subprocess.run(["docker", "compose", "up", "-d"], cwd=CONTAINER_DIR)
+    
+    if result.returncode == 0:
+        print(f"\n{Fore.GREEN}SUCCESS: Honeypot restarted{Style.RESET_ALL}")
+
+def docker_compose_logs():
+    """View Honeypot logs"""
+    clear_screen()
+    print_header("Viewing Honeypot Logs (Ctrl+C to stop)")
     
     print(f"Container: {CONTAINER_NAME}")
     print_separator()
     print()
     
     try:
-        subprocess.run(["docker", "logs", "-f", CONTAINER_NAME])
+        subprocess.run(["docker", "compose", "logs", "-f"], cwd=CONTAINER_DIR)
     except KeyboardInterrupt:
-        print(f"\n\n{Fore.GREEN}Stopped viewing logs{Style.RESET_ALL}")
+        print(f"\n\n{Fore.GREEN}Stopped viewing logs!{Style.RESET_ALL}")
 
 
-def docker_status():
-    """Check Docker container status"""
+
+def docker_compose_status():
+    """Check honeypot status"""
     clear_screen()
-    print_header("Container Status Check")
+    print_header("Honeypot Status Check")
     
+    # Check if container is running
     result = subprocess.run(
+        ["docker", "compose", "ps"],
+        cwd=CONTAINER_DIR,
+        capture_output=True,
+        text=True
+    )
+    
+    print(result.stdout)
+    
+    # Check resource usage if running
+    container_running = subprocess.run(
         ["docker", "ps", "--filter", f"name={CONTAINER_NAME}", "--format", "{{.Status}}"],
         capture_output=True,
         text=True
     )
     
-    if result.stdout.strip():
-        print(f"{Fore.GREEN}Status: RUNNING{Style.RESET_ALL}")
-        print(f"{result.stdout.strip()}")
-        
-        # Show resource usage
+    if container_running.stdout.strip():
         print(f"\n{Fore.CYAN}Resource Usage:{Style.RESET_ALL}")
         print_separator()
         subprocess.run(["docker", "stats", "--no-stream", CONTAINER_NAME])
-    else:
-        print(f"{Fore.RED}Status: STOPPED{Style.RESET_ALL}")
 
-
-def docker_list():
-    """List Docker images and containers"""
+def docker_compose_rebuild():
+    """Rebuild honeypot image"""
     clear_screen()
-    print_header("Docker Images & Containers")
+    print_header("Rebuilding Honeypot Image")
     
-    print(f"{Fore.CYAN}Images:{Style.RESET_ALL}")
-    print_separator()
-    subprocess.run(["docker", "images", "--filter", f"reference={IMAGE_NAME}"])
-    
-    print(f"\n{Fore.CYAN}Containers:{Style.RESET_ALL}")
-    print_separator()
-    subprocess.run(["docker", "ps", "-a", "--filter", f"name={CONTAINER_NAME}"])
-
-
-def docker_cleanup():
-    """Remove Docker container and image"""
-    clear_screen()
-    print_header("Cleanup Container & Image")
-    
-    print(f"{Fore.RED}WARNING: This will remove the container and image!{Style.RESET_ALL}\n")
-    confirm = input("Type 'yes' to continue: ").strip().lower()
+    print(f"{Fore.YELLOW}This will rebuild the image from scratch{Style.RESET_ALL}\n")
+    confirm = input("Continue? (yes/no): ").strip().lower()
     
     if confirm != 'yes':
         print(f"\n{Fore.YELLOW}Operation cancelled{Style.RESET_ALL}")
         return
     
-    print(f"\n{Fore.CYAN}Stopping container...{Style.RESET_ALL}")
-    subprocess.run(
-        ["docker", "stop", CONTAINER_NAME],
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL
-    )
+    print(f"\n{Fore.CYAN}Stopping existing containers...{Style.RESET_ALL}")
+    subprocess.run(["docker", "compose", "down"], cwd=CONTAINER_DIR)
     
-    print(f"{Fore.CYAN}Removing container...{Style.RESET_ALL}")
-    subprocess.run(
-        ["docker", "rm", CONTAINER_NAME],
-        stderr=subprocess.DEVNULL,
-        stdout=subprocess.DEVNULL
-    )
+    print(f"\n{Fore.CYAN}Building image...{Style.RESET_ALL}")
+    print_separator()
     
-    print(f"{Fore.CYAN}Removing image...{Style.RESET_ALL}")
-    result = subprocess.run(["docker", "rmi", f"{IMAGE_NAME}:{IMAGE_TAG}"])
+    result = subprocess.run(
+        ["docker", "compose", "build", "--no-cache"],
+        cwd=CONTAINER_DIR
+    )
     
     if result.returncode == 0:
-        print(f"\n{Fore.GREEN}SUCCESS: Cleanup complete{Style.RESET_ALL}")
+        print(f"\n{Fore.GREEN}SUCCESS: Image rebuilt{Style.RESET_ALL}")
+        print("\nYou can now start the honeypot with option [1]")
     else:
-        print(f"\n{Fore.RED}ERROR: Some items may not have been removed{Style.RESET_ALL}")
+        print(f"\n{Fore.RED}ERROR: Build failed!{Style.RESET_ALL}")
 
+def docker_compose_view_data():
+    """View collected honeypot data"""
+    clear_screen()
+    print_header("Collected Honeypot Data")
+    
+    # Check for log directories
+    log_dir = CONTAINER_DIR / "cowrie-logs"
+    downloads_dir = CONTAINER_DIR / "cowrie-downloads"
+    tty_dir = CONTAINER_DIR / "cowrie-tty"
+    
+    print(f"{Fore.CYAN}Data Directories:{Style.RESET_ALL}\n")
+    
+    for dir_path, name in [(log_dir, "Logs"), (downloads_dir, "Downloads"), (tty_dir, "TTY Recordings")]:
+        if dir_path.exists():
+            files = list(dir_path.glob("*"))
+            print(f"{name}: {len(files)} file(s)")
+            print(f"  Location: {dir_path}")
+        else:
+            print(f"{name}: Directory not created yet")
+            print(f"  Will be created at: {dir_path}")
+        print()
+    
+    # Show recent log entries if available
+    log_file = log_dir / "cowrie.log"
+    if log_file.exists():
+        print(f"\n{Fore.CYAN}Recent Log Entries:{Style.RESET_ALL}")
+        print_separator()
+        try:
+            result = subprocess.run(
+                ["tail", "-n", "10", str(log_file)],
+                capture_output=True,
+                text=True
+            )
+            print(result.stdout)
+        except:
+            print(f"{Fore.YELLOW}Could not read log file!{Style.RESET_ALL}")
 
+def docker_compose_cleanup():
+    """Remove all honeypot containers, images, and data"""
+    clear_screen()
+    print_header("Cleanup Honeypot")
+    
+    print(f"{Fore.RED}WARNING: This will remove:{Style.RESET_ALL}")
+    print("  - All containers")
+    print("  - The honeypot image")
+    print("  - All collected data (logs, downloads, recordings)")
+    print()
+    
+    confirm = input("Type 'DELETE' to confirm: ").strip()
+    
+    if confirm != 'DELETE':
+        print(f"\n{Fore.YELLOW}Operation cancelled{Style.RESET_ALL}")
+        return
+    
+    print(f"\n{Fore.CYAN}Stopping and removing containers...{Style.RESET_ALL}")
+    subprocess.run(["docker", "compose", "down", "-v"], cwd=CONTAINER_DIR)
+    
+    print(f"{Fore.CYAN}Removing image...{Style.RESET_ALL}")
+    subprocess.run(["docker", "rmi", f"{IMAGE_NAME}:{IMAGE_TAG}"], stderr=subprocess.DEVNULL)
+    
+    print(f"{Fore.CYAN}Removing data directories...{Style.RESET_ALL}")
+    import shutil
+    for dir_name in ["cowrie-logs", "cowrie-downloads", "cowrie-tty"]:
+        dir_path = CONTAINER_DIR / dir_name
+        if dir_path.exists():
+            shutil.rmtree(dir_path)
+            print(f"  Removed: {dir_name}")
+    
+    print(f"\n{Fore.GREEN}SUCCESS: Cleanup complete{Style.RESET_ALL}")
 # ============================================================================
 # MENU HANDLERS
 # ============================================================================
@@ -536,10 +572,10 @@ def vanilla_menu_handler():
             pause()
 
 
-def docker_menu_handler():
+def docker_compose_menu_handler():
     """Handle Docker honeypot menu"""
     while True:
-        display_docker_menu()
+        display_docker_compose_menu()
         choice = input(f"{Fore.CYAN}Enter choice> {Style.RESET_ALL}").strip().lower()
         
         if choice == '0':
@@ -547,25 +583,29 @@ def docker_menu_handler():
         elif choice == 'b':
             return 'back'
         elif choice == '1':
-            docker_build_and_run(detached=True)
+            docker_compose_build_and_run(detached=True)
         elif choice == '2':
-            docker_build_and_run(detached=False)
+            docker_compose_build_and_run(detached=False)
         elif choice == '3':
-            docker_stop()
+            docker_compose_stop()
         elif choice == '4':
-            docker_logs()
+            docker_compose_restart()
         elif choice == '5':
-            docker_status()
+            docker_compose_logs()
         elif choice == '6':
-            docker_list()
+            docker_compose_status()
         elif choice == '7':
-            docker_cleanup()
+            docker_compose_rebuild()
+        elif choice == '8':
+            docker_compose_view_data()
+        elif choice == '9':
+            docker_compose_cleanup()
         else:
             clear_screen()
             print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
             pause()
             continue
-        
+
         # Don't pause after interactive mode
         if choice not in ['0', 'b', '2']:
             pause()
@@ -591,7 +631,7 @@ def main():
                 print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
                 break
         elif choice == '2':
-            result = docker_menu_handler()
+            result = docker_compose_menu_handler()
             if result == 'exit':
                 clear_screen()
                 print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
