@@ -1,0 +1,53 @@
+services:
+  cowrie-honeypot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: cowrie-honeypot
+
+    ports:
+      - "2223:2222"
+      - "2224:2223"
+    volumes:
+      - cowrie-logs:/home/cowrie/cowrie/var/log/cowrie
+      - cowrie-downloads:/home/cowrie/cowrie/var/lib/cowrie/downloads
+      - cowrie-tty:/home/cowrie/cowrie/var/lib/cowrie/tty
+
+    restart: unless-stopped
+
+    networks:
+      - honeypot-network
+
+    # Prevents privilege escalation
+    security_opt:
+      - no-new-privileges:true
+
+    # Drop all capabilities
+    cap_drop:
+      - ALL
+
+    # Only permit cowrie to bind ports
+    cap_add:
+      - NET_BIND_SERVICE
+
+#    read_only: true
+
+    tmpfs:
+      - /tmp
+      - /var/tmp
+
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+
+networks:
+  honeypot-network:
+    driver: bridge
+
+volumes:
+  cowrie-logs:
+  cowrie-downloads:
+  cowrie-tty:
