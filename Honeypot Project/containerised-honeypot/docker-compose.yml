@@ -22,7 +22,7 @@ services:
     # Prevents privilege escalation
     security_opt:
       - no-new-privileges:true
-
+#      - seccomp=./seccomp-cowrie.json
     # Drop all capabilities
     cap_drop:
       - ALL
