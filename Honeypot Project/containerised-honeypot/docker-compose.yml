@@ -22,6 +22,7 @@ services:
     # Prevents privilege escalation
     security_opt:
       - no-new-privileges:true
+      - apparmor:cowrie-docker
     # Drop all capabilities
     cap_drop:
       - ALL
