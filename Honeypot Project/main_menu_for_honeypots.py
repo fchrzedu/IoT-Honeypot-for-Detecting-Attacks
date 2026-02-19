@@ -6,6 +6,7 @@ Manages both Vanilla and Containerised Cowrie Honeypots
 import os
 import subprocess
 import time
+import signal
 from pathlib import Path
 from colorama import Fore, Style, init
 
@@ -34,9 +35,13 @@ DOCKER_COMPOSE_FILE = CONTAINER_DIR / "docker-compose.yml"
 # DOCKER CONFIGURATION
 IMAGE_NAME = "cowrie-sandboxed-image"
 IMAGE_TAG = "v2"
-CONTAINER_NAME = "cowrie-honeypot-container"
+CONTAINER_NAME = "cowrie-honeypot"
 HOST_PORT = "2223"
 CONTAINER_PORT = "2222"
+
+# KILLSWITCH CONFIGURATION
+KILLSWITCH_LOG = "/var/log/honeypot_killswitch.log"
+
 
 
 # ============================================================================
@@ -74,6 +79,8 @@ def display_main_menu():
     
     print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Manage Vanilla Honeypot")
     print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Manage Sandboxed Honeypot (Docker Compose)")
+    print(f"{Fore.YELLOW}[R]{Style.RESET_ALL} Restore Network & Docker\n")
+    print(f"{Fore.RED}[K]{Style.RESET_ALL} KILLSWITCH")
     print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
     
     print_separator()
@@ -612,6 +619,217 @@ def docker_compose_menu_handler():
 
 
 # ============================================================================
+# NFTABLES KILLSWITCH
+# ============================================================================
+def killswitch_block_network():
+    """Block all network traffic via nftables
+    The default templates were used to construct these following rules:
+    
+    Reference: https://wiki.nftables.org/wiki-nftables/index.php/Main_Page
+    Reference: https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks
+    """
+
+    nft_rules = """
+    table inet killswitch {
+
+        chain input {
+            type filter hook input priority 0; policy drop;
+
+            # Allow loopback — required for OS internal communication
+            iif lo accept
+
+            # Allow established sessions — keeps this terminal alive
+            # 'ct state' = connection tracking state
+            # Reference: https://wiki.nftables.org/wiki-nftables/index.php/Matching_connection_tracking_stateful_information
+            ct state established,related accept
+
+            # Everything else: falls through to policy drop
+        }
+
+        chain forward {
+            type filter hook forward priority 0; policy drop;
+            # Drop all forwarded traffic — this covers Docker container
+            # traffic which passes through the host via the forward hook
+        }
+
+        chain output {
+            type filter hook output priority 0; policy drop;
+
+            # Allow loopback output
+            oif lo accept
+
+            # Allow established outbound sessions
+            ct state established,related accept
+
+            # Everything else dropped — malware cannot phone home
+        }
+    }
+    """
+
+    # (1) Flush deletes ALL existing nftable rules
+    flush = subprocess.run(
+        ["sudo", "nft", "flush", "ruleset"],
+        capture_output=True, text=True
+    )
+
+    if flush.returncode != 0:
+        print(f"{Fore.RED}[!] Failed to flush nftables ruleset: {flush.stderr}{Style.RESET_ALL}")
+        return False
+
+    # Step 2: load blocking rules into the kernel via stdin
+    load = subprocess.run(
+        ["sudo", "nft", "-f", "-"],
+        input=nft_rules,
+        capture_output=True, text=True
+    )
+
+    if load.returncode != 0:
+        print(f"{Fore.RED}[!] Failed to load nftables rules: {load.stderr}{Style.RESET_ALL}")
+        return False
+
+    return True
+
+
+def killswitch_kill_docker():
+    # Check if container is actually running before attempting to stop
+    check = subprocess.run(
+        ["docker", "ps", "--format", "{{.Names}}"],
+        capture_output=True, text=True
+    )
+
+    if CONTAINER_NAME in check.stdout:
+        result = subprocess.run(
+            ["docker", "stop", "--time", "5", CONTAINER_NAME],
+            capture_output=True, text=True
+        )
+        return result.returncode == 0
+    else:
+        # Container not running — nothing to stop
+        return None
+    
+
+
+def killswitch_kill_cowrie():
+    if VANILLA_PID_FILE.exists():
+        try:
+            pid = int(VANILLA_PID_FILE.read_text().strip()) # Read the PID
+            os.kill(pid, 0) # kill -0 checks whether process exists without sending real signal
+
+            # process exists, send SIGTERMINATE
+            os.kill(pid, signal.SIGTERM)
+            return True, pid
+        except ProcessLookupError:
+            # PID file exists but process is already gone
+            return None, None
+        except (ValueError, PermissionError) as e:
+            return False, str(e)
+        
+    else:
+        # No PID --> kill process via name
+        # pkill sends signal to all processes matching the pattern
+        result = subprocess.run(
+            ["pkill", "-SIGTERM", "-f", "cowrie-env/bin/python"],
+            capture_output=True
+        )
+        return result.returncode == 0, "by process name"
+
+
+
+
+
+def display_killswitch_menu():
+    clear_screen()
+    print(f"\n{Fore.RED}{'='*60}{Style.RESET_ALL}")
+    print(f"{Fore.RED}{"!!! EMERGENCY KILL SWITCH !!!":^60}{Style.RESET_ALL}")
+    print(f"{Fore.RED}{'='*60}{Style.RESET_ALL}\n")
+
+
+    print(f"{Fore.YELLOW}This will IMMEDIATELY:{Style.RESET_ALL}")
+    print(f"  {Fore.RED}1.{Style.RESET_ALL} Block ALL network traffic at kernel level (nftables)")
+    print(f"  {Fore.RED}2.{Style.RESET_ALL} Stop Docker container: {CONTAINER_NAME}")
+    print(f"  {Fore.RED}3.{Style.RESET_ALL} Stop vanilla Cowrie process")
+    print(f"  {Fore.RED}4.{Style.RESET_ALL} Log the event to log")
+    print()
+    print(f"{Fore.YELLOW}To RESTORE after VM snapshot rollback:{Style.RESET_ALL}")
+    print(f"  sudo nft flush ruleset")
+    print()
+    print(f"{Fore.RED}{'='*60}{Style.RESET_ALL}")
+    
+
+    confirm = input(f"{Fore.RED}Type KILLSWITCH to confirm; press ENTER to cancel> {Style.RESET_ALL}").strip()
+
+    if confirm != "KILLSWITCH":
+        print(f"{Fore.GREEN}Killswitch cancelled")
+        pause()
+        return
+    
+    # --- EXECUTE KILLSWITCH ---
+    print()
+    print(f"{Fore.RED}ACTIVATING KILL SWITCH...{Style.RESET_ALL}")
+    print()
+
+    # Block any network
+    print(f"{Fore.CYAN}(1) BLOCKING ALL NETWORK TRAFFIC VIA nftables...{Style.RESET_ALL}")
+    if killswitch_block_network():
+        print(f"{Fore.GREEN}Network succesfully blocked at kernel level{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}UNABLE TO BLOCK NETWORK{Style.RESET_ALL}")
+    print()
+
+
+    # Stop Docker
+    print(f"{Fore.CYAN}(2) STOPPING DOCKER CONTAINER ({CONTAINER_NAME})...{Style.RESET_ALL}")    
+    docker_result = killswitch_kill_docker()
+    if docker_result:
+        print(f"{Fore.GREEN}Docker container stopped{Style.RESET_ALL}")
+    elif docker_result is None:
+        print(f"{Fore.YELLOW}Docker container was not running{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}FAILED TO STOP DOCKER CONTAINER{Style.RESET_ALL}")
+    print()
+
+    # Stop Cowrie
+    print(f"{Fore.CYAN}(3) STOPPING VANILLA COWRIE...{Style.RESET_ALL}")
+    success, detail = killswitch_kill_cowrie()
+    if success is True:
+        print(f"{Fore.GREEN}Vanilla Cowrie stopped (PID: {detail}){Style.RESET_ALL}")
+    elif success is None:
+        print(f"{Fore.YELLOW}Vanilla Cowrie was not running{Style.RESET_ALL}")
+    else:
+        print(f"{Fore.RED}COULD NOT STOP COWRIE: {detail}{Style.RESET_ALL}")
+    print()
+
+    
+
+    # Log event
+    print(f"{Fore.CYAN}(4) LOGGING EVENT WITHIN: {Style.RESET_ALL}{KILLSWITCH_LOG}....")
+    timestamp = time.strftime('%d-%m-%Y %H:%M:%S')
+    try:
+        with open(KILLSWITCH_LOG, 'a') as f:
+            f.write(f"[{timestamp}] KILL SWITCH ACTIVATED\n")
+            f.write(f"[{timestamp}] Activated from: main_menu_for_honeypots.py\n")
+    except PermissionError:
+        # Log file requires root — silently skip if not running as root
+        pass
+    print()
+
+    print(f"{Fore.RED}{'='*60}{Style.RESET_ALL}")
+    print(f"{Fore.GREEN}{'KILL SWITCH COMPLETE':^60}\nTO REINSTATE THE FRAMEWORK, SELECT [R] IN THE MAIN MENU{Style.RESET_ALL}")
+    print(f"{Fore.RED}{'='*60}{Style.RESET_ALL}")
+    pause()
+    
+
+def killswitch_restore():
+    clear_screen()
+    print_header("Restoring Docker & nftables")
+    subprocess.run(["sudo", "nft", "flush", "ruleset"])
+    subprocess.run(["sudo", "systemctl", "restart", "docker"])
+    print(f"{Fore.GREEN}Network restored. Docker restored.{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}You may now restart the honeypots{Style.RESET_ALL}")
+    pause()   
+
+
+# ============================================================================
 # MAIN PROGRAM
 # ============================================================================
 def main():
@@ -636,6 +854,11 @@ def main():
                 clear_screen()
                 print(f"\n{Fore.YELLOW}Exiting Honeypot Management System...{Style.RESET_ALL}\n")
                 break
+
+        elif choice == 'K' or choice == 'k':
+            display_killswitch_menu()
+        elif choice == 'R' or choice == 'r':
+            killswitch_restore()
         else:
             clear_screen()
             print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
