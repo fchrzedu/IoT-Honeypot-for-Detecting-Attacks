@@ -1,0 +1,117 @@
+#include <tunables/global>
+# ============================================================
+# APPARMOR PROFILE: cowrie-docker
+# ============================================================
+# PURPOSE:
+#   Confines the containerised Cowrie SSH honeypot running
+#   inside Docker. Combines rules observed from vanilla Cowrie
+#   profiling with Docker-default signal and proc/sys
+#   restrictions from the Moby docker-default template:
+#   https://docs.docker.com/engine/security/apparmor/
+#
+# DEPLOYMENT INSTRUCTIONS:
+#   1. Copy to /etc/apparmor.d/containers/:rie-docker
+#
+#   2. Load into kernel (load it into a new directory)!
+#      sudo apparmor_parser -r /etc/apparmor.d/containers/cowrie-docker
+#
+#   3. Ensure docker-compose.yml contains:
+#      security_opt:
+#        - apparmor:cowrie-docker
+#
+#   6. Verify attachment:
+#      sudo cat /proc/$(docker inspect --format \
+#        '{{.State.Pid}}' cowrie-honeypot)/attr/current
+#      Expected: cowrie-docker (enforce)
+#
+# NOTES:
+#   - Profile is in ENFORCE mode by default
+#   - To debug: sudo aa-complain /etc/apparmor.d/containers/cowrie-docker
+#   - Container runs Cowrie as user 'cowrie', not root
+#   - Paths reflect container-internal paths (/home/cowrie/cowrie/)
+#   - /var/lib/docker volumes are mounted at runtime
+# ============================================================
+
+
+
+profile cowrie-docker flags=(attach_disconnected, mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/python>
+
+  # ── CAPABILITIES ──────────────────────────────────────────────
+  # dac_read_search: Cowrie reads files owned by other users
+  capability dac_read_search,
+
+  # ── NETWORK ───────────────────────────────────────────────────
+  # Cowrie needs TCP for SSH/Telnet, UDP and netlink for DNS
+  network inet tcp,
+  network inet udp,
+  network inet6 tcp,
+  network netlink raw,
+
+  # ── DOCKER SIGNAL HANDLING ────────────────────────────────────
+  # Required for docker stop, docker kill to work correctly
+  signal (receive) peer=unconfined,
+  signal (receive) peer=runc,
+  signal (receive) peer=crun,
+  signal (receive) peer=docker-default,
+  signal (send,receive) peer=cowrie-docker,
+
+  # ── COWRIE PATHS (container-internal) ────────────────────────
+  # Cowrie source and config — read only
+  /home/cowrie/cowrie/** r,
+
+  # Python shared libraries Cowrie memory-maps
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/_cffi_backend.cpython-312-x86_64-linux-gnu.so mrw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/bcrypt/_bcrypt.abi3.so mrw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/charset_normalizer/md.cpython-312-x86_64-linux-gnu.so mrw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/charset_normalizer/md__mypyc.cpython-312-x86_64-linux-gnu.so mrw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/cryptography/hazmat/bindings/_rust.abi3.so mrw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/zope/interface/_zope_interface_coptimizations.cpython-312-x86_64-linux-gnu.so mrw,
+
+  # Cowrie volume mounts — logs, downloads, tty recordings
+  /home/cowrie/cowrie/var/log/cowrie/** rw,
+  /home/cowrie/cowrie/var/lib/cowrie/downloads/** rw,
+  /home/cowrie/cowrie/var/lib/cowrie/tty/** rw,
+
+  # PID file & plugin cachce
+  /home/cowrie/cowrie/twistd.pid rw,
+  /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/twisted/plugins/dropin.cache rw,
+
+
+  # ── SYSTEM PATHS ──────────────────────────────────────────────
+  / r,
+  /etc/** r,
+  /lib/** rix,
+  /usr/** rix,
+  /tmp/** rw,
+  /run/** rw,
+
+  # ── PROC RESTRICTIONS (from docker-default) ───────────────────
+  # Allow reading proc but deny writes — prevents container escape
+  /proc/** r,
+  deny @{PROC}/* w,
+  deny @{PROC}/{[^1-9],[^1-9][^0-9],[^1-9s][^0-9y][^0-9s],[^1-9][^0-9][^0-9][^0-9/]*}/** w,
+  deny @{PROC}/sys/[^k]** w,
+  deny @{PROC}/sys/kernel/{?,??,[^s][^h][^m]**} w,
+  deny @{PROC}/sysrq-trigger rwklx,
+  deny @{PROC}/kcore rwklx,
+
+  # ── SYS RESTRICTIONS (from docker-default) ────────────────────
+  # Allow cgroup reads, deny everything dangerous
+  /sys/fs/cgroup/** r,
+  deny /sys/[^f]*/** wklx,
+  deny /sys/f[^s]*/** wklx,
+  deny /sys/fs/[^c]*/** wklx,
+  deny /sys/fs/c[^g]*/** wklx,
+  deny /sys/fs/cg[^r]*/** wklx,
+  deny /sys/firmware/** rwklx,
+  deny /sys/devices/virtual/powercap/** rwklx,
+  deny /sys/kernel/security/** rwklx,
+
+  # ── ADDITIONAL DENIALS ────────────────────────────────────────
+  # Prevent container escape via mount or ptrace
+  deny mount,
+  ptrace (trace,read,tracedby,readby) peer=cowrie-docker,
+}
