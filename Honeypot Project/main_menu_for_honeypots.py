@@ -829,6 +829,17 @@ def killswitch_restore():
     pause()   
 
 
+
+# ============================================================================
+# HEALTH CHECK
+# ============================================================================
+def check_aa_profile():
+    result = subprocess.run(
+        ["sudo", "aa-status"],capture_output=True, text=True
+    )
+    if "cowrie-docker" not in result.stdout:
+        print(f"{Fore.RED}[!] WARNING: cowrie-docker AppArmor profile is not loaded!{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}    Run: sudo apparmor_parser -r /etc/apparmor.d/containers/cowrie-docker{Style.RESET_ALL}")
 # ============================================================================
 # MAIN PROGRAM
 # ============================================================================
