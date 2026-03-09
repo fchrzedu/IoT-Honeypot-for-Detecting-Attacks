@@ -21,6 +21,7 @@ RUN apt-get update && apt-get install -y \
     iproute2 \
     && rm -rf /var/lib/apt/lists/*
 
+
 # Create a dedicated cowrie user (non-root for security)
 RUN useradd -m -r -d /home/cowrie cowrie
 
@@ -44,6 +45,9 @@ RUN cowrie/cowrie-env/bin/pip install --upgrade pip && \
     cowrie/cowrie-env/bin/pip install -r cowrie/requirements.txt && \
     cowrie/cowrie-env/bin/pip install -e cowrie
 
+
+RUN cp /home/cowrie/cowrie/device_profiles.py \
+    /home/cowrie/cowrie/cowrie-env/lib/python3.12/site-packages/device_profiles.py
 # Ensure the venv's bin directory is in PATH
 ENV PATH="/home/cowrie/cowrie/cowrie-env/bin:$PATH"
 
