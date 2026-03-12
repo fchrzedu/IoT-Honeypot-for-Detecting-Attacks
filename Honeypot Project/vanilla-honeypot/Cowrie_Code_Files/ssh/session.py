@@ -37,28 +37,30 @@ class HoneyPotSSHSession(session.SSHSession):
             sys.path.insert(0, cowrie_root_path)
 
         try:
-            # Import device profiles
-            from device_profiles import DEVICE_PROFILES
-
-            # Randomly select a device profile for this session
-            profile_name = random.choice(list(DEVICE_PROFILES.keys()))
-
-            # Store profile in session object (accessible by all commands)
-            self.device_profile = DEVICE_PROFILES[profile_name]	# Creates new attribute in THIS session
+            from device_profiles import get_next_profile
+            from cowrie.core.config import CowrieConfig
+ 
+            # Use sensor_name as the instance key so each deployment has its
+            # own independent round-robin counter and state file.
+            instance_id = CowrieConfig.get(
+                "honeypot", "sensor_name", fallback="default"
+            )
+ 
+            profile_name, self.device_profile = get_next_profile(instance_id)
             self.device_profile_name = profile_name
-
-            # Log which profile was assigned
+ 
             log.msg(
-                eventid='cowrie.session.profile',
-                format='Assigned device profile: %(profile)s (%(model)s)',
+                eventid="cowrie.session.profile",
+                format="Assigned device profile: %(profile)s (%(model)s) [instance: %(instance)s]",
                 profile=profile_name,
-                model=self.device_profile['model']
+                model=self.device_profile["model"],
+                instance=instance_id,
             )
 
         except Exception as e:
             # If device_profiles.py not found or has errors, log and continue
             # Cowrie will use default behavior
-            log.msg(f"[WARNING] Failed to load device profile: {e}")
+            log.msg(f"[WARNING] session.py Failed to load device profile: {e}")
             self.device_profile = None
             self.device_profile_name = "default"
 
