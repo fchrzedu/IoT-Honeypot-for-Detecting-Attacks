@@ -19,6 +19,10 @@ from __future__ import annotations
 from cowrie.core.config import CowrieConfig
 from cowrie.shell.command import HoneyPotCommand
 
+
+from twisted.python import log  # used for log.msg()
+
+
 # Import Cowrie path for Python
 import os
 import sys
