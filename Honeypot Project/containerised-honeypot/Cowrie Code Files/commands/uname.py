@@ -79,21 +79,21 @@ def kernel_build_string(profile=None) -> str:
         # Parse output from uname_output, split it and extract build time
         parts = profile['uname_output'].split()
 
-    # Find where build string starts (#)
-    for i, part in enumerate(parts):
-        if part.startswith('#'):
-            # Collect all parts until architecture / OS hit
-            build_parts = []
-            j = i
-            # Stop when we hit known architecture - not needed, but good for future expansion of devices supported
-            while j < len(parts):
-                if parts[j] in ['mipsel', 'mips', 'armv7l', 'x86_64', 'i686', 'aarch64', 'GNU/Linux']:
-                    break
-                build_parts.append(parts[j])
-                j +=1
-            return ' '.join(build_parts)
-    # Fallback to default cowrie value
-    return CowrieConfig.get(
+        # Find where build string starts (#)
+        for i, part in enumerate(parts):
+            if part.startswith('#'):
+                # Collect all parts until architecture / OS hit
+                build_parts = []
+                j = i
+                # Stop when we hit known architecture - not needed, but good for future expansion of devices supported
+                while j < len(parts):
+                    if parts[j] in ['mipsel', 'mips', 'armv7l', 'x86_64', 'i686', 'aarch64', 'GNU/Linux']:
+                        break
+                    build_parts.append(parts[j])
+                    j +=1
+                return ' '.join(build_parts)
+        # Fallback to default cowrie value
+        return CowrieConfig.get(
         "shell", "kernel_build_string", fallback="#1 SMP Debian 3.2.68-1+deb7u1"
     )
 
