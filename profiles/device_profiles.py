@@ -1,3 +1,9 @@
+from __future__ import annotations
+
+import json
+import os
+from typing import Tuple
+
 DEVICE_PROFILES = {
     "dlink_dcs5020l_camera": {
         # Fields were derived from Shodan and OpenWRT reverse engineering for a D-Link IP Camera
@@ -194,42 +200,151 @@ DEVICE_PROFILES = {
 
 
 
-
-
-# ============================================
-#	Helper Functions
-# ============================================
-
-
-# Returns a random device profile from DEVICE_PROFILES above
-def get_random_profile():
+# ============================================================================
+# Round-Robin State Management
+# ============================================================================
+ 
+# Stable ordered list of profile keys for deterministic cycling
+_PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())
+ 
+ 
+def _state_path(instance_id: str) -> str:
+    """
+    Return a writable path for the round-robin state file.
+ 
+    Priority:
+      1. CowrieConfig state_path → var/lib/cowrie/   (guaranteed writable,
+         same directory as downloads/ and tty/ logs)
+      2. /tmp/  fallback for standalone testing outside Cowrie
+ 
+    Writing next to __file__ is intentionally avoided — that resolves to
+    site-packages/ which is not writable by the Cowrie process user.
+    """
+    safe_id = instance_id.replace("/", "_").replace("\\", "_").replace(" ", "_")
+    filename = f".profile_state_{safe_id}.json"
+ 
+    try:
+        from cowrie.core.config import CowrieConfig
+        state_dir = CowrieConfig.get("honeypot", "state_path", fallback=None)
+        if state_dir and os.path.isdir(state_dir):
+            return os.path.join(state_dir, filename)
+    except Exception:
+        pass
+ 
+    # Fallback: /tmp/ works for `python device_profiles.py` standalone runs
+    return os.path.join("/tmp", filename)
+ 
+ 
+def _read_index(instance_id: str) -> int:
+    """Read the current round-robin index; return 0 if file missing or corrupt."""
+    path = _state_path(instance_id)
+    try:
+        with open(path, "r") as fh:
+            data = json.load(fh)
+            idx = int(data.get("index", 0))
+            return idx % len(_PROFILE_KEYS)
+    except (FileNotFoundError, json.JSONDecodeError, ValueError, ZeroDivisionError):
+        return 0
+ 
+ 
+def _write_index(instance_id: str, index: int) -> None:
+    """Persist the round-robin index. Logs a warning if the write fails."""
+    path = _state_path(instance_id)
+    try:
+        with open(path, "w") as fh:
+            json.dump({"index": index}, fh)
+    except OSError as e:
+        try:
+            from twisted.python import log
+            log.msg(f"[WARNING] device_profiles: could not write state file {path}: {e}")
+        except Exception:
+            pass
+ 
+ 
+def get_next_profile(instance_id: str = "default") -> Tuple[str, dict]:
+    """
+    Return the next (profile_name, profile_dict) in round-robin order for
+    the given honeypot instance, then advance and persist the counter.
+ 
+    Parameters
+    ----------
+    instance_id : str
+        Value of [honeypot] sensor_name from cowrie.cfg.
+        Examples: "vanilla-honeypot", "sandboxed-honeypot"
+    """
+    current_index = _read_index(instance_id)
+    profile_name = _PROFILE_KEYS[current_index]
+    profile = DEVICE_PROFILES[profile_name]
+ 
+    next_index = (current_index + 1) % len(_PROFILE_KEYS)
+    _write_index(instance_id, next_index)
+ 
+    return profile_name, profile
+ 
+ 
+# ============================================================================
+# Convenience helpers
+# ============================================================================
+ 
+def get_random_profile() -> Tuple[str, dict]:
+    """Return a randomly selected profile (retained for compatibility)."""
     import random
-    profile_name = random.choice(list(DEVICE_PROFILES.keys()))
+    profile_name = random.choice(_PROFILE_KEYS)
+    return profile_name, DEVICE_PROFILES[profile_name]
+ 
+ 
+def get_profile_by_name(name: str) -> dict | None:
+    """Return a profile dict by key, or None if not found."""
+    return DEVICE_PROFILES.get(name, None)
+ 
+ 
+ 
+# ============================================
+#	FUNCTIONS USED FOR RANDOM SELECTION
+# ============================================
+
+def get_random_profile() -> Tuple[str, dict]:
+    """Return a randomly selected profile (retained for compatibility)."""
+    import random
+    profile_name = random.choice(_PROFILE_KEYS)
     return profile_name, DEVICE_PROFILES[profile_name]
 
-# Returns a profile based on its name
-def get_profile_by_name(name):
-	return DEVICE_PROFILES.get(name, None)
 
-
+def get_profile_by_name(name: str) -> dict | None:
+    """Return a profile dict by key, or None if not found."""
+    return DEVICE_PROFILES.get(name, None)
 # ============================================
 # Testing Function
 # ============================================
 
 if __name__ == "__main__":
     print("=" * 70)
-    print("DEVICE PROFILE CATALOGUE - VALIDATION TEST")
+    print("DEVICE PROFILE CATALOGUE — VALIDATION")
     print("=" * 70)
     print(f"\n✓ Total profiles loaded: {len(DEVICE_PROFILES)}")
-    
+
     for profile_id, profile in DEVICE_PROFILES.items():
         print("\n" + "-" * 70)
-        print(f"[{profile_id}]")
-        print(f"  Name: {profile['name']}")
-        print(f"  Architecture: {profile['architecture']}")
-        print(f"  SSH Banner: {profile['ssh_banner']}")
-        print(f"  Kernel: {profile['kernel_version']}")
-    
+        print(f"  [{profile_id}]")
+        print(f"  Name         : {profile['name']}")
+        print(f"  Architecture : {profile['architecture']}")
+        print(f"  SSH Banner   : {profile['ssh_banner']}")
+        print(f"  Kernel       : {profile['kernel_version']}")
+
+    print("\n" + "=" * 70)
+    print("ROUND-ROBIN TEST (instance_id='vanilla-honeypot')")
+    print("=" * 70)
+    for i in range(len(DEVICE_PROFILES) * 2):    # Two full cycles
+        name, p = get_next_profile("vanilla-honeypot")
+        print(f"  Session {i + 1:02d}: {name}  ({p['architecture']})")
+
+    print("\n" + "=" * 70)
+    print("ROUND-ROBIN TEST (instance_id='sandboxed-honeypot')")
+    print("=" * 70)
+    for i in range(len(DEVICE_PROFILES) * 2):
+        name, p = get_next_profile("sandboxed-honeypot")
+        print(f"  Session {i + 1:02d}: {name}  ({p['architecture']})")
+
     print("\n" + "=" * 70)
     print("VALIDATION COMPLETE")
     print("=" * 70)
