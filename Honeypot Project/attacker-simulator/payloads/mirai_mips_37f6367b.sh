@@ -28,6 +28,10 @@ cat /proc/net/tcp6
 cat /proc/net/if_inet6
 cat /proc/net/ipv6_route
 
+
+
+
+
 # Observed: /proc/[pid]/maps + /proc/[pid]/mem (64 IoCs) — credential scraping
 # Loop unrolled: Cowrie does not support shell loop syntax
 cat /proc/1/maps
