@@ -13,6 +13,8 @@ services:
       - cowrie-logs:/home/cowrie/cowrie/var/log/cowrie
       - cowrie-downloads:/home/cowrie/cowrie/var/lib/cowrie/downloads
       - cowrie-tty:/home/cowrie/cowrie/var/lib/cowrie/tty
+      # Need a volume for the container to access payloads
+      - ../attacker-simulator/payloads:/home/cowrie/cowrie/payloads:ro
 
     restart: unless-stopped
 
