@@ -52,6 +52,9 @@ KILLSWITCH_LOG = "/var/log/honeypot_killswitch.log"
 # RESULTS DIRECTORY - all experimental exports land here, one subfolder per experiment
 RESULTS_DIR = SCRIPT_DIR / "results"
 
+# STAGING DIR - CONTAINERISED LOGS ARE COPIED HERE AT STOP TIME BEOFRE docker compose down DESTROYS CONTAINER
+STAGED_DIR = RESULTS_DIR / "_staged" / "containerised"
+
 
 # ============================================================================
 # UTILITY FUNCTIONS
@@ -81,10 +84,6 @@ def pause():
 # ============================================================================
 # DOCKER HELPER FUNCTIONS
 # ============================================================================
-
-# FIX 1: is_container_running — added missing --format flag.
-# Without --format, docker ps returns a table with headers, not just names,
-# so the container name would never match reliably.
 def is_container_running(container_name):
     """Returns True if the named container is currently running."""
     result = subprocess.run(
@@ -93,10 +92,6 @@ def is_container_running(container_name):
     )
     return container_name in result.stdout
 
-
-# FIX 2: is_container_stopped — rewrote entirely.
-# Original used curly braces {} which is not valid Python syntax (that's JavaScript).
-# Python functions use 'def' with a colon and indented body.
 def is_container_stopped(container_name):
     """
     Returns True if the container exists but is currently stopped.
@@ -115,6 +110,9 @@ def copy_file_from_container(container_name, container_path, dest_path):
     Copy a single file from a running container to the host filesystem.
     Returns True on success, False on failure.
     Reference: https://docs.docker.com/engine/reference/commandline/cp/
+
+    i.e.: docker cp honeypot:cowrie/home/downloads/ --> destination
+    We have to access the actual Docker process
     """
     result = subprocess.run(
         ["docker", "cp", f"{container_name}:{container_path}", str(dest_path)],
@@ -402,6 +400,137 @@ def vanilla_check_status():
             pass
 
 
+
+
+
+# ============================================================================
+# APPARMOR FUNCTIONS
+# ============================================================================
+def clear_app_armor_logs():
+    """Clear all AppArmor logs, and logs of type BPF for seccomp"""
+    clear_screen()
+    print_header("Clearing AppArmor logs")
+
+    res = subprocess.run(
+        ["sudo", "truncate", "-s", "0", "/var/log/audit/audit.log"],
+        capture_output=True, text=True)
+    
+    if res.returncode == 0:
+        print(f"{Fore.GREEN}Succesfully cleared {Style.RESET_ALL}/var/log/audit/audit.log")
+    else:
+        print(f"{Fore.RED}ERROR: Unable to clear{Style.RESET_ALL} /var/log/audit/audit.log")
+        print(res.stderr)
+
+
+
+def stage_containerised_logs():
+    """Copy containerised logs into STAGED_DIR whilst container is running.
+    Called automatically at stop time so [E] can read them without restarting."""
+    STAGED_DIR.mkdir(parents=True, exist_ok=True)
+    staged = 0
+
+    print(f"{Fore.CYAN}  Staging containerised logs before shutdown...{Style.RESET_ALL}")
+
+    # cowrie.log
+    res = subprocess.run(
+        ["docker", "cp",
+         f"{CONTAINER_NAME}:{CONTAINER_LOG_PATH}/cowrie.log",
+         str(STAGED_DIR / "cowrie.log")],
+        capture_output=True, text=True
+    )
+    if res.returncode == 0:
+        size = (STAGED_DIR / "cowrie.log").stat().st_size
+        print(f"{Fore.GREEN}    cowrie.log  ({size:,} bytes){Style.RESET_ALL}")
+        staged += 1
+    else:
+        print(f"{Fore.YELLOW}    cowrie.log not found in container{Style.RESET_ALL}")
+
+    # cowrie.json
+    res = subprocess.run(
+        ["docker", "cp",
+         f"{CONTAINER_NAME}:{CONTAINER_LOG_PATH}/cowrie.json",
+         str(STAGED_DIR / "cowrie.json")],
+        capture_output=True, text=True
+    )
+    if res.returncode == 0:
+        size = (STAGED_DIR / "cowrie.json").stat().st_size
+        print(f"{Fore.GREEN}    cowrie.json ({size:,} bytes){Style.RESET_ALL}")
+        staged += 1
+    else:
+        print(f"{Fore.YELLOW}    cowrie.json not found in container{Style.RESET_ALL}")
+
+    # downloads/
+    downloads_dest = STAGED_DIR / "downloads"
+    downloads_dest.mkdir(exist_ok=True)
+    downloads_fnames = list_files_in_container(CONTAINER_NAME, CONTAINER_DOWNLOADS_PATH)
+    if downloads_fnames:
+        copied = 0
+        for fname in downloads_fnames:
+            success = copy_file_from_container(
+                CONTAINER_NAME,
+                f"{CONTAINER_DOWNLOADS_PATH}/{fname}",
+                downloads_dest / fname
+            )
+            if success:
+                copied += 1
+        print(f"{Fore.GREEN}    downloads/  ({copied} file(s)){Style.RESET_ALL}")
+        staged += copied
+    else:
+        print(f"{Fore.YELLOW}    downloads/ is empty{Style.RESET_ALL}")
+
+    # AppArmor denials
+    aa_res = subprocess.run(
+        ["sudo", "grep", "cowrie-docker", "/var/log/audit/audit.log"],
+        capture_output=True, text=True
+    )
+    if aa_res.returncode == 0 and aa_res.stdout.strip():
+        denied = []
+        for x in aa_res.stdout.splitlines():
+            if "DENIED" in x:
+                denied.append(x)
+        if denied:
+            file_contents = ""
+            for line in denied:
+                file_contents += line + "\n"
+            (STAGED_DIR / "apparmor_denials.log").write_text(file_contents)
+            print(f"{Fore.GREEN}    apparmor_denials.log  ({len(denied)} denial(s)){Style.RESET_ALL}")
+            staged += 1
+        else:
+            print(f"{Fore.YELLOW}    apparmor_denials.log  (no DENIED entries){Style.RESET_ALL}")
+    else:
+        print(f"{Fore.YELLOW}    apparmor_denials.log  (audit.log unreadable){Style.RESET_ALL}")
+
+    # Seccomp BPF events
+    bpf_res = subprocess.run(
+        ["sudo", "grep", "type=BPF", "/var/log/audit/audit.log"],
+        capture_output=True, text=True
+    )
+    if bpf_res.returncode == 0 and bpf_res.stdout.strip():
+        lines = 0
+        for line in bpf_res.stdout.splitlines():
+            lines += 1
+        (STAGED_DIR / "seccomp_bpf.log").write_text(bpf_res.stdout)
+        print(f"{Fore.GREEN}    seccomp_bpf.log       ({lines} event(s)){Style.RESET_ALL}")
+        staged += 1
+    else:
+        print(f"{Fore.YELLOW}    seccomp_bpf.log       (no BPF events){Style.RESET_ALL}")
+
+    # AppArmor profile
+    profile_res = subprocess.run(
+        ["sudo", "cat", "/etc/apparmor.d/cowrie-docker"],
+        capture_output=True, text=True
+    )
+    if profile_res.returncode == 0:
+        (STAGED_DIR / "apparmor_profile.txt").write_text(profile_res.stdout)
+        print(f"{Fore.GREEN}    apparmor_profile.txt  (cowrie-docker profile){Style.RESET_ALL}")
+        staged += 1
+    else:
+        print(f"{Fore.YELLOW}    apparmor_profile.txt  (not found){Style.RESET_ALL}")
+
+    print(f"{Fore.GREEN}  Staging complete — {staged} item(s){Style.RESET_ALL}")
+    return staged
+
+
 # ============================================================================
 # CONTAINERISED (DOCKER COMPOSE) HONEYPOT FUNCTIONS
 # ============================================================================
@@ -421,6 +550,7 @@ def display_docker_compose_menu():
     print(f"{Fore.GREEN}[8]{Style.RESET_ALL} View Collected Data\n")
 
     print(f"{Fore.RED}[9]{Style.RESET_ALL} Cleanup (Remove All)")
+    print(f"{Fore.RED}[A]{Style.RESET_ALL} Clear AppArmor & Seccomp logs")
     print(f"{Fore.YELLOW}[b]{Style.RESET_ALL} Back to Main Menu")
     print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
 
@@ -457,28 +587,25 @@ def docker_compose_stop():
     """Stop Docker container"""
     clear_screen()
     print_header("Stopping Container")
-    print(f"{Fore.YELLOW}Stopping will remove the container completely\nLogs inside the container will be inaccessible afterwards{Style.RESET_ALL}\n")
-    export_first = input(f"{Fore.CYAN}Export logs before stopping? (yes/no)> {Style.RESET_ALL}")
-    if export_first == "yes":
-        export_logs()
-        clear_screen()
-        print_header("Stopping Container")
-        print(f"{Fore.CYAN}Export complete. Stopping container...{Style.RESET_ALL}\n")   
+    
+    if not is_container_running(CONTAINER_NAME):
+        print(f"{Fore.YELLOW}Container is not running{Style.RESET_ALL}")
+        res = subprocess.run(
+            # Run docker compose down within cwd (containerised-honeypot/)
+            ["docker", "compose", "down"],cwd=CONTAINER_DIR,capture_output=True,text=True)
+        if res.returncode == 0:
+            print(f"{Fore.GREEN}SUCCESS: {CONTAINER_NAME} removed{Style.RESET_ALL}")
+            
+    stage_containerised_logs()
 
-
-    result = subprocess.run(
-        ["docker", "compose", "down"],
-        cwd=CONTAINER_DIR,
-        capture_output=True,
-        text=True
-    )
-
-    if result.returncode == 0:
-        print(f"{Fore.GREEN}SUCCESS: Honeypot stopped{Style.RESET_ALL}")
+    print(f"\n{Fore.CYAN}Bringing container down...{Style.RESET_ALL}")
+    res_2 = subprocess.run(
+        ["docker", "compose", "down"],cwd=CONTAINER_DIR,capture_output=True,text=True)
+    if res_2.returncode == 0:
+        print(f"{Fore.GREEN}Honeypot stopped!{Style.RESET_ALL}")
     else:
-        print(f"{Fore.RED}ERROR: Failed to stop honeypot!{Style.RESET_ALL}")
-        if result.stderr:
-            print(result.stderr)
+        print(f"{Style.RED}ERROR: Failed to stop honeypot! {Style.RESET_ALL}")
+        if res_2.stderr:print(res_2.stderr)
 
 
 def docker_compose_restart():
@@ -681,6 +808,8 @@ def docker_compose_menu_handler():
             return 'exit'
         elif choice == 'b':
             return 'back'
+        elif choice == 'a' or choice == 'A':
+            clear_app_armor_logs()
         elif choice == '1':
             docker_compose_build_and_run(detached=True)
         elif choice == '2':
@@ -963,88 +1092,55 @@ def export_logs():
     else:
         print(f"{Fore.YELLOW}    downloads/ directory not found{Style.RESET_ALL}")
 
-    # ── EXPORT CONTAINERISED LOGS ─────────────────────────────────
+    # ── EXPORT CONTAINERISED LOGS (from staging_dir) ─────────────────────────────────
     # FIX 3: Check container state before attempting docker cp / docker exec.
     # If stopped, start it temporarily, copy files, then stop it again.
     # Previously the script blindly ran docker cp regardless of container state.
+        # Simplified logic via stage_containerised_logs()
+    # Container needs to be running for export. If we killswitch, we cannot re-access container without
+    #   altering the logs produced. Therefore, we copy from staged  
+
     print(f"\n{Fore.CYAN}Exporting containerised honeypot...{Style.RESET_ALL}")
     container_count = 0
-    container_was_started_for_export = False
-
-    if not is_container_running(CONTAINER_NAME):
-        if is_container_stopped(CONTAINER_NAME):
-            print(f"{Fore.YELLOW}    Container is stopped — starting temporarily to extract logs...{Style.RESET_ALL}")
-            start_result = subprocess.run(
-                ["docker", "compose", "up", "-d"],
-                cwd=CONTAINER_DIR,
-                capture_output=True, text=True
-            )
-            if start_result.returncode == 0:
-                time.sleep(3)  # give Cowrie a moment to initialise
-                container_was_started_for_export = True
-                print(f"{Fore.GREEN}    Container started{Style.RESET_ALL}")
+    if not STAGED_DIR.exists():
+        print(f"{Fore.RED}No staged logs found{Style.RESET_ALL}")
+        print(f"{Fore.YELLOW}Stop container manually to stage logs{Style.RESET_ALL}")
+    else:
+        for fname in ["cowrie.log", "cowrie.json"]:
+            source = STAGED_DIR / fname
+            if source.exists() and source.stat().st_size > 0:
+                shutil.copy2(source, containerised_export_dir / fname)
+                print(f"{Fore.GREEN}{fname} ({source.stat().st_size:}, bytes){Style.RESET_ALL}")
+                container_count +=1
             else:
-                print(f"{Fore.RED}    Could not start container — containerised logs skipped{Style.RESET_ALL}")
-        else:
-            print(f"{Fore.RED}    Container does not exist — containerised logs skipped{Style.RESET_ALL}")
+                print(f"{Fore.YELLOW}WARNING: {fname} not in staging{Style.RESET_ALL}")
 
-    if is_container_running(CONTAINER_NAME):
-        # cowrie.log
-        log_result = subprocess.run(
-            ["docker", "cp",
-             f"{CONTAINER_NAME}:{CONTAINER_LOG_PATH}/cowrie.log",
-             str(containerised_export_dir / "cowrie.log")],
-            capture_output=True, text=True
-        )
-        if log_result.returncode == 0:
-            size = (containerised_export_dir / "cowrie.log").stat().st_size
-            print(f"{Fore.GREEN}    cowrie.log  ({size:,} bytes){Style.RESET_ALL}")
-            container_count += 1
-        else:
-            print(f"{Fore.YELLOW}    cowrie.log not found in container{Style.RESET_ALL}")
+        staged_download = STAGED_DIR / "downloads"
+        containerised_download_export = containerised_export_dir / "downloads"
+        containerised_download_export.mkdir(exist_ok=True)
+        if staged_download.exists():
+            download_files = list(staged_download.glob("*"))
+            for x in download_files:
+                shutil.copy2(x, containerised_download_export / x.name)
+            count_str = f"{len(download_files)} file(s)" if download_files else "empty"
+            colour = Fore.GREEN if dl_files else Fore.YELLOW
+            print(f"{colour} downloads/ {(count_str)}{Style.RESET_ALL}")
+            container_count += len(download_files)
 
-        # cowrie.json
-        json_result = subprocess.run(
-            ["docker", "cp",
-             f"{CONTAINER_NAME}:{CONTAINER_LOG_PATH}/cowrie.json",
-             str(containerised_export_dir / "cowrie.json")],
-            capture_output=True, text=True
-        )
-        if json_result.returncode == 0:
-            size = (containerised_export_dir / "cowrie.json").stat().st_size
-            print(f"{Fore.GREEN}    cowrie.json ({size:,} bytes){Style.RESET_ALL}")
-            container_count += 1
-        else:
-            print(f"{Fore.YELLOW}    cowrie.json not found in container{Style.RESET_ALL}")
-
-        # downloads/ — list then copy individually
-        container_dl_export = containerised_export_dir / "downloads"
-        container_dl_export.mkdir(exist_ok=True)
-
-        dl_filenames = list_files_in_container(CONTAINER_NAME, CONTAINER_DOWNLOADS_PATH)
-        if dl_filenames:
-            copied = sum(
-                1 for fname in dl_filenames
-                if copy_file_from_container(
-                    CONTAINER_NAME,
-                    f"{CONTAINER_DOWNLOADS_PATH}/{fname}",
-                    container_dl_export / fname
-                )
-            )
-            print(f"{Fore.GREEN}    downloads/  ({copied} file(s)){Style.RESET_ALL}")
-            container_count += copied
-        else:
-            print(f"{Fore.YELLOW}    downloads/ is empty{Style.RESET_ALL}")
-
-    # Stop container again only if export started it
-    if container_was_started_for_export:
-        print(f"{Fore.CYAN}    Stopping container (started for export only)...{Style.RESET_ALL}")
-        subprocess.run(
-            ["docker", "compose", "down"],
-            cwd=CONTAINER_DIR,
-            capture_output=True, text=True
-        )
-        print(f"{Fore.GREEN}    Container stopped{Style.RESET_ALL}")
+        # Copy apparmor and its profiel
+        for filename, label in [
+            ("apparmor_denials.log", "AppArmor denials"),
+            ("apparmor_profile.txt", "AppArmor profile"),]:
+            source = STAGED_DIR / filename
+            if source.exists() and source.stat().st_size > 0:
+                shutil.copy2(source, containerised_export_dir / filename)
+                print(f"{Fore.GREEN} {filename} ({label}){Style.RESET_ALL}")
+            else:
+                print(f"{Fore.YELLOW} {filename} not in staging{Style.RESET_ALL}")
+    # CLEAR STAGING DIRECTORY
+    if STAGED_DIR.exists():
+        shutil.rmtree(STAGED_DIR)
+        print(f"{Fore.GREEN} Staging area cleared {Style.RESET_ALL}{(STAGED_DIR)}")
 
     # ── CLEAR LIVE DATA AFTER EXPORT ─────────────────────────────
     # Logs truncated, downloads + tty deleted
