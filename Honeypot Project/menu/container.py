@@ -15,6 +15,7 @@ from menu.config import(
 from menu.utils import(
     clear_screen, print_header, pause, print_separator, is_container_running
 )
+from menu.staging import clear_app_armor_logs, stage_containerised_logs
 def display_docker_compose_menu():
     """Display Docker Compose honeypot menu"""
     clear_screen()

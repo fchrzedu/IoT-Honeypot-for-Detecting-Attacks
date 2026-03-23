@@ -3,7 +3,7 @@ from pathlib import Path
 # ============================================================================
 # PATH CONFIGURATION
 # ============================================================================
-SCRIPT_DIR = Path(__file__).parent.resolve()
+SCRIPT_DIR = Path(__file__).parent.parent.resolve()
 
 # VANILLA HONEYPOT PATHS
 VANILLA_HONEYPOT_DIR = SCRIPT_DIR / "vanilla-honeypot"

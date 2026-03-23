@@ -13,7 +13,7 @@ from menu.config import (
     VANILLA_LOG_FILE, VANILLA_JSON_LOG_FILE,
     VANILLA_DOWNLOADS_DIR, VANILLA_TTY_DIR,
     CONTAINER_NAME, CONTAINER_LOG_PATH,
-    CONTAINER_DOWNLOADS_PATH, CONTAINER_TTY_PATH
+    CONTAINER_DOWNLOADS_PATH, CONTAINER_TTY_PATH, VANILLA_COWRIE_DIR
 )
 from menu.utils import (
     clear_screen, print_header, print_separator, pause,
