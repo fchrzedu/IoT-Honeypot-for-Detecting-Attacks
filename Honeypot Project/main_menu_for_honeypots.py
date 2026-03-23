@@ -10,7 +10,8 @@ from menu.vanilla import vanilla_menu_handler
 from menu.container import docker_compose_menu_handler
 from menu.export import export_logs
 from menu.killswitch import display_killswitch_menu, killswitch_restore
-
+#from menu.analyse import run_analysis
+from menu.process_data import run_analysis
 init(autoreset=True)
 
 
@@ -20,6 +21,8 @@ def display_main_menu():
     print(f"{Fore.GREEN}[1]{Style.RESET_ALL} Manage Vanilla Honeypot")
     print(f"{Fore.GREEN}[2]{Style.RESET_ALL} Manage Sandboxed Honeypot (Docker Compose)\n")
     print(f"{Fore.YELLOW}[E]{Style.RESET_ALL} Export Experimental Logs")
+
+    print(f"{Fore.YELLOW}[A]{Style.RESET_ALL} Analyse Experiment")
     print(f"{Fore.YELLOW}[R]{Style.RESET_ALL} Restore Network & Docker\n")
     print(f"{Fore.RED}[K]{Style.RESET_ALL} KILLSWITCH")
     print(f"{Fore.RED}[0]{Style.RESET_ALL} Exit")
@@ -55,6 +58,8 @@ def main():
             display_killswitch_menu()
         elif choice in ('r', 'R'):
             killswitch_restore()
+        elif choice in ('a', 'A'):
+             run_analysis()
         else:
             clear_screen()
             print(f"\n{Fore.RED}ERROR: Invalid choice{Style.RESET_ALL}")
