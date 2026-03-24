@@ -343,15 +343,17 @@ DEVICE_PROFILES = {
 # Round-Robin State Management
 # ============================================================================
 
-
-_PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())	# Extracts all profile names and stores as an indexed list (this is a dictionary)
+# profiles are a dict. this converts them into a list so we can numerically sort them
+_PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())
 
 # Cache resolved writable path to avoid repeated permission failures - this fixed the containerised-honeypot bug
 _RESOLVED_STATE_PATH: dict[str, str] = {}
 
 
 def _get_candidate_paths(instance_id: str) -> list[str]:
-    """Return possible state file paths (ordered by preference)."""
+"""
+returns possible state paths to determine where it is safe and writable to store the roub robin index
+"""
     safe_id = instance_id.replace("/", "_").replace("\\", "_").replace(" ", "_")	# Sanitise the filename ID for system use
     filename = f".profile_state_{safe_id}.json"	
 
@@ -412,7 +414,7 @@ def _write_index(instance_id: str, index: int) -> None:
             json.dump({"index": index}, fh)
 
     except OSError:
-        # Silent failure → honeypot must never break or spam logs
+        # Silent failure honeypot must never break or spam logs
         pass
 
 def get_next_profile(instance_id: str = "default") -> Tuple[str, dict]:
