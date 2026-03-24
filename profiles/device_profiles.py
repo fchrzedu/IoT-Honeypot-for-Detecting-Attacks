@@ -4,6 +4,7 @@ import json
 import os
 from typing import Tuple
 
+
 DEVICE_PROFILES = {
     "dlink_dcs5020l_camera": {
         # Fields were derived from Shodan and OpenWRT reverse engineering for a D-Link IP Camera
@@ -342,62 +343,77 @@ DEVICE_PROFILES = {
 # Round-Robin State Management
 # ============================================================================
 
-# Stable ordered list of profile keys for deterministic cycling
-_PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())
+
+_PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())	# Extracts all profile names and stores as an indexed list (this is a dictionary)
+
+# Cache resolved writable path to avoid repeated permission failures - this fixed the containerised-honeypot bug
+_RESOLVED_STATE_PATH: dict[str, str] = {}
 
 
-def _state_path(instance_id: str) -> str:
+def _get_candidate_paths(instance_id: str) -> list[str]:
+    """Return possible state file paths (ordered by preference)."""
+    safe_id = instance_id.replace("/", "_").replace("\\", "_").replace(" ", "_")	# Sanitise the filename ID for system use
+    filename = f".profile_state_{safe_id}.json"	
+
+    return [
+        f"/home/cowrie/cowrie/var/lib/cowrie/state/{filename}",  # intended location
+        f"/tmp/{filename}",  # guaranteed fallback
+    ]
+
+
+def _resolve_state_path(instance_id: str) -> str:
     """
-    Return a writable path for the round-robin state file.
-
-    Priority:
-      1. CowrieConfig state_path → var/lib/cowrie/   (guaranteed writable,
-         same directory as downloads/ and tty/ logs)
-      2. /tmp/  fallback for standalone testing outside Cowrie
-
-    Writing next to __file__ is intentionally avoided — that resolves to
-    site-packages/ which is not writable by the Cowrie process user.
+    Resolve and cache a writable path by actually attempting a write.
+    This avoids relying on os.access() which is unreliable in containers.
     """
-    safe_id = instance_id.replace("/", "_").replace("\\", "_").replace(" ", "_")
-    filename = f".profile_state_{safe_id}.json"
+    if instance_id in _RESOLVED_STATE_PATH:
+        return _RESOLVED_STATE_PATH[instance_id]
 
-    try:
-        from cowrie.core.config import CowrieConfig
-        state_dir = CowrieConfig.get("honeypot", "state_path", fallback=None)
-        if state_dir and os.path.isdir(state_dir):
-            return os.path.join(state_dir, filename)
-    except Exception:
-        pass
+    for path in _get_candidate_paths(instance_id):
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
 
-    # Fallback: /tmp/ works for `python device_profiles.py` standalone runs
-    return os.path.join("/tmp", filename)
+            # Attempt actual write test
+            with open(path, "a"):
+                pass
+
+            _RESOLVED_STATE_PATH[instance_id] = path
+            return path
+
+        except OSError:
+            continue
+
+    # Absolute fallback
+    fallback = f"/tmp/.profile_state_{instance_id}.json"
+    _RESOLVED_STATE_PATH[instance_id] = fallback
+    return fallback
 
 
 def _read_index(instance_id: str) -> int:
-    """Read the current round-robin index; return 0 if file missing or corrupt."""
-    path = _state_path(instance_id)
+    """Read round-robin index safely."""
+    path = _resolve_state_path(instance_id)
+
     try:
         with open(path, "r") as fh:
             data = json.load(fh)
             idx = int(data.get("index", 0))
             return idx % len(_PROFILE_KEYS)
-    except (FileNotFoundError, json.JSONDecodeError, ValueError, ZeroDivisionError):
+
+    except (FileNotFoundError, json.JSONDecodeError, ValueError):
         return 0
 
 
 def _write_index(instance_id: str, index: int) -> None:
-    """Persist the round-robin index. Logs a warning if the write fails."""
-    path = _state_path(instance_id)
+    """Write index silently """
+    path = _resolve_state_path(instance_id)
+
     try:
         with open(path, "w") as fh:
             json.dump({"index": index}, fh)
-    except OSError as e:
-        try:
-            from twisted.python import log
-            log.msg(f"[WARNING] device_profiles: could not write state file {path}: {e}")
-        except Exception:
-            pass
 
+    except OSError:
+        # Silent failure → honeypot must never break or spam logs
+        pass
 
 def get_next_profile(instance_id: str = "default") -> Tuple[str, dict]:
     """
