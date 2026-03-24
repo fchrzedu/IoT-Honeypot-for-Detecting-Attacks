@@ -103,7 +103,7 @@ DEVICE_PROFILES = {
 
 
 
-    "tplink_archer_a7_router": {     
+    "tplink_archer_a7_router": {
             # ============================
             # DEVICE IDENTIFICATION
             # ============================
@@ -128,14 +128,14 @@ DEVICE_PROFILES = {
             # Reasoning: "Firmware v3.0-r43502" released June 2020
             # Firmware 2020 -> OpenWRT, looked for release closest: Feb 2021 21.02 Linux 5.4
             # June 2020 suggests transition period from Feb -> June: 5.4.188
-            "kernel_version": "5.4.188", 
+            "kernel_version": "5.4.188",
             "hostname": "OpenWrt",  # Standard OpenWRT hostname, user conf so doesn't matter
             "ssh_banner": "SSH-2.0-dropbear_2020.79",
             # Reasoning:
             # - Hostname: OpenWrt (standard)
             # - Kernel: 5.4.188 (OpenWrt 21.02 series)
             # - Build date: Mon Jun 23 (firware date 06/23/20)
-            # - Architecture: mips 
+            # - Architecture: mips
             "uname_output": "Linux OpenWrt 5.4.188 #0 SMP Mon Jun 23 10:15:42 2020 mips GNU/Linux",
             # /proc/cpuinfo (QCA9563 standard output)
             "cpuinfo": """system type\t\t: Qualcomm Atheros QCA956X rev 0
@@ -149,7 +149,7 @@ DEVICE_PROFILES = {
                 extra interrupt vector\t: yes
                 hardware watchpoint\t: yes, count: 4, address/irw mask: [0x0ffc, 0x0ffc, 0x0ffb, 0x0ffb]
                 isa\t\t\t: mips1 mips2 mips32r1 mips32r2
-                ASEs implemented\t: 
+                ASEs implemented\t:
                 shadow register sets\t: 1
                 kscratch registers\t: 0
                 package\t\t\t: 0
@@ -188,12 +188,150 @@ DEVICE_PROFILES = {
             "cpuinfo (QCA9563 datasheet + MIPS 74Kc specs)"
         ]
     },
-    
-    "testing_priority": "high"    
-                
-          
-    }
 
+    "testing_priority": "high"
+
+
+    },
+
+
+# ===========================================================================================================================================================
+
+
+    "netgear_r7000_ddwrt": {
+        # This is not inheritently an IoT device, but rather a popular ARM router that manages IoT devices therefore it is also vulnearble
+        # Source 1 & 2: https://www.shodan.io/host/174.87.123.230 https://www.shodan.io/host/24.183.229.183
+                        # Confirmed: Firmware Info, MAC & OUI, http_auth protocol & type, model
+                        # Direct filters did not work. Had to look at port 80 (HTTP), also deduced this is a DD-WRT router not an OpenWRT router
+        # Source 3 : MAC OUI lookup  https://maclookup.app/macaddress/cc40d0
+                        # Confirmed OUI against sources 1 & 2
+        # Source 4: DD-WRT WikI
+                        # Did attempt to look at communiy forums with filter ' Netgear AND R7000 AND SSH AND Dropbear' - found absolutely nothing.
+                        # But DD-WRT wiki did confirm: All hardware specifications, kernel & version
+                        # Cross-referenced against OpenWRT, but was not a direct source
+        # Source 5: WimsWord blog: https://wimsworld.wordpress.com/2022/05/07/dd-wrt-upgrade/
+                        # Spent forever googling looking for R7000 terminal and command line outputs, found someone having an issue upgrading SSH
+                        # This deduced: Identical specifications as to all sources, BusyBox version
+        # Source 6 : Dropbear Release timeline: https://github.com/mkj/dropbear/releases
+                        # Used to construct SSH banner.
+                        # 2020.81 Released Oct 29 2020
+                        # 2022.81 Released April 1 2022
+                        # firmware is dated 4 Feb 2022, therefore 2020.81 is the chosen version
+            # ============================
+            # DEVICE IDENTIFICATION
+            # ============================
+          "name": "Netgear Nighthawk R7000 Router (DD-WRT)",
+          "manufacturer": "Netgear",
+          "model": "Netgear R7000",
+          "hardware_version": "v1", # Unable to find hardware version, used v1 as it doesn't matter'
+          "firmware_version": "v3.0-r48289 std",        # CONFIRMED by Shodan
+          "device_type": "ARM Router",
+
+            # ============================
+            # HARDWARE SPECIFICATIONS
+            # ============================
+            # All of these specifications were derived from DD-WRT wiki,
+            "cpu": "Broadcom BCM4709A0",
+            "cpu_mhz": "1000",
+            "architecture": "armv7l",
+            "ram_mb": "256",
+            "flash_mb": "128",
+            # ============================
+            # SYSTEMS SPECIFICATIONS
+            # ============================
+            "kernel_version": "4.4.302",    # CONFIRMED via DD-WRT wiki
+            "hostname": "Netgear-R7000",  #  CONFIRMED via WimsWorld blog
+            # SSH banner DEDUCED:
+                # Firmware dated 4th Feb 2022
+                # Released between feb are: 2020.81 on 29oct 2020 & 2022.81 on April 1 2022
+                # Therefore, 2020.81 was chosen - .79 was valid too but some variety for data
+                # Moreover, WimsWorld showed no change in SSH banner after new DropBear deployment
+            "ssh_banner": "SSH-2.0-dropbear_2020.81",
+            # Deduced:
+                # Constructed from: Kernel + SMP(dual-core CPU) + firmware date + arv7l
+            "uname_output": "Linux Netgear-R7000 4.4.302 #1 SMP Fri Feb 4 03:36:35 UTC 2022 armv7l GNU/Linux",
+            # /proc/cpuinfo (QCA9563 standard output)
+            "cpuinfo": """Processor\t\t: ARMv7 Processor rev 0 (v7l)
+                processor\t\t: 0
+                cpu model\t\t: ARMv7 Processor rev 0 (v7l)
+                BogoMIPS\t\t: 1199.30
+                processor\t\t: 1
+                BogoMIPS\t\t: 1199.30
+                Features\t\t: half fastmult edsp tls
+                CPU implementer\t\t: 0x41
+                CPU architecture\t: 7
+                CPU variant\t\t: 0x0
+                CPU part\t\t: 0xc09
+                CPU revision\t\t: 0
+                Hardware\t\t: Northstar Prototype
+                Revision\t\t: 0000
+                Serial\t\t\t: 0000000000000000\n""",
+                # ============================
+                # OPERATIONAL DATA
+                # ============================
+                "available_commands": [
+                    "ls", "cat", "echo", "ps", "kill", "top",
+                    "busybox", "sh", "ash", "mount", "umount", "df",
+                    "ifconfig", "ping", "wget", "reboot", "uname",
+                    "free", "dmesg", "netstat", # Standard BusyBox
+                    ],
+                "shell_prompt": "root@Netgear-R7000:~# ",     # CONFIRMED from WimsWorld terminal output
+
+                # Network info
+                "mac_prefix": "CC:40:D0", # Shodan OUI
+
+                # HTTP Server IF applicable, routers usually have web UI
+                "http_server": "httpd",    # CONFIRMED shodan
+                # ========================================
+                # DOCUMENTATION & VALIDATION
+                # ========================================
+                        "research_sources": {
+            "shodan_hosts": [
+                "https://www.shodan.io/host/174.87.123.230",
+                "https://www.shodan.io/host/24.183.229.183",
+            ],
+            "mac_lookup": "https://maclookup.app/macaddress/cc40d0",
+            "ddwrt_wiki": "https://wiki.dd-wrt.com/wiki/index.php/Netgear_R7000",
+            "openwrt_toh": "https://openwrt.org/toh/netgear/r7000",
+            "busybox_terminal": "https://wimsworld.wordpress.com/2022/05/07/dd-wrt-upgrade/",
+            "dropbear_releases": "https://github.com/mkj/dropbear/releases",
+            "confirmed_fields": [
+                "manufacturer",
+                "model",
+                "firmware_version (v3.0-r48289 std — Shodan DD-WRT banner)",
+                "firmware_date (02/04/22 — Shodan DD-WRT banner)",
+                "cpu (BCM4709A0 — DD-WRT wiki)",
+                "cpu_mhz (1000 — DD-WRT wiki, dual-core 2x1000MHz)",
+                "architecture (armv7l — DD-WRT wiki, ARM Cortex-A9)",
+                "ram_mb (256 — DD-WRT wiki)",
+                "flash_mb (128 NAND — DD-WRT wiki)",
+                "kernel_version (4.4.302 — DD-WRT wiki: Linux kernel 4.4.302-stXX)",
+                "hostname (Netgear-R7000 — WimsWorld terminal output)",
+                "shell_prompt (root@Netgear-R7000:~# — WimsWorld terminal output)",
+                "busybox_version (v1.35.0 — WimsWorld terminal output)",
+                "shell_type (ash — WimsWorld terminal output)",
+                "mac_prefix (CC:40:D0 — Shodan + maclookup.app confirmed Netgear OUI)",
+                "http_server (httpd — Shodan Server: header)",
+                "observed_ports (80, 443, 8080 — Shodan result)",
+                "http_auth_realm (NETGEAR R7000 — Shodan 401 response)",
+                "ssl_cert_cn (www.routerlogin.net — Shodan SSL cert)",
+                "ssl_cert_org (NETGEAR, San Jose CA — Shodan SSL cert)",
+            ],
+        "deduced_fields": [
+                "hardware_version (V1 — only revision produced)",
+                "ssh_banner (dropbear_2020.81 — firmware Feb 4 2022 predates "
+                "Dropbear 2022.82 by ~8 weeks; 2020.81 was the only stable release "
+                "between Oct 2020 and Apr 2022; Debian accepted 2022.82-1 on Apr 2 2022)",
+                "uname_output (constructed from kernel 4.4.302 + armv7l + firmware date)",
+                "cpuinfo (BCM4709A0 Cortex-A9 standard output + BogoMIPS from "
+                "ARM Cortex-A9 calibration at 1000MHz)",
+            ],
+    },
+
+    "testing_priority": "high"
+
+
+    }
 }
 
 
@@ -203,26 +341,26 @@ DEVICE_PROFILES = {
 # ============================================================================
 # Round-Robin State Management
 # ============================================================================
- 
+
 # Stable ordered list of profile keys for deterministic cycling
 _PROFILE_KEYS: list[str] = list(DEVICE_PROFILES.keys())
- 
- 
+
+
 def _state_path(instance_id: str) -> str:
     """
     Return a writable path for the round-robin state file.
- 
+
     Priority:
       1. CowrieConfig state_path → var/lib/cowrie/   (guaranteed writable,
          same directory as downloads/ and tty/ logs)
       2. /tmp/  fallback for standalone testing outside Cowrie
- 
+
     Writing next to __file__ is intentionally avoided — that resolves to
     site-packages/ which is not writable by the Cowrie process user.
     """
     safe_id = instance_id.replace("/", "_").replace("\\", "_").replace(" ", "_")
     filename = f".profile_state_{safe_id}.json"
- 
+
     try:
         from cowrie.core.config import CowrieConfig
         state_dir = CowrieConfig.get("honeypot", "state_path", fallback=None)
@@ -230,11 +368,11 @@ def _state_path(instance_id: str) -> str:
             return os.path.join(state_dir, filename)
     except Exception:
         pass
- 
+
     # Fallback: /tmp/ works for `python device_profiles.py` standalone runs
     return os.path.join("/tmp", filename)
- 
- 
+
+
 def _read_index(instance_id: str) -> int:
     """Read the current round-robin index; return 0 if file missing or corrupt."""
     path = _state_path(instance_id)
@@ -245,8 +383,8 @@ def _read_index(instance_id: str) -> int:
             return idx % len(_PROFILE_KEYS)
     except (FileNotFoundError, json.JSONDecodeError, ValueError, ZeroDivisionError):
         return 0
- 
- 
+
+
 def _write_index(instance_id: str, index: int) -> None:
     """Persist the round-robin index. Logs a warning if the write fails."""
     path = _state_path(instance_id)
@@ -259,13 +397,13 @@ def _write_index(instance_id: str, index: int) -> None:
             log.msg(f"[WARNING] device_profiles: could not write state file {path}: {e}")
         except Exception:
             pass
- 
- 
+
+
 def get_next_profile(instance_id: str = "default") -> Tuple[str, dict]:
     """
     Return the next (profile_name, profile_dict) in round-robin order for
     the given honeypot instance, then advance and persist the counter.
- 
+
     Parameters
     ----------
     instance_id : str
@@ -275,30 +413,30 @@ def get_next_profile(instance_id: str = "default") -> Tuple[str, dict]:
     current_index = _read_index(instance_id)
     profile_name = _PROFILE_KEYS[current_index]
     profile = DEVICE_PROFILES[profile_name]
- 
+
     next_index = (current_index + 1) % len(_PROFILE_KEYS)
     _write_index(instance_id, next_index)
- 
+
     return profile_name, profile
- 
- 
+
+
 # ============================================================================
 # Convenience helpers
 # ============================================================================
- 
+
 def get_random_profile() -> Tuple[str, dict]:
     """Return a randomly selected profile (retained for compatibility)."""
     import random
     profile_name = random.choice(_PROFILE_KEYS)
     return profile_name, DEVICE_PROFILES[profile_name]
- 
- 
+
+
 def get_profile_by_name(name: str) -> dict | None:
     """Return a profile dict by key, or None if not found."""
     return DEVICE_PROFILES.get(name, None)
- 
- 
- 
+
+
+
 # ============================================
 #	FUNCTIONS USED FOR RANDOM SELECTION
 # ============================================
