@@ -34,6 +34,9 @@ COPY cowrie /home/cowrie/cowrie
 # Fix ownership so cowrie user can write files
 RUN chown -R cowrie:cowrie /home/cowrie/cowrie
 
+RUN mkdir -p /home/cowrie/cowrie/var/lib/cowrie/state && \
+    chown -R cowrie:cowrie /home/cowrie/cowrie/var
+
 # Switch to cowrie user for security
 USER cowrie
 
