@@ -14,7 +14,7 @@ __pycache__/
 # Data files
 *.pcap
 *.csv
-*.log
+
 
 # IDE
 .vscode/
