@@ -1,0 +1,22 @@
+EXPERIMENT: LZRD-mirai-mips-bf58db0b
+EXPORTED: 25/03/2026 16:21:34
+
+-=-=-= VANILLA HONEYPOT -=-=-=
+   source: /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie
+   port: SSH 2222
+
+-=-=-= CONTAINERISED HONEYPOT -=-=-=
+   container: cowrie-honeypot
+   port: SSH 2223
+
+-=-=-= HOW TO LOAD LOGS -=-=-=
+  Pandas:
+    import pandas as pd
+    df = pd.read_json('vanilla/cowrie.json', lines=True)
+    df = pd.read_json('containerised/cowrie.json', lines=True)
+
+-=-=-= NOTES -=-=-=
+  cowrie.json : one JSON object per line (JSON Lines format)
+  cowrie.log  : human readable text version of same events
+  downloads/  : captured binaries named by SHA256 hash
+                Cowrie deduplicates — each unique file stored once

@@ -1,0 +1,9 @@
+There are 3 different encforcement layers from AA
+DAC - not logged in audit.log
+MAC & Seccomp - Logged in AA
+
+echo '/usr/bin/.sh &' >> /etc/rc.local
+echo '/usr/bin/.sh &' > /etc/init.d/sysd 
+was denied but not by AA - I am not root within the container 
+
+This explains why there was only one denial, but in a realistic scenario there would be 3
